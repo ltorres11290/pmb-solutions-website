@@ -1,0 +1,26 @@
+/* Bold button label text only — font-weight; no size, padding, color, or layout changes. */
+button,
+input[type="submit"],
+input[type="button"],
+input[type="reset"],
+a.btn,
+a.btn-primary,
+a.btn-ghost,
+a.btn-outline,
+a.btn-nav,
+a.btn-submit,
+a.btn-book-header,
+a.btn-secondary,
+button.btn-primary,
+button.btn-secondary,
+button.btn-outline,
+button.btn-submit,
+button.btn-contact-action,
+button.btn-nav,
+button.support-chat-submit,
+button.support-chat-close,
+button.support-chat-bubble,
+button.smart-search-full-close,
+button.nav-menu-btn {
+  font-weight: 700;
+}

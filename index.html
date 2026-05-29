@@ -1,0 +1,3402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="favicon.ico" sizes="48x48 32x32 16x16" type="image/x-icon"/>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png"/>
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png"/>
+<link rel="icon" type="image/svg+xml" href="favicon.svg" sizes="any"/>
+<link rel="icon" type="image/svg+xml" href="favicon-dark.svg" sizes="any" media="(prefers-color-scheme: dark)"/>
+<link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180"/>
+<link rel="apple-touch-icon" href="apple-touch-icon.svg" type="image/svg+xml" sizes="180x180"/>
+<link rel="manifest" href="site.webmanifest"/>
+<link rel="mask-icon" href="safari-pinned-tab.svg" color="#00b4ff"/>
+<meta name="theme-color" content="#00b4ff" media="(prefers-color-scheme: light)"/>
+<meta name="theme-color" content="#080e1a" media="(prefers-color-scheme: dark)"/>
+<meta name="msapplication-TileColor" content="#080e1a"/>
+<meta name="apple-mobile-web-app-title" content="PMB-Solutions"/>
+<title>PMB-Solutions — IT Services & Network Solutions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════
+   ROOT & RESET
+═══════════════════════════════════════════════ */
+:root {
+  --bg:        #080e1a;
+  --bg2:       #0c1424;
+  --bg3:       #101c32;
+  --panel:     rgba(12,20,36,0.82);
+  --border:    rgba(0,180,255,0.12);
+  --border2:   rgba(0,180,255,0.22);
+  --blue:      #00b4ff;
+  --teal:      #00e5c8;
+  --blue-dim:  rgba(0,180,255,0.08);
+  --teal-dim:  rgba(0,229,200,0.08);
+  --white:     #e8f0ff;
+  --muted:     #6a7fa8;
+  --muted2:    #8a9fc4;
+  --glow-b:    rgba(0,180,255,0.21);
+  --glow-t:    rgba(0,229,200,0.17);
+  --nav-h:     88px;
+  --btn-primary-grad: linear-gradient(180deg,#0d8eb8 0%,#066a94 48%,#044d6e 100%);
+  --btn-primary-text: #ffffff;
+  --btn-primary-border: 1px solid rgba(255,255,255,0.22);
+  --btn-nav-pad-y: 0.62rem;
+  --btn-nav-pad-x: 1.45rem;
+  --btn-nav-font: 0.74rem;
+  --btn-nav-track: 0.12em;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{
+  scroll-behavior:smooth;
+  scroll-padding-top:var(--nav-h, 88px);
+}
+section{
+  scroll-margin-top:0;
+}
+body{
+  background:var(--bg);
+  color:var(--white);
+  font-family:'Outfit',sans-serif;
+  font-weight:400;
+  line-height:1.7;
+  overflow-x:hidden;
+}
+h1,h2,h3,h4,h5{font-family:'Rajdhani',sans-serif;font-weight:700;line-height:1.1;letter-spacing:0.02em}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:'Outfit',sans-serif}
+img{max-width:100%}
+.site-logo-img{max-width:none}
+
+/* ═══════════════════════════════════════════════
+   SCROLLBAR
+═══════════════════════════════════════════════ */
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--blue);border-radius:3px}
+
+/* ═══════════════════════════════════════════════
+   NAVBAR (enterprise sticky header)
+═══════════════════════════════════════════════ */
+#navbar{
+  position:fixed;top:0;left:0;width:100%;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;
+  gap:.65rem 1rem;
+  padding:1.1rem 5vw;overflow:visible;
+  background:rgba(8,14,26,0.82);
+  backdrop-filter:blur(22px) saturate(160%);
+  -webkit-backdrop-filter:blur(22px) saturate(160%);
+  border-bottom:1px solid var(--border);
+  box-shadow:0 1px 0 rgba(0,180,255,0.06);
+  transition:
+    padding .38s cubic-bezier(.22,1,.36,1),
+    background .38s ease,
+    backdrop-filter .38s ease,
+    box-shadow .38s ease,
+    border-color .38s ease;
+}
+#navbar.scrolled{
+  padding:.72rem 5vw;
+  background:rgba(6,11,22,0.92);
+  backdrop-filter:blur(26px) saturate(180%);
+  -webkit-backdrop-filter:blur(26px) saturate(180%);
+  border-bottom-color:rgba(0,180,255,0.18);
+  box-shadow:
+    0 12px 40px rgba(0,0,0,0.38),
+    0 1px 0 rgba(0,180,255,0.1);
+}
+@keyframes navScrollReveal{
+  from{opacity:.88;transform:translateY(-10px)}
+  to{opacity:1;transform:translateY(0)}
+}
+#navbar.nav-scroll-motion{
+  animation:navScrollReveal .48s cubic-bezier(.22,1,.36,1) both;
+}
+@media(prefers-reduced-motion:reduce){
+  #navbar.nav-scroll-motion{animation:none}
+}
+/* Shared header + footer logo sizing (aspect ratio preserved via width + height:auto) */
+.site-logo,
+.nav-logo{
+  display:flex;align-items:center;flex-shrink:0;overflow:visible;line-height:0;
+}
+.site-logo-img,
+.nav-logo .nav-logo-img{
+  display:block;height:auto;width:clamp(150px, 48vw, 170px);
+  transition:width .38s cubic-bezier(.22,1,.36,1);
+}
+@media(min-width:600px){
+  .site-logo-img,
+  .nav-logo .nav-logo-img{width:clamp(180px, 32vw, 210px);}
+}
+@media(min-width:900px){
+  .site-logo-img,
+  .nav-logo .nav-logo-img{width:clamp(230px, 24vw, 260px);}
+}
+#navbar .site-logo,
+#navbar .nav-logo{
+  justify-content:center;
+  box-sizing:border-box;
+  width:calc(clamp(150px, 48vw, 170px) + 20px);
+}
+@media(min-width:600px){
+  #navbar .site-logo,
+  #navbar .nav-logo{width:calc(clamp(180px, 32vw, 210px) + 20px);}
+}
+@media(min-width:900px){
+  #navbar .site-logo,
+  #navbar .nav-logo{width:calc(clamp(230px, 24vw, 260px) + 20px);}
+}
+/* Header only: slightly smaller logo when navbar is scrolled */
+#navbar.scrolled .site-logo-img,
+#navbar.scrolled .nav-logo .nav-logo-img{
+  width:clamp(138px, 44vw, 158px);
+}
+@media(min-width:600px){
+  #navbar.scrolled .site-logo-img,
+  #navbar.scrolled .nav-logo .nav-logo-img{width:clamp(166px, 30vw, 194px);}
+}
+@media(min-width:900px){
+  #navbar.scrolled .site-logo-img,
+  #navbar.scrolled .nav-logo .nav-logo-img{width:clamp(212px, 22vw, 240px);}
+}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{
+  font-size:.83rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted2);font-weight:500;
+  position:relative;padding-bottom:2px;
+  transition:color .2s;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:0;left:0;width:0;height:1px;
+  background:var(--blue);transition:width .25s;
+}
+.nav-links a:hover{color:var(--white)}
+.nav-links a:hover::after{width:100%}
+@media(min-width:901px){
+  /* Padding extends hover area under the trigger; menu uses top:100% so there is no dead-air gap. */
+  .nav-dropdown-wrap{
+    position:relative;
+    padding-bottom:.5rem;
+  }
+  .nav-dropdown-wrap > .nav-dropdown-trigger::after{display:none}
+  .nav-dropdown-menu{
+    position:absolute;top:100%;left:50%;transform:translateX(-50%);
+    min-width:min(320px,94vw);list-style:none;margin:0;padding:.5rem 0 .45rem;
+    background:rgba(8,14,26,.97);border:1px solid var(--border2);border-radius:12px;
+    box-shadow:0 18px 50px rgba(0,0,0,.45);
+    opacity:0;visibility:hidden;pointer-events:none;
+    transition:opacity .2s ease,visibility 0s linear .2s;
+    z-index:320;
+  }
+  .nav-dropdown-wrap:hover .nav-dropdown-menu,
+  .nav-dropdown-wrap:focus-within .nav-dropdown-menu{
+    opacity:1;visibility:visible;pointer-events:auto;
+    transition-delay:0s;
+  }
+  .nav-dropdown-menu a{
+    display:block;padding:.55rem 1.15rem;font-size:.76rem;letter-spacing:.05em;
+    text-transform:none;font-weight:500;white-space:nowrap;
+  }
+  .nav-dropdown-menu a::after{display:none}
+  .nav-dropdown-menu a:hover{background:rgba(0,180,255,.1);color:var(--white)}
+  .nav-dropdown-sep{height:1px;margin:.35rem .75rem;background:rgba(0,180,255,.12);list-style:none;padding:0}
+}
+.nav-right{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;justify-content:flex-end}
+/* Book Now — matches .btn-nav header sizing; gradient from :root */
+a.btn-book-header{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+  padding:var(--btn-nav-pad-y) var(--btn-nav-pad-x);
+  font-size:var(--btn-nav-font);
+  letter-spacing:var(--btn-nav-track);
+  min-height:2.75rem;
+  box-sizing:border-box;
+  white-space:nowrap;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+a.btn-book-header:hover{
+  filter:brightness(1.05);
+  transform:translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.24),
+    0 14px 36px rgba(0,100,140,.42),
+    0 0 28px rgba(0,160,220,.22),
+    0 4px 12px rgba(0,0,0,.38);
+}
+a.btn-book-header:focus-visible{
+  filter:brightness(1.06);
+  outline:2px solid var(--teal);
+  outline-offset:3px;
+}
+.nav-mobile-controls{display:none;align-items:center;gap:.5rem;flex-shrink:0}
+.nav-menu-btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:44px;height:44px;padding:0;border-radius:12px;cursor:pointer;
+  border:1px solid var(--border2);
+  background:rgba(8,14,26,.65);
+  color:var(--white);
+  transition:background .2s,border-color .2s,color .2s,box-shadow .2s;
+  -webkit-tap-highlight-color:transparent;
+}
+.nav-menu-btn:hover{
+  border-color:var(--blue);
+  background:rgba(0,180,255,.12);
+  box-shadow:0 0 0 3px rgba(0,180,255,.12);
+}
+.nav-menu-btn:focus-visible{
+  border-color:var(--blue);
+  background:rgba(0,180,255,.12);
+  outline:2px solid var(--blue);
+  outline-offset:2px;
+}
+.nav-menu-btn svg{display:block;width:22px;height:22px}
+.nav-drawer-backdrop{
+  position:fixed;inset:0;top:0;left:0;right:0;bottom:0;
+  z-index:198;
+  background:rgba(4,8,16,.55);
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+  opacity:0;pointer-events:none;visibility:hidden;
+  transition:opacity .32s ease,visibility 0s linear .32s;
+}
+.nav-drawer-backdrop.is-open{
+  opacity:1;pointer-events:auto;visibility:visible;
+  transition:opacity .32s ease,visibility 0s linear 0s;
+}
+.nav-drawer{
+  position:fixed;z-index:199;top:0;right:0;
+  width:min(320px,calc(100vw - 36px));
+  height:100vh;height:100dvh;
+  padding:calc(var(--nav-h, 88px) + 1rem) 1.25rem 1.5rem;
+  background:linear-gradient(165deg,rgba(10,18,34,.97),rgba(6,10,20,.98));
+  border-left:1px solid var(--border2);
+  box-shadow:-16px 0 48px rgba(0,0,0,.45);
+  transform:translateX(100%);
+  transition:transform .38s cubic-bezier(.22,1,.36,1);
+  pointer-events:none;visibility:hidden;
+}
+.nav-drawer.is-open{
+  transform:translateX(0);
+  pointer-events:auto;visibility:visible;
+}
+.nav-drawer-inner{display:flex;flex-direction:column;gap:1.25rem;height:100%}
+.nav-drawer-title{
+  font-family:'Rajdhani',sans-serif;font-size:.72rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--blue);font-weight:700;margin:0;
+}
+.nav-drawer-links{
+  list-style:none;display:flex;flex-direction:column;gap:0;
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+}
+.nav-drawer-links a{
+  display:block;padding:.95rem 0;font-size:.88rem;
+  letter-spacing:.1em;text-transform:uppercase;font-weight:600;
+  font-family:'Rajdhani',sans-serif;color:var(--muted2);
+  border-bottom:1px solid rgba(0,180,255,.08);
+  transition:color .2s,background .2s,padding-left .2s;
+}
+.nav-drawer-links li:last-child a{border-bottom:none}
+.nav-drawer-links a:hover,.nav-drawer-links a:focus-visible{
+  color:var(--white);padding-left:.35rem;outline:none;
+}
+@media(max-width:900px){
+  .nav-mobile-controls{display:flex}
+  .nav-right .btn-book-header--desktop{display:none}
+  .nav-links{display:none!important}
+}
+@media(min-width:901px){
+  .nav-menu-btn,.nav-drawer-backdrop,.nav-drawer{display:none!important}
+}
+@media(max-width:480px){
+  .nav-mobile-controls .btn-book-header--mobile{
+    padding:var(--btn-nav-pad-y) var(--btn-nav-pad-x);
+    font-size:var(--btn-nav-font);
+    letter-spacing:var(--btn-nav-track);
+  }
+}
+.search-bar{
+  display:flex;align-items:center;gap:.5rem;
+  background:var(--blue-dim);border:1px solid var(--border);
+  border-radius:20px;padding:.35rem .9rem;
+  transition:border-color .2s,box-shadow .2s;
+}
+.search-bar:focus-within{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,180,255,.1)}
+.search-bar input{
+  background:transparent;border:none;outline:none;
+  color:var(--white);font-family:'Outfit',sans-serif;font-size:.83rem;
+  width:140px;
+}
+.search-bar input::placeholder{color:var(--muted)}
+.search-icon{color:var(--muted);font-size:.85rem}
+.site-search-wrap.smart-search-wrap{position:relative}
+#siteSearchResults.site-search-results{
+  position:absolute;top:100%;left:0;right:0;margin-top:.35rem;min-width:min(100vw - 10vw, 280px);
+  max-height:min(72vh, 420px);overflow-y:auto;overflow-x:hidden;
+  background:linear-gradient(165deg,rgba(10,18,32,.98),rgba(8,14,26,.99));
+  border:1px solid var(--border2);border-radius:14px;
+  box-shadow:0 22px 56px rgba(0,0,0,.58),0 0 0 1px rgba(0,180,255,.06),0 0 40px rgba(0,180,255,.08);
+  z-index:400;padding:.4rem 0;
+  opacity:0;transform:translateY(-6px);pointer-events:none;
+  transition:opacity .22s ease,transform .22s ease;
+}
+#siteSearchResults.site-search-results.ss-open{
+  opacity:1;transform:translateY(0);pointer-events:all;
+}
+#siteSearchResults.site-search-results:not([hidden]){display:block}
+#siteSearchResults.site-search-results[hidden]{display:none!important}
+.ss-actions{
+  display:flex;flex-direction:column;gap:.35rem;
+  padding:.5rem .65rem .65rem;
+  border-bottom:1px solid var(--border);
+  margin-bottom:.15rem;
+}
+.ss-action{
+  display:flex;flex-direction:column;gap:.1rem;
+  padding:.55rem .75rem;border-radius:10px;
+  background:rgba(0,180,255,.1);border:1px solid rgba(0,180,255,.22);
+  color:var(--white);text-decoration:none;font-family:'Outfit',sans-serif;
+  font-size:.78rem;transition:background .18s,border-color .18s,transform .15s;
+}
+.ss-action:hover,.ss-action:focus{
+  background:rgba(0,180,255,.16);border-color:var(--blue);outline:none;
+  transform:translateX(2px);
+}
+.ss-action strong{font-family:'Rajdhani',sans-serif;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--blue)}
+.ss-action span{font-size:.84rem;color:var(--muted2)}
+.ss-result{
+  display:block;padding:.65rem 1rem .7rem;text-align:left;width:100%;
+  border:none;background:transparent;cursor:pointer;text-decoration:none;
+  border-bottom:1px solid rgba(0,180,255,.06);
+  transition:background .16s ease,color .16s ease;
+  animation:ssResultIn .28s ease both;
+}
+.ss-result:last-child{border-bottom:none}
+@keyframes ssResultIn{
+  from{opacity:0;transform:translateY(4px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.ss-result:hover,.ss-result:focus{
+  background:rgba(0,180,255,.1);outline:none;
+}
+.ss-result-kicker{
+  display:block;font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--blue);margin-bottom:.2rem;font-weight:600;
+}
+.ss-result-title{
+  display:block;font-family:'Rajdhani',sans-serif;font-size:.9rem;font-weight:600;
+  color:var(--white);letter-spacing:.02em;line-height:1.25;margin-bottom:.25rem;
+}
+.ss-result-snippet{
+  display:block;font-size:.76rem;color:var(--muted2);line-height:1.45;
+  max-height:3.1em;overflow:hidden;
+}
+.ss-mark{
+  background:rgba(0,180,255,.28);color:var(--white);padding:0 .12em;border-radius:3px;
+  font-weight:500;
+}
+.site-search-results .site-search-empty,.site-search-results .ss-empty{
+  padding:.85rem 1rem;font-size:.82rem;color:var(--muted);line-height:1.5;
+}
+.site-search-results .ss-footer-hint{
+  padding:.45rem 1rem .55rem;font-size:.68rem;letter-spacing:.06em;color:var(--muted);
+  border-top:1px solid var(--border);margin-top:.15rem;
+}
+/* Full results (Enter) */
+.smart-search-full{
+  position:fixed;inset:0;z-index:520;display:flex;align-items:flex-start;justify-content:center;
+  padding:max(1rem, env(safe-area-inset-top)) 1rem 1rem;
+  opacity:0;pointer-events:none;transition:opacity .25s ease;
+}
+.smart-search-full.ss-full-visible{
+  opacity:1;pointer-events:all;
+}
+.smart-search-full[hidden]{display:none!important}
+.smart-search-full-backdrop{
+  position:absolute;inset:0;background:rgba(4,8,16,.72);
+  backdrop-filter:blur(8px);
+}
+.smart-search-full-dialog{
+  position:relative;z-index:1;width:min(640px,100%);
+  max-height:min(88vh, 720px);display:flex;flex-direction:column;
+  background:linear-gradient(165deg,rgba(12,20,36,.97),rgba(8,14,26,.98));
+  border:1px solid var(--border2);border-radius:16px;
+  box-shadow:0 28px 80px rgba(0,0,0,.6),0 0 0 1px rgba(0,180,255,.08);
+  margin-top:2vh;overflow:hidden;
+  transform:translateY(12px) scale(.98);transition:transform .28s ease;
+}
+.smart-search-full.ss-full-visible .smart-search-full-dialog{
+  transform:translateY(0) scale(1);
+}
+.smart-search-full-head{
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding:1rem 1.1rem;border-bottom:1px solid var(--border);
+  background:rgba(0,180,255,.06);
+}
+.smart-search-full-head h2{
+  font-family:'Rajdhani',sans-serif;font-size:1.15rem;letter-spacing:.04em;margin:0;color:var(--white);
+}
+.smart-search-full-close{
+  flex-shrink:0;width:40px;height:40px;border-radius:10px;border:1px solid var(--border);
+  background:rgba(8,14,26,.6);color:var(--muted2);font-size:1.35rem;line-height:1;cursor:pointer;
+  transition:border-color .2s,color .2s,background .2s;
+}
+.smart-search-full-close:hover{color:var(--white);border-color:var(--blue);background:var(--blue-dim)}
+.smart-search-full-query{
+  margin:0;padding:.65rem 1.1rem;font-size:.82rem;color:var(--muted2);
+  border-bottom:1px solid rgba(0,180,255,.08);
+}
+.smart-search-full-query strong{color:var(--teal);font-weight:600}
+.smart-search-full-list{
+  overflow-y:auto;padding:.35rem 0;flex:1;
+}
+.smart-search-full-list .ss-result{border-radius:0}
+.smart-search-full-list .ss-actions{
+  border-bottom:1px solid var(--border);margin:0 0 .25rem;padding:.75rem 1rem .85rem;
+}
+
+/* ═══════════════════════════════════════════════
+   SECTION WRAPPER
+═══════════════════════════════════════════════ */
+.section{
+  position:relative;z-index:10;
+  padding:clamp(4rem, 6vw, 5rem) 5vw 7rem;
+}
+.section-inner{max-width:1200px;margin:0 auto}
+.section-tag{
+  display:inline-flex;align-items:center;gap:.6rem;
+  font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--blue);font-weight:600;margin-bottom:.9rem;
+}
+.section-tag::before{content:'//';opacity:.5}
+.section-title{
+  font-size:clamp(2rem,3.8vw,3rem);letter-spacing:.03em;
+  margin-bottom:1rem;
+}
+.section-title em{font-style:normal;color:var(--blue)}
+.section-sub{color:var(--muted2);max-width:540px;font-size:1rem}
+
+/* ═══════════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════════ */
+#hero{
+  min-height:100vh;display:flex;align-items:center;
+  padding:7.5rem 5vw 4rem;position:relative;z-index:10;
+  overflow:hidden;isolation:isolate;
+}
+#hero::before{
+  content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:linear-gradient(
+    118deg,
+    rgba(10,22,42,.97) 0%,
+    rgba(8,16,32,.94) 22%,
+    rgba(12,32,52,.92) 45%,
+    rgba(8,20,38,.95) 68%,
+    rgba(14,40,58,.93) 100%
+  );
+  background-size:280% 280%;
+  animation:heroGradFlow 22s ease-in-out infinite;
+}
+#hero::after{
+  content:'';position:absolute;inset:-15%;z-index:0;pointer-events:none;
+  opacity:.85;
+  background:
+    radial-gradient(ellipse 55% 45% at 18% 28%,rgba(0,180,255,.16) 0%,transparent 58%),
+    radial-gradient(ellipse 50% 42% at 82% 72%,rgba(0,229,200,.1) 0%,transparent 55%),
+    radial-gradient(ellipse 70% 50% at 50% 100%,rgba(0,90,140,.12) 0%,transparent 50%);
+  animation:heroGlowDrift 26s ease-in-out infinite alternate;
+}
+@keyframes heroGradFlow{
+  0%,100%{background-position:0% 40%}
+  50%{background-position:100% 60%}
+}
+@keyframes heroGlowDrift{
+  0%{transform:translate(-2%,-1%) scale(1)}
+  100%{transform:translate(2%,1.5%) scale(1.03)}
+}
+.hero-content{max-width:720px;position:relative;z-index:1}
+.hero-h1{
+  font-size:clamp(3.35rem,7.8vw,5.85rem);
+  font-weight:700;letter-spacing:.015em;line-height:1.02;
+  margin-bottom:1rem;
+  animation:fadeUp .7s .1s ease both;
+}
+.hero-h1 .line2{
+  background:linear-gradient(90deg,var(--blue),var(--teal));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero-sub{
+  color:var(--muted2);font-size:1.08rem;max-width:720px;line-height:1.8;
+  margin-bottom:1.65rem;
+  animation:fadeUp .7s .2s ease both;
+}
+.hero-btns{
+  display:flex;gap:.75rem;flex-wrap:wrap;
+  animation:fadeUp .7s .3s ease both;
+}
+/* Premium pill CTA — hero + forms; header nav uses tighter .btn-nav override */
+.btn-primary,
+.btn-nav,
+.btn-submit{
+  background:var(--btn-primary-grad);
+  color:var(--btn-primary-text);
+  border:none;
+  border-radius:999px;
+  padding:.92rem 2.45rem;
+  font-family:'Rajdhani',sans-serif;
+  font-weight:700;
+  font-size:.8rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  border:var(--btn-primary-border);
+  text-shadow:0 1px 1px rgba(0,0,0,.35);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.18),
+    0 8px 24px rgba(0,60,90,.38),
+    0 2px 8px rgba(0,0,0,.34);
+  cursor:pointer;
+  transition:box-shadow .22s ease,transform .18s ease,filter .2s ease;
+}
+.btn-primary:hover,
+.btn-nav:hover,
+.btn-submit:hover{
+  filter:brightness(1.05);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.24),
+    0 12px 30px rgba(0,100,140,.36),
+    0 0 22px rgba(0,160,220,.18),
+    0 3px 10px rgba(0,0,0,.32);
+  transform:translateY(-1px);
+}
+/* Nav: same CTA system — identical metrics to .btn-book-header */
+.btn-nav{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+  padding:var(--btn-nav-pad-y) var(--btn-nav-pad-x);
+  font-size:var(--btn-nav-font);
+  letter-spacing:var(--btn-nav-track);
+  min-height:2.75rem;
+  box-sizing:border-box;
+}
+.btn-outline,
+.btn-secondary{
+  display:inline-flex;align-items:center;justify-content:center;
+  background:transparent;border:1px solid rgba(0,180,255,.3);
+  color:var(--white);padding:.85rem 2.2rem;border-radius:5px;
+  font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.95rem;
+  letter-spacing:.1em;text-transform:uppercase;text-decoration:none;
+  transition:border-color .2s,background .2s,transform .15s;
+  cursor:pointer;
+}
+.btn-outline:hover,
+.btn-secondary:hover{border-color:var(--blue);background:var(--blue-dim);transform:translateY(-1px)}
+
+.hero-btns .btn-outline{
+  background:rgba(4,12,26,.55);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  color:rgba(232,240,255,.82);border:1px solid rgba(255,255,255,.28);
+  border-radius:999px;padding:.72rem 1.85rem;font-size:.72rem;letter-spacing:.12em;
+  font-weight:600;box-shadow:none;
+  transition:border-color .2s,background .2s,color .2s,transform .18s;
+}
+.hero-btns .btn-outline:hover{
+  border-color:rgba(255,255,255,.42);background:rgba(255,255,255,.06);color:rgba(242,248,255,.92);
+  box-shadow:none;
+  transform:translateY(-1px);
+}
+
+.hero-visual{
+  position:absolute;right:-60px;top:50%;transform:translateY(-50%);
+  width:480px;height:480px;opacity:.12;pointer-events:none;
+  z-index:1;
+  animation:rotateSlow 40s linear infinite;
+}
+@keyframes rotateSlow{from{transform:translateY(-50%) rotate(0deg)}to{transform:translateY(-50%) rotate(360deg)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
+
+/* ═══════════════════════════════════════════════
+   SERVICES
+═══════════════════════════════════════════════ */
+:is(#services,#services-overview){
+  --svc-pad:2rem;
+  --svc-pad-b:1.95rem;
+  --svc-radius:14px;
+  --svc-icon:72px;
+  --svc-icon-r:16px;
+  --svc-svg:40px;
+  --svc-h3-space:.72rem;
+  --svc-ease:cubic-bezier(.22,1,.36,1);
+  --svc-lift:-5px;
+  --svc-blue:rgba(0,180,255,1);
+  --svc-teal:rgba(0,229,200,1);
+  background:rgba(12,20,36,0.6);
+}
+#services-overview{padding-top:2.5rem}
+.services-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1.3rem;margin-top:3.5rem;
+  align-items:stretch;
+}
+/* Service cards: unified layout, links, hover (icons & copy unchanged) */
+:is(#services,#services-overview) .svc-card{
+  display:flex;flex-direction:column;height:100%;
+  color:inherit;text-decoration:none;cursor:default;
+  padding:var(--svc-pad) var(--svc-pad) var(--svc-pad-b);
+  border-radius:var(--svc-radius);
+  position:relative;overflow:hidden;
+  transition:transform .36s var(--svc-ease),border-color .3s ease,box-shadow .36s ease,background .35s ease;
+}
+:is(#services,#services-overview) a.svc-card{cursor:pointer}
+:is(#services,#services-overview) .svc-card:focus-visible{
+  outline:2px solid var(--blue);
+  outline-offset:3px;
+}
+:is(#services,#services-overview) .svc-card .svc-icon-wrap{
+  width:var(--svc-icon);height:var(--svc-icon);
+  border-radius:var(--svc-icon-r);
+  margin-bottom:1.52rem;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  transition:box-shadow .35s ease,background .35s ease,transform .35s ease,border-color .25s ease;
+}
+:is(#services,#services-overview) .svc-card .svc-icon-wrap svg{
+  width:var(--svc-svg);height:var(--svc-svg);display:block;
+}
+:is(#services,#services-overview) .svc-card h3{
+  font-size:1.15rem;margin-bottom:var(--svc-h3-space);
+  letter-spacing:.045em;font-weight:700;
+  color:rgba(244,248,255,.98);
+}
+:is(#services,#services-overview) .svc-card p{
+  flex-grow:1;margin:0;
+  font-size:.97rem;line-height:1.65;letter-spacing:.01em;
+  color:rgba(232,240,255,.86);
+  text-shadow:0 1px 2px rgba(0,0,0,.35);
+}
+:is(#services,#services-overview) .svc-card .svc-link{
+  margin-top:1.1rem;align-self:flex-start;
+  opacity:1;transform:none;
+  cursor:pointer;
+  position:relative;
+  z-index:1;
+  transition:color .2s ease,letter-spacing .2s ease,filter .2s ease;
+}
+:is(#services,#services-overview) .svc-card:hover{
+  transform:translateY(var(--svc-lift));
+  border-color:rgba(0,180,255,.28);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.07) inset,
+    0 18px 44px rgba(0,0,0,.34),
+    0 0 0 1px rgba(0,180,255,.08),
+    0 0 28px rgba(0,180,255,.1),
+    0 0 20px rgba(0,229,200,.08);
+}
+:is(#services,#services-overview) .svc-card:hover .svc-icon-wrap{
+  transform:translateY(-1px);
+  border-color:rgba(0,180,255,.32);
+  background:linear-gradient(155deg,rgba(0,180,255,.17),rgba(0,229,200,.1));
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,.12) inset,
+    0 8px 26px rgba(0,180,255,.18),
+    0 0 18px rgba(0,229,200,.1);
+}
+:is(#services,#services-overview) .svc-card:hover .svc-link{
+  color:var(--teal);
+  letter-spacing:.1em;
+  filter:brightness(1.08);
+}
+.svc-card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:1.8rem;
+  position:relative;overflow:hidden;
+  transition:transform .3s,border-color .3s,box-shadow .3s;
+  cursor:default;
+}
+.svc-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(0,180,255,.04),transparent);
+  opacity:0;transition:opacity .3s;
+}
+.svc-card:hover{transform:translateY(-6px);border-color:rgba(0,180,255,.35);box-shadow:0 20px 50px rgba(0,0,0,.5),0 0 30px rgba(0,180,255,.08)}
+.svc-card:hover::before{opacity:1}
+.svc-card::after{
+  content:'';position:absolute;top:0;left:0;
+  width:100%;height:2px;
+  background:linear-gradient(90deg,var(--blue),var(--teal));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .4s ease;
+}
+.svc-card:hover::after{transform:scaleX(1)}
+.svc-icon-wrap{
+  width:54px;height:54px;border-radius:12px;
+  background:var(--blue-dim);border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.5rem;margin-bottom:1.3rem;
+  transition:box-shadow .3s,background .3s;
+}
+.svc-card:hover .svc-icon-wrap{
+  background:rgba(0,180,255,.14);
+  box-shadow:0 0 20px rgba(0,180,255,.2);
+}
+.svc-card h3{font-size:1.15rem;margin-bottom:.5rem}
+.svc-card p{color:var(--muted2);font-size:.97rem;line-height:1.65}
+.services-grid .svc-card p{font-size:1rem;line-height:1.65}
+.svc-link{
+  display:inline-flex;align-items:center;gap:.35rem;
+  margin-top:1rem;font-size:.85rem;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--blue);font-weight:600;
+  opacity:1;transform:none;
+  transition:color .2s ease,letter-spacing .2s ease,filter .2s ease;
+}
+.svc-card:hover .svc-link{opacity:1;transform:none;color:var(--teal)}
+
+/* Desktop Support — premium card variant */
+.svc-card--desktop{
+  border:1px solid rgba(0,180,255,.14);
+  background:linear-gradient(165deg,rgba(14,24,44,.96) 0%,rgba(11,19,36,.89) 48%,rgba(13,24,44,.94) 100%);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.055) inset,
+    0 10px 36px rgba(0,0,0,.26),
+    0 2px 10px rgba(0,180,255,.055),
+    0 1px 0 rgba(0,229,200,.04);
+}
+.svc-card--desktop::before{
+  background:linear-gradient(135deg,rgba(0,180,255,.075),rgba(0,229,200,.055) 50%,transparent 72%);
+}
+.svc-card--desktop .svc-icon-wrap{
+  background:linear-gradient(150deg,rgba(0,180,255,.12),rgba(0,229,200,.1));
+  border:1px solid rgba(0,180,255,.22);
+  box-shadow:0 0 0 1px rgba(0,0,0,.2) inset,0 6px 22px rgba(0,180,255,.09),0 4px 16px rgba(0,229,200,.06);
+}
+
+/* Network Engineering — premium / technical card variant */
+:is(#services,#services-overview) .svc-card--network{padding-left:2.1rem}
+.svc-card--network{
+  border:1px solid rgba(0,180,255,.13);
+  background:
+    repeating-linear-gradient(180deg,transparent 0,transparent 22px,rgba(0,180,255,.035) 22px,rgba(0,180,255,.035) 23px),
+    linear-gradient(172deg,rgba(15,26,48,.97) 0%,rgba(10,18,34,.91) 52%,rgba(12,22,42,.95) 100%);
+  box-shadow:
+    inset 2px 0 0 rgba(0,180,255,.32),
+    0 1px 0 rgba(255,255,255,.05) inset,
+    0 10px 38px rgba(0,0,0,.27),
+    0 2px 12px rgba(0,180,255,.06);
+}
+.svc-card--network::before{
+  background:linear-gradient(128deg,rgba(0,180,255,.06),rgba(0,229,200,.07) 40%,transparent 75%);
+}
+:is(#services,#services-overview) .svc-card--network:hover{
+  box-shadow:
+    inset 3px 0 0 rgba(0,229,200,.38),
+    0 1px 0 rgba(255,255,255,.07) inset,
+    0 22px 52px rgba(0,0,0,.4),
+    0 0 0 1px rgba(0,180,255,.1),
+    0 0 36px rgba(0,180,255,.12),
+    0 0 26px rgba(0,229,200,.1);
+}
+.svc-card--network .svc-icon-wrap{
+  background:linear-gradient(148deg,rgba(0,180,255,.11),rgba(8,14,28,.4));
+  border:1px solid rgba(0,180,255,.26);
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,.22) inset,
+    0 0 0 1px rgba(0,229,200,.08) inset,
+    0 6px 24px rgba(0,180,255,.12);
+}
+
+/* Camera Installation — premium / security-focused card variant */
+.svc-card--camera{
+  border:1px solid rgba(0,180,255,.17);
+  background:
+    radial-gradient(ellipse 115% 72% at 50% -8%,rgba(0,180,255,.14),transparent 52%),
+    linear-gradient(178deg,rgba(13,22,40,.98) 0%,rgba(8,14,26,.93) 100%);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.065) inset,
+    0 0 0 1px rgba(0,229,200,.07) inset,
+    0 12px 42px rgba(0,0,0,.32),
+    0 4px 18px rgba(0,180,255,.07),
+    0 0 48px rgba(0,0,0,.25);
+}
+.svc-card--camera::before{
+  background:radial-gradient(60% 45% at 50% 18%,rgba(0,229,200,.1),transparent 70%);
+}
+:is(#services,#services-overview) .svc-card--camera:hover{
+  border-color:rgba(0,229,200,.3);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.075) inset,
+    0 0 0 1px rgba(0,180,255,.1) inset,
+    0 22px 52px rgba(0,0,0,.42),
+    0 0 0 1px rgba(0,180,255,.1),
+    0 0 36px rgba(0,180,255,.12),
+    0 0 28px rgba(0,229,200,.1);
+}
+.svc-card--camera .svc-icon-wrap{
+  background:linear-gradient(165deg,rgba(6,12,24,.55),rgba(0,180,255,.12));
+  border:1px solid rgba(0,180,255,.28);
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,.28) inset,
+    0 0 20px rgba(0,180,255,.15),
+    0 6px 22px rgba(0,0,0,.35);
+}
+
+/* Data Migration & Recovery — premium card variant */
+.svc-card--data{
+  border:1px solid rgba(0,180,255,.14);
+  background:linear-gradient(166deg,rgba(14,24,44,.96) 0%,rgba(11,19,36,.9) 50%,rgba(13,24,44,.94) 100%);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.055) inset,
+    0 10px 36px rgba(0,0,0,.26),
+    0 2px 10px rgba(0,180,255,.055),
+    0 1px 0 rgba(0,229,200,.04);
+}
+.svc-card--data::before{
+  background:linear-gradient(135deg,rgba(0,180,255,.08),rgba(0,229,200,.06) 50%,transparent 72%);
+}
+.svc-card--data .svc-icon-wrap{
+  background:linear-gradient(150deg,rgba(0,180,255,.12),rgba(0,229,200,.1));
+  border:1px solid rgba(0,180,255,.22);
+  box-shadow:0 0 0 1px rgba(0,0,0,.2) inset,0 6px 22px rgba(0,180,255,.09),0 4px 16px rgba(0,229,200,.06);
+}
+
+/* IT Security Services — premium card variant */
+.svc-card--security{
+  border:1px solid rgba(0,229,200,.15);
+  background:linear-gradient(167deg,rgba(13,24,42,.96) 0%,rgba(10,18,32,.9) 50%,rgba(12,22,40,.94) 100%);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.055) inset,
+    0 10px 36px rgba(0,0,0,.27),
+    0 2px 12px rgba(0,229,200,.07),
+    0 1px 0 rgba(0,180,255,.05);
+}
+.svc-card--security::before{
+  background:linear-gradient(132deg,rgba(0,229,200,.08),rgba(0,180,255,.07) 48%,transparent 72%);
+}
+:is(#services,#services-overview) .svc-card--security:hover{
+  border-color:rgba(0,229,200,.32);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.065) inset,
+    0 22px 52px rgba(0,0,0,.4),
+    0 0 0 1px rgba(0,229,200,.1),
+    0 0 34px rgba(0,229,200,.12),
+    0 0 24px rgba(0,180,255,.08);
+}
+.svc-card--security .svc-icon-wrap{
+  background:linear-gradient(152deg,rgba(0,229,200,.11),rgba(0,180,255,.1));
+  border:1px solid rgba(0,229,200,.24);
+  box-shadow:0 0 0 1px rgba(0,0,0,.2) inset,0 6px 22px rgba(0,229,200,.1),0 4px 16px rgba(0,180,255,.05);
+}
+
+/* Troubleshooting — enterprise card variant */
+.svc-card--troubleshoot{
+  border:1px solid rgba(0,180,255,.16);
+  background:linear-gradient(160deg,rgba(14,22,40,.94) 0%,rgba(10,18,34,.88) 55%,rgba(12,22,42,.92) 100%);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.06) inset,
+    0 12px 40px rgba(0,0,0,.28);
+}
+.svc-card--troubleshoot::before{
+  background:linear-gradient(145deg,rgba(0,180,255,.08),rgba(0,229,200,.04) 45%,transparent 72%);
+}
+.svc-card--troubleshoot .svc-icon-wrap{
+  background:linear-gradient(155deg,rgba(0,180,255,.14),rgba(0,229,200,.07));
+  border:1px solid rgba(0,180,255,.28);
+  box-shadow:0 0 0 1px rgba(0,0,0,.2) inset,0 8px 24px rgba(0,180,255,.12);
+}
+
+/* Small Business IT — premium card variant */
+.svc-card--smb{
+  border:1px solid rgba(0,229,200,.15);
+  background:linear-gradient(168deg,rgba(14,24,44,.96) 0%,rgba(11,19,36,.9) 48%,rgba(13,24,42,.94) 100%);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.055) inset,
+    0 10px 36px rgba(0,0,0,.26),
+    0 2px 12px rgba(0,229,200,.07);
+}
+.svc-card--smb::before{
+  background:linear-gradient(138deg,rgba(0,229,200,.08),rgba(0,180,255,.06) 42%,transparent 68%);
+}
+:is(#services,#services-overview) .svc-card--smb:hover{
+  border-color:rgba(0,229,200,.34);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.065) inset,
+    0 22px 52px rgba(0,0,0,.4),
+    0 0 0 1px rgba(0,229,200,.1),
+    0 0 34px rgba(0,229,200,.12),
+    0 0 24px rgba(0,180,255,.08);
+}
+.svc-card--smb .svc-icon-wrap{
+  background:linear-gradient(152deg,rgba(0,229,200,.13),rgba(0,180,255,.09));
+  border:1px solid rgba(0,229,200,.25);
+  box-shadow:0 0 0 1px rgba(0,0,0,.2) inset,0 6px 22px rgba(0,229,200,.11);
+}
+
+/* Home Office Tech Support — premium card variant */
+.svc-card--home{
+  border:1px solid rgba(0,180,255,.15);
+  background:linear-gradient(162deg,rgba(14,23,42,.95) 0%,rgba(11,18,34,.9) 50%,rgba(12,22,40,.93) 100%);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.055) inset,
+    0 10px 36px rgba(0,0,0,.25),
+    0 2px 12px rgba(0,180,255,.06);
+}
+.svc-card--home::before{
+  background:linear-gradient(142deg,rgba(0,180,255,.07),rgba(0,229,200,.06) 44%,transparent 70%);
+}
+.svc-card--home .svc-icon-wrap{
+  background:linear-gradient(154deg,rgba(0,180,255,.13),rgba(0,229,200,.08));
+  border:1px solid rgba(0,180,255,.24);
+  box-shadow:0 0 0 1px rgba(0,0,0,.19) inset,0 6px 22px rgba(0,180,255,.1);
+}
+
+/* Digital & creative services — premium card variant (new offerings) */
+.svc-card--digital{
+  border:1px solid rgba(0,180,255,.15);
+  background:
+    radial-gradient(ellipse 90% 55% at 12% 0%,rgba(0,229,200,.1),transparent 58%),
+    linear-gradient(166deg,rgba(14,24,46,.97) 0%,rgba(11,18,34,.9) 50%,rgba(13,26,46,.95) 100%);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.055) inset,
+    0 10px 36px rgba(0,0,0,.26),
+    0 2px 12px rgba(0,229,200,.06),
+    0 0 0 1px rgba(0,180,255,.04);
+}
+.svc-card--digital::before{
+  background:linear-gradient(128deg,rgba(0,229,200,.07),rgba(0,180,255,.08) 46%,transparent 72%);
+}
+:is(#services,#services-overview) .svc-card--digital:hover{
+  border-color:rgba(0,180,255,.3);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.07) inset,
+    0 22px 52px rgba(0,0,0,.4),
+    0 0 0 1px rgba(0,180,255,.1),
+    0 0 34px rgba(0,180,255,.12),
+    0 0 26px rgba(0,229,200,.1);
+}
+.svc-card--digital .svc-icon-wrap{
+  background:linear-gradient(152deg,rgba(0,180,255,.12),rgba(0,229,200,.11));
+  border:1px solid rgba(0,180,255,.24);
+  box-shadow:0 0 0 1px rgba(0,0,0,.2) inset,0 6px 22px rgba(0,180,255,.1),0 4px 16px rgba(0,229,200,.07);
+}
+/* Unified service-card treatment for consistent enterprise styling */
+.services-grid .svc-card[class*="svc-card--"]{
+  padding:1.8rem;
+  border:1px solid var(--border);
+  background:var(--panel);
+  box-shadow:none;
+}
+.services-grid .svc-card[class*="svc-card--"]::before{
+  background:linear-gradient(135deg,rgba(0,180,255,.04),transparent);
+}
+.services-grid .svc-card[class*="svc-card--"] .svc-icon-wrap{
+  background:var(--blue-dim);
+  border:1px solid var(--border2);
+  box-shadow:none;
+}
+
+/* ═══════════════════════════════════════════════
+   WHY CHOOSE US
+═══════════════════════════════════════════════ */
+#why{
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 0%,rgba(0,180,255,.06),transparent 55%),
+    var(--bg);
+  border-top:1px solid rgba(0,180,255,.08);
+  border-bottom:1px solid rgba(0,180,255,.06);
+}
+#why .section-inner > .reveal .section-title{
+  font-size:clamp(1.85rem,4vw,2.35rem);
+  letter-spacing:.04em;
+  line-height:1.12;
+}
+#why .section-inner > .reveal .section-sub{
+  max-width:560px;
+  font-size:1.02rem;
+  line-height:1.72;
+  color:rgba(184,198,228,.92);
+  letter-spacing:.015em;
+}
+#why .section-inner > .reveal .section-tag{
+  letter-spacing:.14em;
+  font-weight:600;
+}
+.why-grid{
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  gap:3.25rem 3.5rem;
+  align-items:start;
+  margin-top:3rem;
+}
+.why-badges{
+  display:flex;flex-direction:column;gap:0;
+  background:rgba(10,16,30,.55);
+  border:1px solid rgba(0,180,255,.12);
+  border-radius:14px;
+  padding:0;
+  overflow:hidden;
+  box-shadow:0 16px 48px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.04);
+}
+.why-badge{
+  display:flex;align-items:flex-start;gap:1.25rem;
+  padding:1.35rem 1.6rem 1.4rem 1.5rem;
+  background:transparent;
+  border:none;border-radius:0;
+  border-bottom:1px solid rgba(0,180,255,.1);
+  transition:background .22s ease,border-color .22s ease,box-shadow .22s ease;
+  position:relative;
+}
+.why-badge:last-child{border-bottom:none}
+.why-badge::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg,var(--blue),var(--teal));
+  opacity:0;transition:opacity .22s ease;
+}
+.why-badge:hover{
+  background:rgba(0,180,255,.04);
+  box-shadow:none;
+  transform:none;
+}
+.why-badge:hover::before{opacity:1}
+.badge-icon{
+  width:46px;height:46px;flex-shrink:0;
+  border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-size:1.2rem;
+  background:linear-gradient(145deg,rgba(0,229,200,.1),rgba(0,180,255,.06));
+  border:1px solid rgba(0,229,200,.18);
+  transition:box-shadow .22s ease,border-color .22s ease;
+}
+.why-badge:hover .badge-icon{
+  border-color:rgba(0,180,255,.24);
+  box-shadow:0 0 16px rgba(0,180,255,.1);
+}
+.badge-body{min-width:0}
+.badge-body h4{
+  font-family:'Rajdhani',sans-serif;
+  font-size:1.05rem;font-weight:700;
+  letter-spacing:.04em;
+  text-transform:none;
+  color:rgba(240,246,255,.98);
+  margin-bottom:.35rem;
+  line-height:1.25;
+}
+.badge-body p{
+  font-size:.96rem;
+  line-height:1.68;
+  letter-spacing:.015em;
+  color:rgba(168,184,214,.95);
+}
+.badge-icon{
+  font-family:'Rajdhani',sans-serif;
+  font-size:.95rem;
+  font-weight:700;
+  letter-spacing:.08em;
+}
+
+.why-right{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:1rem;
+}
+.stat-block{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  gap:.35rem;
+  padding:1.35rem 1.45rem 1.25rem;
+  border-radius:12px;
+  background:linear-gradient(165deg,rgba(14,22,40,.92) 0%,rgba(10,16,28,.88) 100%);
+  border:1px solid rgba(0,180,255,.14);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.06) inset,
+    0 10px 32px rgba(0,0,0,.28);
+  overflow:hidden;
+  transition:border-color .25s ease,box-shadow .25s ease,transform .25s ease;
+}
+.stat-block::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,rgba(0,180,255,.45),rgba(0,229,200,.35),transparent);
+  opacity:.85;
+}
+.stat-block:hover{
+  border-color:rgba(0,180,255,.28);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.07) inset,
+    0 14px 40px rgba(0,0,0,.35),
+    0 0 0 1px rgba(0,180,255,.06),
+    0 0 28px rgba(0,180,255,.08);
+  transform:translateY(-2px);
+}
+.stat-num{
+  font-family:'Rajdhani',sans-serif;
+  font-size:2.35rem;font-weight:700;
+  line-height:1.05;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:.02em;
+  background:linear-gradient(135deg,var(--blue),var(--teal));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-top:.15rem;
+}
+.stat-label{
+  font-size:.72rem;
+  font-weight:600;
+  color:rgba(184,198,220,.88);
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  line-height:1.45;
+  margin-top:0;
+  max-width:22rem;
+}
+.stat-bar{
+  height:4px;
+  background:rgba(255,255,255,.06);
+  border-radius:99px;
+  margin-top:.65rem;
+  overflow:hidden;
+}
+.stat-fill{
+  height:100%;
+  border-radius:99px;
+  background:linear-gradient(90deg,var(--blue),var(--teal));
+  box-shadow:0 0 12px rgba(0,180,255,.35);
+}
+@media (min-width:1100px){
+  .why-right{
+    grid-template-columns:1fr 1fr;
+    gap:1rem 1rem;
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   ABOUT
+═══════════════════════════════════════════════ */
+#about{
+  background:
+    radial-gradient(ellipse 55% 45% at 100% 20%,rgba(0,180,255,.06),transparent 55%),
+    rgba(12,20,36,0.72);
+  border-top:1px solid rgba(0,180,255,.07);
+}
+.about-grid{
+  display:block;
+  padding-top:.5rem;
+}
+.about-text{
+  max-width:42rem;
+}
+.about-text .section-tag{
+  letter-spacing:.14em;
+  margin-bottom:.35rem;
+}
+.about-text .section-title{
+  font-size:clamp(1.85rem,3.5vw,2.25rem);
+  letter-spacing:.035em;
+  line-height:1.12;
+  margin-bottom:.25rem;
+}
+.about-text p{
+  color:rgba(184,198,228,.95);
+  margin-top:1.65rem;
+  font-size:1.02rem;
+  line-height:1.82;
+  letter-spacing:.012em;
+}
+.about-text p+p{margin-top:1.15rem}
+.about-text .about-lead{margin-top:1.35rem}
+.about-principles{
+  list-style:none;padding:0;margin:1.25rem 0 0;
+}
+.about-principles li{
+  position:relative;
+  padding-left:1.15rem;
+  margin-top:.95rem;
+  color:rgba(184,198,228,.95);
+  font-size:1.02rem;
+  line-height:1.72;
+  letter-spacing:.012em;
+}
+.about-principles li::before{
+  content:'';position:absolute;left:0;top:.62em;
+  width:6px;height:6px;border-radius:50%;
+  background:linear-gradient(135deg,var(--blue),var(--teal));
+  box-shadow:0 0 10px rgba(0,180,255,.35);
+}
+.about-principles li strong{
+  color:rgba(240,246,255,.96);
+  font-weight:600;
+}
+
+/* ═══════════════════════════════════════════════
+   FAQ
+═══════════════════════════════════════════════ */
+#faq{background:var(--bg)}
+.faq-list{
+  margin-top:3.5rem;
+  display:flex;flex-direction:column;
+  gap:1.15rem;
+  max-width:860px;margin-left:auto;margin-right:auto;
+}
+.faq-item{
+  background:linear-gradient(165deg,rgba(12,20,36,.88),rgba(10,16,28,.92));
+  border:1px solid rgba(0,180,255,.12);
+  border-radius:14px;
+  overflow:hidden;
+  transition:border-color .35s ease,box-shadow .35s ease;
+  box-shadow:0 4px 24px rgba(0,0,0,.2);
+}
+.faq-item.open{
+  border-color:rgba(0,180,255,.28);
+  box-shadow:
+    0 8px 36px rgba(0,0,0,.28),
+    0 0 0 1px rgba(0,180,255,.06),
+    0 0 28px rgba(0,180,255,.08);
+}
+.faq-q{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:1.25rem;
+  padding:1.4rem 1.5rem 1.45rem 1.65rem;
+  cursor:pointer;
+  font-family:'Rajdhani',sans-serif;font-size:1.06rem;font-weight:600;
+  letter-spacing:.02em;
+  line-height:1.35;
+  transition:color .25s ease,background .3s ease;
+  user-select:none;
+}
+.faq-q:hover{color:var(--blue)}
+.faq-item.open .faq-q{
+  color:rgba(232,240,255,.98);
+  background:rgba(0,180,255,.04);
+}
+/* Plus / close control — site palette */
+.faq-icon{
+  position:relative;
+  flex-shrink:0;
+  width:2.35rem;height:2.35rem;
+  border-radius:10px;
+  border:1px solid rgba(0,180,255,.32);
+  background:linear-gradient(145deg,rgba(0,180,255,.14),rgba(0,229,200,.08));
+  box-shadow:0 0 0 1px rgba(0,0,0,.2) inset,0 1px 0 rgba(255,255,255,.06) inset;
+  transition:
+    transform .42s cubic-bezier(.34,1.3,.64,1),
+    border-color .3s ease,
+    background .3s ease,
+    box-shadow .3s ease;
+}
+.faq-icon::before,
+.faq-icon::after{
+  content:'';
+  position:absolute;left:50%;top:50%;
+  border-radius:1px;
+  background:linear-gradient(90deg,var(--blue),var(--teal));
+  transform:translate(-50%,-50%);
+  transition:background .25s ease;
+}
+.faq-icon::before{width:12px;height:2px}
+.faq-icon::after{width:2px;height:12px}
+.faq-item.open .faq-icon{
+  transform:rotate(45deg);
+  border-color:rgba(0,229,200,.45);
+  background:linear-gradient(145deg,rgba(0,180,255,.22),rgba(0,229,200,.14));
+  box-shadow:0 0 0 1px rgba(0,0,0,.15) inset,0 0 18px rgba(0,180,255,.2);
+}
+.faq-q:hover .faq-icon{
+  border-color:rgba(0,180,255,.45);
+  box-shadow:0 0 0 1px rgba(0,0,0,.18) inset,0 0 14px rgba(0,180,255,.15);
+}
+.faq-a{
+  display:grid;
+  grid-template-rows:0fr;
+  transition:grid-template-rows .45s cubic-bezier(.25,1,.45,1);
+}
+.faq-a.open{grid-template-rows:1fr}
+.faq-a-inner{
+  min-height:0;
+  overflow:hidden;
+  padding:0 1.65rem;
+  color:rgba(184,198,228,.95);
+  font-size:.98rem;
+  line-height:1.78;
+  letter-spacing:.015em;
+  transition:padding-block .38s cubic-bezier(.25,1,.45,1);
+}
+.faq-a.open .faq-a-inner{
+  padding-top:.2rem;
+  padding-bottom:1.45rem;
+}
+
+/* ═══════════════════════════════════════════════
+   CONTACT
+═══════════════════════════════════════════════ */
+#contact{
+  background:
+    radial-gradient(ellipse 50% 40% at 0% 30%,rgba(0,180,255,.06),transparent 55%),
+    rgba(12,20,36,0.82);
+  border-top:1px solid rgba(0,180,255,.07);
+}
+.contact-layout{
+  display:flex;flex-direction:column;
+  gap:clamp(2rem,4vw,2.75rem);
+}
+/* Two columns: left (journey + consultation) | right (form + send button) */
+.contact-main-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:clamp(1.75rem,4vw,3rem);
+  align-items:stretch;
+}
+.contact-left{
+  display:flex;flex-direction:column;
+  min-width:0;min-height:100%;
+  align-self:stretch;
+}
+.contact-journey{
+  min-width:0;padding-top:.25rem;flex:0 0 auto;
+}
+.contact-journey .section-sub{margin-top:.35rem}
+.contact-intro{
+  margin:.65rem 0 1rem;
+  font-size:.98rem;
+  color:rgba(190,206,234,.95);
+}
+.contact-info{
+  margin-top:2.25rem;
+  display:flex;flex-direction:column;
+  gap:1rem;
+}
+.c-item{
+  display:flex;align-items:flex-start;gap:1.1rem;
+  background:linear-gradient(165deg,rgba(12,20,36,.75),rgba(10,16,28,.85));
+  border:1px solid rgba(0,180,255,.12);
+  border-radius:12px;
+  padding:1.2rem 1.35rem;
+  transition:border-color .28s ease,box-shadow .28s ease;
+  box-shadow:0 4px 20px rgba(0,0,0,.18);
+}
+.c-item:hover{
+  border-color:rgba(0,180,255,.28);
+  box-shadow:0 8px 28px rgba(0,0,0,.22),0 0 0 1px rgba(0,180,255,.05);
+}
+.c-icon{
+  width:42px;height:42px;flex-shrink:0;border-radius:10px;
+  background:linear-gradient(145deg,rgba(0,180,255,.12),rgba(0,229,200,.06));
+  border:1px solid rgba(0,180,255,.2);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Rajdhani',sans-serif;font-size:.72rem;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--blue);
+}
+.c-item h4{font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-bottom:.25rem;font-weight:600}
+.c-item p{font-size:.97rem;color:rgba(184,198,228,.92);line-height:1.6}
+.c-item p a{color:inherit;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(0,180,255,.45)}
+.c-item p a:hover{color:var(--white);text-decoration-color:var(--blue)}
+.contact-cta-box,
+.contact-form-card{
+  border-radius:14px;
+  padding:1.7rem 1.75rem 1.75rem;
+  box-shadow:0 8px 32px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.05);
+}
+.contact-cta-box{
+  margin-top:auto;
+  flex:0 0 auto;
+  width:100%;
+  display:flex;flex-direction:column;
+  background:linear-gradient(155deg,rgba(0,180,255,.08),rgba(0,229,200,.05));
+  border:1px solid rgba(0,180,255,.22);
+}
+.contact-cta-box h4{
+  font-family:'Rajdhani',sans-serif;
+  font-size:1.08rem;font-weight:700;
+  letter-spacing:.04em;
+  margin:0 0 .55rem;
+  color:rgba(240,246,255,.98);
+}
+.contact-cta-box p{
+  color:rgba(184,198,228,.9);font-size:.97rem;line-height:1.65;
+  margin:0 0 1.1rem;
+}
+/* Matched contact CTAs — Book a Free Call + Send Message (identical size & alignment) */
+.btn-contact-action{
+  box-sizing:border-box;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  max-width:100%;
+  min-height:3.25rem;
+  padding:0 2.45rem;
+  margin:0;
+  line-height:1.15;
+  align-self:stretch;
+  flex-shrink:0;
+}
+
+.contact-form-card{
+  display:flex;flex-direction:column;
+  align-self:stretch;
+  min-height:100%;
+  background:linear-gradient(168deg,rgba(12,20,36,.92) 0%,rgba(8,14,26,.94) 100%);
+  border:1px solid rgba(0,180,255,.14);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.06) inset,
+    0 16px 48px rgba(0,0,0,.35),
+    0 0 0 1px rgba(0,0,0,.2);
+}
+.contact-form-card h3{
+  font-family:'Rajdhani',sans-serif;
+  font-size:1.28rem;font-weight:700;
+  letter-spacing:.03em;
+  margin:0 0 .4rem;
+  color:rgba(244,248,255,.98);
+}
+.contact-form-lead{
+  color:rgba(168,184,214,.92);
+  font-size:.96rem;
+  line-height:1.55;
+  margin:0 0 1.35rem;
+}
+.contact-form{
+  display:flex;flex-direction:column;
+  gap:1.2rem;
+  margin-top:0;
+  flex:1;
+}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem}
+.f-group{display:flex;flex-direction:column;gap:.55rem}
+.f-group label{
+  font-size:.82rem;letter-spacing:.11em;text-transform:uppercase;
+  color:rgba(148,164,198,.95);font-weight:600;
+}
+.f-group input,.f-group textarea,.f-group select{
+  width:100%;
+  background:rgba(6,12,24,.55);
+  border:1px solid rgba(0,180,255,.16);
+  border-radius:10px;
+  padding:.82rem 1.05rem;
+  color:var(--white);
+  font-family:'Outfit',sans-serif;
+  font-size:.96rem;
+  line-height:1.45;
+  outline:none;
+  transition:border-color .22s ease,box-shadow .22s ease,background .22s ease;
+  box-shadow:0 1px 0 rgba(255,255,255,.04) inset;
+}
+.f-group input::placeholder,.f-group textarea::placeholder{color:rgba(106,127,168,.9)}
+.f-group input:hover,.f-group textarea:hover{
+  border-color:rgba(0,180,255,.28);
+  background:rgba(8,14,28,.65);
+}
+.f-group select:hover{
+  border-color:rgba(0,180,255,.28);
+  background-color:rgba(8,14,28,.65);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='8' viewBox='0 0 14 8' fill='none'%3E%3Cpath d='M1 1.5L7 6.5 13 1.5' stroke='%236a7fa8' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 1rem center;
+}
+.f-group input:focus,.f-group textarea:focus{
+  border-color:rgba(0,180,255,.45);
+  box-shadow:0 0 0 3px rgba(0,180,255,.12),0 1px 0 rgba(255,255,255,.05) inset;
+  background:rgba(10,18,32,.75);
+}
+.f-group select:focus{
+  border-color:rgba(0,180,255,.45);
+  box-shadow:0 0 0 3px rgba(0,180,255,.12),0 1px 0 rgba(255,255,255,.05) inset;
+  background-color:rgba(10,18,32,.75);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='8' viewBox='0 0 14 8' fill='none'%3E%3Cpath d='M1 1.5L7 6.5 13 1.5' stroke='%236a7fa8' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 1rem center;
+}
+.f-group select{
+  cursor:pointer;
+  appearance:none;
+  background-color:rgba(6,12,24,.55);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='8' viewBox='0 0 14 8' fill='none'%3E%3Cpath d='M1 1.5L7 6.5 13 1.5' stroke='%236a7fa8' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 1rem center;
+  padding-right:2.5rem;
+}
+.f-group select option{background:var(--bg2);color:var(--white)}
+.f-group textarea{min-height:132px;resize:vertical;line-height:1.65}
+.contact-form .btn-submit{
+  margin-top:auto;
+}
+.btn-secondary-action{
+  background:rgba(8,14,26,.75);
+  border:1px solid rgba(0,180,255,.32);
+  color:rgba(232,240,255,.95);
+  box-shadow:none;
+  text-shadow:none;
+}
+.btn-secondary-action:hover{
+  background:var(--blue-dim);
+  border-color:rgba(0,180,255,.45);
+  filter:none;
+  box-shadow:none;
+  transform:translateY(-1px);
+}
+.contact-form-status{
+  margin:.65rem 0 0;font-size:.96rem;line-height:1.6;max-width:36rem;
+}
+.contact-form-status.is-success{color:var(--teal)}
+.contact-form-status.is-error{color:#f87171}
+.contact-form-status[hidden]{display:none!important}
+
+/* ═══════════════════════════════════════════════
+   SUPPORT CHAT (email to team — no AI)
+═══════════════════════════════════════════════ */
+.support-chat{position:fixed;z-index:310;bottom:24px;right:24px;pointer-events:none}
+.support-chat > *{pointer-events:auto}
+.support-chat-bubble{
+  width:56px;height:56px;border-radius:50%;
+  border:none;padding:0;cursor:pointer;
+  background:var(--blue);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 6px 22px rgba(0,0,0,.34),0 2px 10px rgba(0,180,255,.28);
+  transition:transform .2s ease,box-shadow .2s ease,filter .2s ease;
+  -webkit-tap-highlight-color:transparent;
+}
+.support-chat-bubble:hover,.support-chat-bubble:focus-visible{
+  transform:scale(1.04);
+  filter:brightness(1.04);
+  box-shadow:0 10px 30px rgba(0,0,0,.38),0 2px 12px rgba(0,180,255,.32);
+  outline:none;
+}
+.support-chat-bubble:active{transform:scale(1.02)}
+.support-chat-bubble svg{width:26px;height:26px;display:block}
+.support-chat-backdrop{
+  position:fixed;inset:0;z-index:305;
+  background:rgba(4,8,16,.55);backdrop-filter:blur(6px);
+  opacity:0;pointer-events:none;transition:opacity .28s ease;
+}
+.support-chat-backdrop.support-chat-open{
+  opacity:1;pointer-events:auto;
+}
+.support-chat-panel{
+  position:fixed;z-index:306;right:24px;bottom:calc(24px + 56px + 14px);
+  width:min(380px,calc(100vw - 32px));max-height:min(72vh,520px);
+  display:flex;flex-direction:column;
+  background:linear-gradient(165deg,rgba(12,20,36,.98),rgba(8,14,26,.99));
+  border:1px solid var(--border2);border-radius:16px;
+  box-shadow:0 24px 64px rgba(0,0,0,.55),0 0 0 1px rgba(0,180,255,.08);
+  overflow:hidden;
+  opacity:0;transform:translateY(16px) scale(.96);
+  pointer-events:none;visibility:hidden;
+  transition:opacity .3s ease,transform .3s ease,visibility 0s linear .3s;
+}
+.support-chat-panel.support-chat-open{
+  opacity:1;transform:translateY(0) scale(1);
+  pointer-events:auto;visibility:visible;
+  transition:opacity .3s ease,transform .3s ease,visibility 0s linear 0s;
+}
+.support-chat-close{
+  position:absolute;top:.55rem;right:.55rem;width:38px;height:38px;border-radius:10px;
+  border:1px solid var(--border);background:rgba(8,14,26,.55);color:var(--muted2);
+  font-size:1.35rem;line-height:1;cursor:pointer;z-index:2;
+  transition:border-color .2s,color .2s,background .2s;
+}
+.support-chat-close:hover,.support-chat-close:focus-visible{
+  color:var(--white);border-color:var(--blue);background:var(--blue-dim);outline:none;
+}
+.support-chat-panel-inner{
+  padding:1.25rem 1.2rem 1.15rem;display:flex;flex-direction:column;gap:.75rem;
+  overflow-y:auto;flex:1;
+}
+.support-chat-panel h2{
+  font-family:'Rajdhani',sans-serif;font-size:1.12rem;font-weight:700;
+  letter-spacing:.02em;color:var(--white);margin:0 .5rem 0 0;padding-right:2.25rem;line-height:1.2;
+}
+.support-chat-sub{
+  margin:0;font-size:.96rem;color:var(--muted2);line-height:1.45;
+}
+.support-chat-form{display:flex;flex-direction:column;gap:.65rem;margin-top:.15rem}
+.support-chat-form label{
+  display:flex;flex-direction:column;gap:.28rem;
+  font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);font-weight:600;
+}
+.support-chat-form input,.support-chat-form textarea{
+  background:var(--blue-dim);border:1px solid var(--border);
+  border-radius:10px;padding:.55rem .75rem;color:var(--white);
+  font-family:'Outfit',sans-serif;font-size:.95rem;outline:none;
+  transition:border-color .2s,box-shadow .2s;
+}
+.support-chat-form textarea{min-height:110px;resize:vertical;line-height:1.55}
+.support-chat-form input:focus,.support-chat-form textarea:focus{
+  border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,180,255,.12);
+}
+.support-chat-form input::placeholder,.support-chat-form textarea::placeholder{color:var(--muted)}
+.support-chat-submit{
+  margin-top:.35rem;align-self:stretch;
+  background:var(--btn-primary-grad);
+  color:var(--btn-primary-text);border:none;border-radius:999px;padding:.72rem 1.2rem;
+  font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.78rem;
+  letter-spacing:.12em;text-transform:uppercase;
+  border:var(--btn-primary-border);
+  text-shadow:0 1px 1px rgba(0,0,0,.35);
+  cursor:pointer;transition:filter .2s,transform .15s,box-shadow .2s;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 6px 22px rgba(0,60,90,.4);
+}
+.support-chat-submit:hover,.support-chat-submit:focus-visible{
+  filter:brightness(1.05);outline:none;
+  transform:translateY(-1px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 8px 26px rgba(0,80,120,.38),0 0 20px rgba(0,140,200,.18);
+}
+.support-chat-submit:disabled{opacity:.65;cursor:not-allowed;transform:none}
+.support-chat-success{
+  padding:.85rem 1rem;border-radius:12px;
+  background:rgba(0,229,200,.1);border:1px solid rgba(0,229,200,.25);
+  color:rgba(184,198,228,.98);font-size:.84rem;line-height:1.55;margin:0;
+}
+.support-chat-success[hidden]{display:none!important}
+@media(max-width:768px){
+  .support-chat{bottom:90px;right:20px}
+  .support-chat-panel{right:20px;bottom:calc(90px + 56px + 12px);width:min(380px,calc(100vw - 24px))}
+}
+
+/* ═══════════════════════════════════════════════
+   FOOTER — minimal enterprise layout (brand + contact; nav lives in header)
+═══════════════════════════════════════════════ */
+footer.site-footer{
+  background:#040810;
+  border-top:1px solid var(--border);
+  padding:2.25rem 5vw 1.35rem;
+  position:relative;z-index:10;
+}
+.footer-main{
+  display:grid;grid-template-columns:1.25fr 1fr 1fr 1fr 1fr;
+  gap:2rem;max-width:1200px;margin:0 auto 1.35rem;
+}
+.footer-brand{flex:1 1 280px;min-width:0;max-width:420px}
+.footer-brand p{
+  color:var(--muted);font-size:.97rem;margin-top:.65rem;
+  max-width:340px;line-height:1.65;
+}
+.footer-col{min-width:0}
+.footer-col-label{
+  font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--blue);margin:0 0 .75rem;font-weight:600;
+}
+.footer-col-list{
+  list-style:none;margin:0;padding:0;
+  display:flex;flex-direction:column;gap:.45rem;
+}
+.footer-col-list a{
+  color:var(--muted);font-size:.97rem;line-height:1.55;
+  transition:color .2s;
+}
+.footer-col-list a:hover{color:var(--white)}
+.footer-contact{flex:0 1 auto;min-width:200px}
+.footer-contact-label{
+  font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--blue);margin:0 0 .75rem;font-weight:600;
+}
+.footer-contact-list{
+  list-style:none;margin:0;padding:0;
+  display:flex;flex-direction:column;gap:.45rem;
+}
+.footer-contact-list a,
+.footer-contact-list .footer-location{
+  color:var(--muted);font-size:.97rem;line-height:1.55;
+  transition:color .2s;
+}
+.footer-contact-list a:hover{color:var(--white)}
+.footer-contact-list .footer-location{display:block;max-width:22rem}
+.footer-bottom{
+  display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;
+  gap:.75rem 1.5rem;padding-top:1.15rem;border-top:1px solid var(--border);
+  max-width:1200px;margin:0 auto;
+}
+.footer-copy{font-size:.9rem;color:var(--muted);margin:0}
+.footer-legal{
+  font-size:.78rem;color:var(--muted);text-decoration:none;
+  transition:color .2s;
+}
+.footer-legal:hover{color:var(--white)}
+.socials{display:flex;gap:.7rem}
+.social{
+  width:34px;height:34px;border-radius:6px;
+  background:var(--blue-dim);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.85rem;color:var(--muted2);
+  transition:border-color .2s,color .2s,box-shadow .2s;
+}
+.social:hover{border-color:var(--blue);color:var(--blue);box-shadow:0 0 12px var(--glow-b)}
+
+/* ═══════════════════════════════════════════════
+   REVEAL ANIMATIONS
+═══════════════════════════════════════════════ */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+.reveal-l{opacity:0;transform:translateX(-28px);transition:opacity .7s ease,transform .7s ease}
+.reveal-l.in{opacity:1;transform:none}
+.reveal-r{opacity:0;transform:translateX(28px);transition:opacity .7s ease,transform .7s ease}
+.reveal-r.in{opacity:1;transform:none}
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════ */
+@media(max-width:900px){
+  .nav-right{flex-wrap:wrap;justify-content:flex-end;row-gap:.5rem}
+  .about-grid,.why-grid{grid-template-columns:1fr;gap:2.5rem}
+  .contact-main-grid{grid-template-columns:1fr;gap:1.75rem;align-items:start}
+  .contact-left{display:contents}
+  .contact-journey{order:1}
+  .contact-form-card{order:2;min-height:0}
+  .contact-cta-box{order:3;margin-top:1.25rem}
+  .form-row{grid-template-columns:1fr}
+  .footer-main{grid-template-columns:1fr;gap:1.5rem}
+}
+@media(max-width:600px){
+  .services-grid{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;align-items:flex-start}
+}
+
+/* ═══════════════════════════════════════════════
+   MOBILE CLICK-TO-CALL (floating FAB only)
+═══════════════════════════════════════════════ */
+.mobile-call-fab{display:none}
+@media(max-width:768px){
+  .mobile-call-fab{
+    display:flex;align-items:center;justify-content:center;
+    position:fixed;bottom:20px;right:20px;z-index:250;
+    width:60px;height:60px;border-radius:50%;
+    background:var(--blue);color:#fff;
+    box-shadow:0 6px 22px rgba(0,0,0,.38),0 2px 10px rgba(0,180,255,.32);
+    text-decoration:none;-webkit-tap-highlight-color:transparent;
+    touch-action:manipulation;
+    transition:transform .15s ease,box-shadow .15s ease;
+  }
+  .mobile-call-fab:active{
+    transform:scale(1.08);
+    box-shadow:0 8px 28px rgba(0,0,0,.42),0 3px 12px rgba(0,180,255,.38);
+  }
+  .mobile-call-fab svg{width:26px;height:26px;display:block;flex-shrink:0}
+}
+
+</style>
+<link rel="stylesheet" href="css/pmb-button-text-weight.css"/>
+<link rel="stylesheet" href="css/pmb-homepage-background.css"/>
+<link rel="stylesheet" href="css/pmb-homepage-video.css"/>
+<link rel="stylesheet" href="css/theme-toggle.css"/>
+</head>
+<body class="homepage-video-bg">
+
+<!-- VIDEO LAYER — fixed full-screen cinematic background (autoplay, muted, loop) -->
+<div class="homepage-video-wrap" aria-hidden="true">
+  <video class="homepage-bg-video" autoplay muted loop playsinline preload="auto" aria-hidden="true">
+    <source src="assets/video/PMB%20Homepage.mp4" type="video/mp4"/>
+  </video>
+</div>
+
+<!-- OVERLAY LAYER — global dark tint above video for text readability -->
+<div class="homepage-video-overlay" aria-hidden="true"></div>
+
+<!-- PARTICLE CANVAS (hidden on homepage — video background active) -->
+<canvas id="particle-canvas" aria-hidden="true"></canvas>
+
+<!-- ═══ NAVBAR ═══ -->
+<nav id="navbar" role="banner" aria-label="PMB-Solutions">
+  <a href="index.html" class="nav-logo site-logo" aria-label="PMB-Solutions — Home">
+    <img class="nav-logo-img site-logo-img" src="pmb_solutions_logo.svg" alt="" width="260" height="97" decoding="async" />
+  </a>
+  <ul class="nav-links">
+    <li class="nav-dropdown-wrap">
+      <a href="#services-overview" class="nav-dropdown-trigger">Services</a>
+      <ul class="nav-dropdown-menu" role="menu" aria-label="Service categories">
+        <li role="none"><a role="menuitem" href="category-it-support-technical-services.html">IT Support &amp; Technical Services</a></li>
+        <li role="none"><a role="menuitem" href="category-website-design-digital-presence.html">Website Design &amp; Digital Presence</a></li>
+        <li role="none"><a role="menuitem" href="category-branding-graphic-design.html">Branding &amp; Graphic Design</a></li>
+        <li role="none"><a role="menuitem" href="category-social-media-content-management.html">Social Media &amp; Content Management</a></li>
+        <li role="none"><a role="menuitem" href="category-business-setup-digital-infrastructure.html">Business Setup &amp; Digital Infrastructure</a></li>
+        <li role="none"><a role="menuitem" href="category-premium-bundles-packages.html">Premium Bundles &amp; Packages</a></li>
+        <li class="nav-dropdown-sep" role="presentation" aria-hidden="true"></li>
+      </ul>
+    </li>
+    <li class="nav-dropdown-wrap">
+      <a href="knowledge-base/index.html" class="nav-dropdown-trigger">Resources</a>
+      <ul class="nav-dropdown-menu" role="menu" aria-label="Resources">
+        <li role="none"><a role="menuitem" href="knowledge-base/index.html">Knowledge Base</a></li>
+        
+      </ul>
+    </li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-mobile-controls">
+    <a class="btn-primary btn-book-header btn-book-header--mobile" href="https://outlook.office.com/book/PMBSolutionsClientBookingPortal@PMB-Solutions.com/" target="_blank" rel="noopener noreferrer">Book a Consultation</a>
+    <button type="button" class="nav-menu-btn" id="navMenuToggle" aria-expanded="false" aria-controls="navDrawer" aria-label="Open site menu">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </div>
+  <div class="nav-right">
+    <div class="site-search-wrap smart-search-wrap">
+      <div class="search-bar">
+        <span class="search-icon" aria-hidden="true">⌕</span>
+        <input type="text" id="siteSearchInput" placeholder="Search site…" autocomplete="off" enterkeyhint="search" aria-autocomplete="list" aria-controls="siteSearchResults" aria-expanded="false" spellcheck="false" />
+      </div>
+      <div id="siteSearchResults" class="site-search-results" role="listbox" aria-label="Search results" hidden></div>
+    </div>
+    <a class="btn-primary btn-book-header btn-book-header--desktop" href="https://outlook.office.com/book/PMBSolutionsClientBookingPortal@PMB-Solutions.com/" target="_blank" rel="noopener noreferrer">Book a Consultation</a>
+  </div>
+</nav>
+<div id="navDrawerBackdrop" class="nav-drawer-backdrop" aria-hidden="true"></div>
+<div id="navDrawer" class="nav-drawer" role="dialog" aria-modal="true" aria-labelledby="navDrawerTitle" aria-hidden="true" inert>
+  <div class="nav-drawer-inner">
+    <p id="navDrawerTitle" class="nav-drawer-title">Navigate</p>
+    <ul class="nav-drawer-links">
+      <li><a href="category-it-support-technical-services.html">IT Support &amp; Technical</a></li>
+      <li><a href="category-website-design-digital-presence.html">Website &amp; Digital Presence</a></li>
+      <li><a href="category-branding-graphic-design.html">Branding &amp; Design</a></li>
+      <li><a href="category-social-media-content-management.html">Social &amp; Content</a></li>
+      <li><a href="category-business-setup-digital-infrastructure.html">Business Setup</a></li>
+      <li><a href="category-premium-bundles-packages.html">Bundles &amp; Packages</a></li>
+      <li><a href="knowledge-base/index.html">Knowledge Base</a></li>
+      
+      <li><a href="#why">Why Us</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <!-- Decorative rotating ring -->
+  <svg class="hero-visual" viewBox="0 0 480 480" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="240" cy="240" r="200" stroke="url(#rg1)" stroke-width="1"/>
+    <circle cx="240" cy="240" r="160" stroke="url(#rg1)" stroke-width="0.5" stroke-dasharray="8 12"/>
+    <circle cx="240" cy="240" r="120" stroke="url(#rg1)" stroke-width="1"/>
+    <circle cx="240" cy="240" r="80" stroke="url(#rg1)" stroke-width="0.5"/>
+    <circle cx="240" cy="40" r="6" fill="#00b4ff"/>
+    <circle cx="440" cy="240" r="4" fill="#00e5c8"/>
+    <circle cx="240" cy="440" r="5" fill="#00b4ff"/>
+    <circle cx="40" cy="240" r="4" fill="#00e5c8"/>
+    <defs>
+      <linearGradient id="rg1" x1="0" y1="0" x2="480" y2="480">
+        <stop offset="0%" stop-color="#00b4ff" stop-opacity=".8"/>
+        <stop offset="100%" stop-color="#00e5c8" stop-opacity=".4"/>
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <div class="hero-content">
+    <h1 class="section-title">Reliable IT infrastructure and support designed for <em>modern businesses</em></h1>
+    <p class="hero-sub">We design, implement, and manage systems that keep your operations running efficiently, securely, and without disruption.</p>
+    <p class="hero-sub" style="margin-top:-.6rem;opacity:.92">Focused on delivering structured, reliable IT systems for modern business environments.</p>
+    <div class="hero-btns">
+      <a class="btn-primary" href="https://outlook.office.com/book/PMBSolutionsClientBookingPortal@PMB-Solutions.com/" target="_blank" rel="noopener noreferrer">Book a Consultation</a>
+      <a href="#services-overview" class="btn-outline">Explore Services</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SERVICES OVERVIEW (6 CATEGORIES) ═══ -->
+<section id="services-overview" class="section">
+  <div class="section-inner">
+    <div class="reveal">
+      <p class="section-tag">Services Overview</p>
+      <h2 class="section-title">Explore by <em>Category</em></h2>
+      <p class="section-sub">Choose a curated path—each category opens a full catalog of services and booking-ready detail pages. Access guides and solutions anytime through our <a href="knowledge-base/index.html" style="color:var(--blue);text-decoration:underline;text-underline-offset:3px">knowledge base</a>.</p>
+    </div>
+    <div class="services-grid">
+      <a href="category-it-support-technical-services.html" class="svc-card reveal" aria-labelledby="ov-it-heading">
+        <div class="svc-icon-wrap" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="icoOvIt" x1="8" y1="8" x2="40" y2="40"><stop stop-color="#00b4ff"/><stop offset="1" stop-color="#00e5c8"/></linearGradient></defs>
+            <path d="M14 34l18-18M22 14l12 12-4 4M18 30l-4 4" stroke="url(#icoOvIt)" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="16" cy="32" r="3" stroke="url(#icoOvIt)" stroke-width="1.75"/>
+          </svg>
+        </div>
+        <h3 id="ov-it-heading">IT Support &amp; Technical Services</h3>
+        <p>Structured technical support that stabilizes devices, networks, and core systems for reliable day-to-day operations.</p>
+        <span class="svc-link">Learn more →</span>
+      </a>
+      <a href="category-website-design-digital-presence.html" class="svc-card reveal" aria-labelledby="ov-web-heading">
+        <div class="svc-icon-wrap" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="icoOvWeb" x1="10" y1="9" x2="38" y2="41"><stop stop-color="#00e5c8"/><stop offset="1" stop-color="#00b4ff"/></linearGradient></defs>
+            <rect x="9" y="12" width="30" height="22" rx="3" stroke="url(#icoOvWeb)" stroke-width="2"/>
+            <path d="M9 18h30" stroke="url(#icoOvWeb)" stroke-width="1.5" opacity=".5"/>
+            <path d="M14 24h14M14 29h10" stroke="url(#icoOvWeb)" stroke-width="1.5" stroke-linecap="round" opacity=".45"/>
+          </svg>
+        </div>
+        <h3 id="ov-web-heading">Website Design &amp; Digital Presence</h3>
+        <p>Digital environments built to strengthen visibility, improve trust, and support measurable business growth.</p>
+        <span class="svc-link">Learn more →</span>
+      </a>
+      <a href="category-branding-graphic-design.html" class="svc-card reveal" aria-labelledby="ov-brand-heading">
+        <div class="svc-icon-wrap" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="icoOvBrand" x1="10" y1="38" x2="38" y2="10"><stop stop-color="#00b4ff"/><stop offset="1" stop-color="#00e5c8"/></linearGradient></defs>
+            <path d="M14 34L24 12l10 22H14z" stroke="url(#icoOvBrand)" stroke-width="2" stroke-linejoin="round"/>
+            <circle cx="24" cy="28" r="3" stroke="url(#icoOvBrand)" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <h3 id="ov-brand-heading">Branding &amp; Graphic Design</h3>
+        <p>Unified brand systems that improve recognition, consistency, and communication across every customer touchpoint.</p>
+        <span class="svc-link">Learn more →</span>
+      </a>
+      <a href="category-social-media-content-management.html" class="svc-card reveal" aria-labelledby="ov-soc-heading">
+        <div class="svc-icon-wrap" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="icoOvSoc" x1="8" y1="8" x2="40" y2="40"><stop stop-color="#00e5c8"/><stop offset="1" stop-color="#00b4ff"/></linearGradient></defs>
+            <circle cx="16" cy="20" r="4" stroke="url(#icoOvSoc)" stroke-width="1.75"/>
+            <circle cx="32" cy="16" r="3.5" stroke="url(#icoOvSoc)" stroke-width="1.75"/>
+            <circle cx="28" cy="32" r="3.5" stroke="url(#icoOvSoc)" stroke-width="1.75"/>
+            <path d="M19.5 22.5l7-3M27 19l3 10" stroke="url(#icoOvSoc)" stroke-width="1.5" stroke-linecap="round" opacity=".75"/>
+          </svg>
+        </div>
+        <h3 id="ov-soc-heading">Social Media &amp; Content Management</h3>
+        <p>Content operations structured to increase consistency, audience engagement, and long-term channel performance.</p>
+        <span class="svc-link">Learn more →</span>
+      </a>
+      <a href="category-business-setup-digital-infrastructure.html" class="svc-card reveal" aria-labelledby="ov-biz-heading">
+        <div class="svc-icon-wrap" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="icoOvBiz" x1="8" y1="40" x2="40" y2="8"><stop stop-color="#00b4ff"/><stop offset="1" stop-color="#00e5c8"/></linearGradient></defs>
+            <rect x="10" y="14" width="28" height="20" rx="3" stroke="url(#icoOvBiz)" stroke-width="2"/>
+            <path d="M10 20h28" stroke="url(#icoOvBiz)" stroke-width="1.5" opacity=".5"/>
+            <path d="M16 26h10M16 30h6" stroke="url(#icoOvBiz)" stroke-width="1.25" stroke-linecap="round" opacity=".45"/>
+          </svg>
+        </div>
+        <h3 id="ov-biz-heading">Business Setup &amp; Digital Infrastructure</h3>
+        <p>Operational foundations designed to streamline launch readiness, communication flow, and business continuity.</p>
+        <span class="svc-link">Learn more →</span>
+      </a>
+      <a href="category-premium-bundles-packages.html" class="svc-card reveal" aria-labelledby="ov-bundle-heading">
+        <div class="svc-icon-wrap" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="icoOvBundle" x1="6" y1="12" x2="42" y2="36"><stop stop-color="#00b4ff"/><stop offset="1" stop-color="#00e5c8"/></linearGradient></defs>
+            <rect x="8" y="20" width="32" height="22" rx="3" stroke="url(#icoOvBundle)" stroke-width="2"/>
+            <path d="M24 20V42M8 26h32" stroke="url(#icoOvBundle)" stroke-width="1.75"/>
+            <path d="M18 20c0-4 3-8 6-8s6 4 6 8M24 12v8" stroke="url(#icoOvBundle)" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3 id="ov-bundle-heading">Premium Bundles &amp; Packages</h3>
+        <p>Integrated solution packages that reduce complexity and deliver coordinated results across business systems.</p>
+        <span class="svc-link">Learn more →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ HOW IT WORKS ═══ -->
+<section id="how-it-works" class="section">
+  <div class="section-inner">
+    <div class="reveal" style="text-align:center">
+      <p class="section-tag" style="justify-content:center">How It Works</p>
+      <h2 class="section-title">A Structured Delivery <em>Process</em></h2>
+    </div>
+    <div class="services-grid" style="margin-top:1.8rem">
+      <article class="svc-card reveal">
+        <h3>1. Initial Consultation</h3>
+        <p>We define business goals, current challenges, and the outcomes your team needs most.</p>
+      </article>
+      <article class="svc-card reveal">
+        <h3>2. System Assessment</h3>
+        <p>We evaluate infrastructure, workflows, and risk points to build a practical action plan.</p>
+      </article>
+      <article class="svc-card reveal">
+        <h3>3. Implementation &amp; Setup</h3>
+        <p>We deploy and configure solutions with clear documentation, validation, and controlled rollout.</p>
+      </article>
+      <article class="svc-card reveal">
+        <h3>4. Ongoing Support &amp; Optimization</h3>
+        <p>We provide continuous support, monitoring, and iterative improvements to keep systems reliable.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+  <div class="section-inner" style="display:none" aria-hidden="true">
+    <div class="reveal">
+      <p class="section-tag">What We Do</p>
+      <h2 class="section-title">Comprehensive <em>IT Services</em></h2>
+      <p class="section-sub">From your home office to your business network — PMB-Solutions has you covered at every layer.</p>
+    </div>
+    <!-- Booking: replace https://outlook.office.com/book/PMBSolutionsClientBookingPortal@PMB-Solutions.com/ URLs with your live booking links when ready -->
+    <div class="services-grid">
+      <a href="desktop-support.html" class="svc-card svc-card--desktop reveal" aria-labelledby="svc-desktop-heading">
+        <div class="svc-icon-wrap" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="icoDesktopGrad" x1="9" y1="10" x2="39" y2="40" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#00b4ff"/>
+                <stop offset="1" stop-color="#00e5c8"/>
+              </linearGradient>
+            </defs>
+            <rect x="10" y="12" width="28" height="20" rx="3" stroke="url(#icoDesktopGrad)" stroke-width="2"/>
+            <path d="M16 19h16M16 24h11" stroke="url(#icoDesktopGrad)" stroke-width="1.5" stroke-linecap="round" opacity=".45"/>
+            <path d="M24 32v6" stroke="url(#icoDesktopGrad)" stroke-width="2" stroke-linecap="round"/>
+            <path d="M15 39h18" stroke="url(#icoDesktopGrad)" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3 id="svc-desktop-heading">Desktop Support</h3>
+        <p>Endpoint support focused on system reliability, uptime, and consistent performance across your workstation environment.</p>
+        <span class="svc-link">Learn more →</span>
+      </a>
+      <a href="network-engineering.html" class="svc-card svc-card--network reveal" aria-labelledby="svc-network-heading">
+        <div class="svc-icon-wrap" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="icoNetworkGrad" x1="8" y1="8" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#00b4ff"/>
+                <stop offset="1" stop-color="#00e5c8"/>
+              </linearGradient>
+            </defs>
+            <path d="M24 14v6M24 28v6M14 24h6M28 24h6" stroke="url(#icoNetworkGrad)" stroke-width="1.5" stroke-linecap="round" opacity=".4"/>
+            <circle cx="24" cy="24" r="3.5" stroke="url(#icoNetworkGrad)" stroke-width="2"/>
+            <circle cx="24" cy="14" r="2.5" stroke="url(#icoNetworkGrad)" stroke-width="1.75"/>
+            <circle cx="34" cy="24" r="2.5" stroke="url(#icoNetworkGrad)" stroke-width="1.75"/>
+            <circle cx="24" cy="34" r="2.5" stroke="url(#icoNetworkGrad)" stroke-width="1.75"/>
+            <circle cx="14" cy="24" r="2.5" stroke="url(#icoNetworkGrad)" stroke-width="1.75"/>
+            <path d="M24 17.5l6.5 6.5M24 17.5l-6.5 6.5M24 30.5l6.5-6.5M24 30.5l-6.5-6.5" stroke="url(#icoNetworkGrad)" stroke-width="1.5" stroke-linecap="round" opacity=".75"/>
+          </svg>
+        </div>
+        <h3 id="svc-network-heading">Network Engineering</h3>
+        <p>Structured network systems designed to improve reliability, security, and long-term performance.</p>
+        <span class="svc-link">Learn more →</span>
+      </a>
+      <a href="camera-installation-security-setup.html" class="svc-card svc-card--camera reveal" aria-labelledby="svc-cam-heading">
+        <div class="svc-icon-wrap" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="icoCameraGrad" x1="10" y1="10" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#00e5c8"/>
+                <stop offset="1" stop-color="#00b4ff"/>
+              </linearGradient>
+            </defs>
+            <path d="M15 15h4M15 15v4M33 15h-4M33 15v4M15 33v-4M15 33h4M33 33v-4M33 33h-4" stroke="url(#icoCameraGrad)" stroke-width="1.5" stroke-linecap="round" opacity=".32"/>
+            <rect x="11" y="17" width="26" height="19" rx="4" stroke="url(#icoCameraGrad)" stroke-width="2"/>
+            <circle cx="24" cy="26.5" r="6" stroke="url(#icoCameraGrad)" stroke-width="1.75"/>
+            <circle cx="24" cy="26.5" r="2.75" stroke="url(#icoCameraGrad)" stroke-width="1.25" opacity=".9"/>
+            <circle cx="17.5" cy="32" r="1.15" fill="url(#icoCameraGrad)" opacity=".55"/>
+            <circle cx="24" cy="32" r="1.15" fill="url(#icoCameraGrad)" opacity=".75"/>
+            <circle cx="30.5" cy="32" r="1.15" fill="url(#icoCameraGrad)" opacity=".55"/>
+            <path d="M24 36v4.5M18 41.5h12" stroke="url(#icoCameraGrad)" stroke-width="1.75" stroke-linecap="round" opacity=".65"/>
+          </svg>
+        </div>
+        <h3 id="svc-cam-heading">Camera Installation</h3>
+        <p>Surveillance environments deployed for dependable coverage, secure access, and operational visibility.</p>
+        <span class="svc-link">Learn more →</span>
+      </a>
+      <a href="data-migration-recovery.html" class="svc-card svc-card--data reveal" aria-labelledby="svc-data-heading">
+        <div class="svc-icon-wrap" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="icoDataGrad" x1="8" y1="10" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#00b4ff"/>
+                <stop offset="1" stop-color="#00e5c8"/>
+              </linearGradient>
+            </defs>
+            <ellipse cx="19" cy="19" rx="6.5" ry="5" stroke="url(#icoDataGrad)" stroke-width="1.5" fill="none" opacity=".85"/>
+            <ellipse cx="29" cy="18" rx="7" ry="5.5" stroke="url(#icoDataGrad)" stroke-width="1.5" fill="none" opacity=".85"/>
+            <ellipse cx="24" cy="21" rx="11" ry="7.5" stroke="url(#icoDataGrad)" stroke-width="1.75" fill="none"/>
+            <path d="M24 25v11M21 28l3-3 3 3M21 35l3 3 3-3" stroke="url(#icoDataGrad)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M15 38.5h18" stroke="url(#icoDataGrad)" stroke-width="1.75" stroke-linecap="round" opacity=".5"/>
+            <path d="M13 41.5h22" stroke="url(#icoDataGrad)" stroke-width="2" stroke-linecap="round" opacity=".45"/>
+          </svg>
+        </div>
+        <h3 id="svc-data-heading">Data Migration &amp; Recovery</h3>
+        <p>Data continuity services that reduce risk, protect critical information, and accelerate recovery during disruptions.</p>
+        <span class="svc-link">Learn more →</span>
+      </a>
+      <a href="it-security-services.html" class="svc-card svc-card--security reveal" aria-labelledby="svc-security-heading">
+        <div class="svc-icon-wrap" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="icoSecurityGrad" x1="10" y1="8" x2="38" y2="42" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#00e5c8"/>
+                <stop offset="1" stop-color="#00b4ff"/>
+              </linearGradient>
+            </defs>
+            <path d="M24 11L12 16.5v11.5c0 8.5 5 15.5 12 18 7-2.5 12-9.5 12-18V16.5L24 11z" stroke="url(#icoSecurityGrad)" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M19 24v-3.5a5 5 0 0110 0V24" stroke="url(#icoSecurityGrad)" stroke-width="1.75" stroke-linecap="round"/>
+            <rect x="17" y="24" width="14" height="11" rx="2" stroke="url(#icoSecurityGrad)" stroke-width="1.75"/>
+            <path d="M24 28v4.5" stroke="url(#icoSecurityGrad)" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="24" cy="28" r="1.35" fill="url(#icoSecurityGrad)"/>
+          </svg>
+        </div>
+        <h3 id="svc-security-heading">IT Security Services</h3>
+        <p>Security controls aligned to reduce exposure, strengthen compliance posture, and protect business operations.</p>
+        <span class="svc-link">Learn more →</span>
+      </a>
+      <a href="troubleshooting-tech-support.html" class="svc-card svc-card--troubleshoot reveal" aria-labelledby="svc-troubleshoot-heading">
+        <div class="svc-icon-wrap" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="40" height="40">
+            <defs>
+              <linearGradient id="icoTroubleshootGrad" x1="6" y1="6" x2="42" y2="42" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#00b4ff"/>
+                <stop offset="1" stop-color="#00e5c8"/>
+              </linearGradient>
+            </defs>
+            <path d="M10 16h28" stroke="url(#icoTroubleshootGrad)" stroke-width="2" stroke-linecap="round" opacity=".45"/>
+            <path d="M10 24h18M28 24h10" stroke="url(#icoTroubleshootGrad)" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 32h12" stroke="url(#icoTroubleshootGrad)" stroke-width="2" stroke-linecap="round" opacity=".55"/>
+            <rect x="30" y="26" width="14" height="14" rx="3" stroke="url(#icoTroubleshootGrad)" stroke-width="2"/>
+            <path d="M35.2 35.2L40 40" stroke="url(#icoTroubleshootGrad)" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="37" cy="33" r="2.25" fill="url(#icoTroubleshootGrad)"/>
+          </svg>
+        </div>
+        <h3 id="svc-troubleshoot-heading">Troubleshooting</h3>
+        <p>Root-cause troubleshooting that restores service quickly and prevents repeat incidents.</p>
+        <span class="svc-link">Learn more →</span>
+      </a>
+      <a href="small-business-it-support.html" class="svc-card svc-card--smb reveal" aria-labelledby="svc-smb-heading">
+        <div class="svc-icon-wrap" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="icoSmbGrad" x1="10" y1="6" x2="38" y2="44" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#00e5c8"/>
+                <stop offset="1" stop-color="#00b4ff"/>
+              </linearGradient>
+            </defs>
+            <path d="M15 42V20h18v22" stroke="url(#icoSmbGrad)" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M12 20h24" stroke="url(#icoSmbGrad)" stroke-width="2" stroke-linecap="round"/>
+            <path d="M18 12v6M24 8v10M30 12v6" stroke="url(#icoSmbGrad)" stroke-width="1.75" stroke-linecap="round" opacity=".85"/>
+            <rect x="18" y="24" width="5" height="5" rx="1" stroke="url(#icoSmbGrad)" stroke-width="1.5"/>
+            <rect x="25" y="24" width="5" height="5" rx="1" stroke="url(#icoSmbGrad)" stroke-width="1.5"/>
+            <rect x="18" y="32" width="5" height="5" rx="1" stroke="url(#icoSmbGrad)" stroke-width="1.5"/>
+            <rect x="25" y="32" width="5" height="5" rx="1" stroke="url(#icoSmbGrad)" stroke-width="1.5"/>
+            <path d="M10 42h28" stroke="url(#icoSmbGrad)" stroke-width="2" stroke-linecap="round" opacity=".5"/>
+          </svg>
+        </div>
+        <h3 id="svc-smb-heading">Small Business IT</h3>
+        <p>Managed IT delivery that provides predictable support, stronger resilience, and scalable operational structure.</p>
+        <span class="svc-link">Learn more →</span>
+      </a>
+      <a href="home-office-tech-support.html" class="svc-card svc-card--home reveal" aria-labelledby="svc-home-heading">
+        <div class="svc-icon-wrap" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="icoHomeGrad" x1="8" y1="8" x2="40" y2="42" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#00b4ff"/>
+                <stop offset="1" stop-color="#00e5c8"/>
+              </linearGradient>
+            </defs>
+            <path d="M14 18Q24 9 34 18" stroke="url(#icoHomeGrad)" stroke-width="1.75" stroke-linecap="round" opacity=".42"/>
+            <path d="M17 21Q24 15.5 31 21" stroke="url(#icoHomeGrad)" stroke-width="1.75" stroke-linecap="round" opacity=".62"/>
+            <path d="M21 24h6" stroke="url(#icoHomeGrad)" stroke-width="1.75" stroke-linecap="round"/>
+            <path d="M11 26.5L24 16l13 10.5V40H11V26.5z" stroke="url(#icoHomeGrad)" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M19 40V30.5h10V40" stroke="url(#icoHomeGrad)" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M13 40h22" stroke="url(#icoHomeGrad)" stroke-width="2" stroke-linecap="round" opacity=".35"/>
+          </svg>
+        </div>
+        <h3 id="svc-home-heading">Home Office Tech Support</h3>
+        <p>Home office systems optimized for secure connectivity, stability, and productive day-to-day execution.</p>
+        <span class="svc-link">Learn more →</span>
+      </a>
+      <a href="social-media-management.html" class="svc-card svc-card--digital reveal" aria-labelledby="svc-dsm-heading">
+        <div class="svc-icon-wrap" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="icoDsmGrad" x1="8" y1="8" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#00b4ff"/><stop offset="1" stop-color="#00e5c8"/>
+              </linearGradient>
+            </defs>
+            <circle cx="16" cy="20" r="5" stroke="url(#icoDsmGrad)" stroke-width="1.75"/>
+            <circle cx="32" cy="16" r="4" stroke="url(#icoDsmGrad)" stroke-width="1.75" opacity=".85"/>
+            <circle cx="28" cy="32" r="4.5" stroke="url(#icoDsmGrad)" stroke-width="1.75" opacity=".9"/>
+            <path d="M20.5 22.5l7-3M27 19l3 10M31 26l-8 4" stroke="url(#icoDsmGrad)" stroke-width="1.5" stroke-linecap="round" opacity=".75"/>
+            <path d="M12 38h24" stroke="url(#icoDsmGrad)" stroke-width="1.75" stroke-linecap="round" opacity=".4"/>
+          </svg>
+        </div>
+        <h3 id="svc-dsm-heading">Social Media Management</h3>
+        <p>Social operations designed to maintain consistent presence, audience momentum, and measurable communication outcomes.</p>
+        <span class="svc-link">Learn more →</span>
+      </a>
+      <a href="website-design-management.html" class="svc-card svc-card--digital reveal" aria-labelledby="svc-wdm-heading">
+        <div class="svc-icon-wrap" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="icoWdmGrad" x1="10" y1="9" x2="38" y2="41" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#00e5c8"/><stop offset="1" stop-color="#00b4ff"/>
+              </linearGradient>
+            </defs>
+            <rect x="9" y="12" width="30" height="22" rx="3" stroke="url(#icoWdmGrad)" stroke-width="2"/>
+            <path d="M9 18h30" stroke="url(#icoWdmGrad)" stroke-width="1.5" opacity=".5"/>
+            <circle cx="13" cy="15" r="1.2" fill="url(#icoWdmGrad)" opacity=".6"/>
+            <path d="M14 26h14M14 30h10" stroke="url(#icoWdmGrad)" stroke-width="1.5" stroke-linecap="round" opacity=".45"/>
+            <path d="M32 24l6 6M32 30h6v-6" stroke="url(#icoWdmGrad)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3 id="svc-wdm-heading">Website Design &amp; Management</h3>
+        <p>Website delivery and maintenance structured to improve trust, performance, and long-term digital continuity.</p>
+        <span class="svc-link">Learn more →</span>
+      </a>
+      <a href="domain-setup-digital-infrastructure.html" class="svc-card svc-card--digital reveal" aria-labelledby="svc-domain-heading">
+        <div class="svc-icon-wrap" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="icoDomainGrad" x1="8" y1="10" x2="42" y2="40" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#00b4ff"/><stop offset="1" stop-color="#00e5c8"/>
+              </linearGradient>
+            </defs>
+            <circle cx="24" cy="24" r="11" stroke="url(#icoDomainGrad)" stroke-width="1.75" opacity=".35"/>
+            <ellipse cx="24" cy="24" rx="11" ry="4.5" stroke="url(#icoDomainGrad)" stroke-width="1.5"/>
+            <path d="M13 24h22" stroke="url(#icoDomainGrad)" stroke-width="1.5" opacity=".55"/>
+            <path d="M24 13v22" stroke="url(#icoDomainGrad)" stroke-width="1.5" opacity=".55"/>
+            <circle cx="24" cy="24" r="2.5" stroke="url(#icoDomainGrad)" stroke-width="1.75"/>
+          </svg>
+        </div>
+        <h3 id="svc-domain-heading">Domain Setup &amp; Digital Infrastructure</h3>
+        <p>Core digital infrastructure configured for dependable routing, secure identity, and system-wide alignment.</p>
+        <span class="svc-link">Learn more →</span>
+      </a>
+      <a href="logo-design-brand-identity.html" class="svc-card svc-card--digital reveal" aria-labelledby="svc-logo-heading">
+        <div class="svc-icon-wrap" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="icoLogoGrad" x1="10" y1="38" x2="38" y2="10" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#00e5c8"/><stop offset="1" stop-color="#00b4ff"/>
+              </linearGradient>
+            </defs>
+            <path d="M14 34L24 12l10 22H14z" stroke="url(#icoLogoGrad)" stroke-width="2" stroke-linejoin="round"/>
+            <circle cx="24" cy="28" r="3" stroke="url(#icoLogoGrad)" stroke-width="1.5"/>
+            <path d="M30 20h6M33 17v6" stroke="url(#icoLogoGrad)" stroke-width="1.5" stroke-linecap="round" opacity=".7"/>
+          </svg>
+        </div>
+        <h3 id="svc-logo-heading">Logo Design &amp; Brand Identity</h3>
+        <p>Brand identity systems built to ensure clear positioning and consistency across digital and print channels.</p>
+        <span class="svc-link">Learn more →</span>
+      </a>
+      <a href="flier-graphic-design.html" class="svc-card svc-card--digital reveal" aria-labelledby="svc-flier-heading">
+        <div class="svc-icon-wrap" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="icoFlierGrad" x1="8" y1="8" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#00b4ff"/><stop offset="1" stop-color="#00e5c8"/>
+              </linearGradient>
+            </defs>
+            <rect x="12" y="10" width="20" height="28" rx="2" stroke="url(#icoFlierGrad)" stroke-width="2"/>
+            <rect x="15" y="14" width="14" height="3" rx="1" stroke="url(#icoFlierGrad)" stroke-width="1.25" opacity=".55"/>
+            <rect x="15" y="20" width="14" height="2" rx=".5" stroke="url(#icoFlierGrad)" stroke-width="1" opacity=".35"/>
+            <rect x="15" y="24" width="10" height="2" rx=".5" stroke="url(#icoFlierGrad)" stroke-width="1" opacity=".35"/>
+            <rect x="15" y="30" width="14" height="5" rx="1" stroke="url(#icoFlierGrad)" stroke-width="1.25" opacity=".65"/>
+          </svg>
+        </div>
+        <h3 id="svc-flier-heading">Flier &amp; Graphic Design</h3>
+        <p>Production-ready design assets that strengthen communication clarity and campaign execution quality.</p>
+        <span class="svc-link">Learn more →</span>
+      </a>
+      <a href="digital-presence-full-business-launch.html" class="svc-card svc-card--digital reveal" aria-labelledby="svc-launch-heading">
+        <div class="svc-icon-wrap" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="icoLaunchGrad" x1="8" y1="40" x2="40" y2="8" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#00e5c8"/><stop offset="1" stop-color="#00b4ff"/>
+              </linearGradient>
+            </defs>
+            <path d="M14 36V20h8v16M22 36V16h8v20M30 36V24h8v12" stroke="url(#icoLaunchGrad)" stroke-width="2" stroke-linecap="round"/>
+            <path d="M18 12l6-4 6 4" stroke="url(#icoLaunchGrad)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M24 8v4" stroke="url(#icoLaunchGrad)" stroke-width="1.75" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3 id="svc-launch-heading">Digital Presence Setup (Full Business Launch)</h3>
+        <p>Launch workflows coordinated to deliver readiness, consistency, and a credible public business presence.</p>
+        <span class="svc-link">Learn more →</span>
+      </a>
+      <a href="content-creation-businesses.html" class="svc-card svc-card--digital reveal" aria-labelledby="svc-content-heading">
+        <div class="svc-icon-wrap" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="icoContentGrad" x1="6" y1="12" x2="42" y2="38" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#00b4ff"/><stop offset="1" stop-color="#00e5c8"/>
+              </linearGradient>
+            </defs>
+            <rect x="11" y="13" width="20" height="16" rx="2" stroke="url(#icoContentGrad)" stroke-width="1.75"/>
+            <circle cx="21" cy="21" r="3.5" stroke="url(#icoContentGrad)" stroke-width="1.5"/>
+            <path d="M28 17l9-4v18l-9-4V17z" stroke="url(#icoContentGrad)" stroke-width="1.75" stroke-linejoin="round"/>
+            <path d="M15 34h22" stroke="url(#icoContentGrad)" stroke-width="1.75" stroke-linecap="round" opacity=".4"/>
+          </svg>
+        </div>
+        <h3 id="svc-content-heading">Content Creation for Businesses</h3>
+        <p>Content production structured to support consistent publishing, brand alignment, and campaign efficiency.</p>
+        <span class="svc-link">Learn more →</span>
+      </a>
+      <a href="business-email-setup-management.html" class="svc-card svc-card--digital reveal" aria-labelledby="svc-bemail-heading">
+        <div class="svc-icon-wrap" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="icoBemailGrad" x1="10" y1="14" x2="38" y2="36" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#00e5c8"/><stop offset="1" stop-color="#00b4ff"/>
+              </linearGradient>
+            </defs>
+            <rect x="10" y="14" width="28" height="20" rx="3" stroke="url(#icoBemailGrad)" stroke-width="2"/>
+            <path d="M10 17l14 10 14-10" stroke="url(#icoBemailGrad)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M17 22h5M17 26h8" stroke="url(#icoBemailGrad)" stroke-width="1.25" stroke-linecap="round" opacity=".45"/>
+          </svg>
+        </div>
+        <h3 id="svc-bemail-heading">Business Email Setup &amp; Management</h3>
+        <p>Email systems configured for secure communication, reliable delivery, and scalable team operations.</p>
+        <span class="svc-link">Learn more →</span>
+      </a>
+      <a href="online-booking-system-setup.html" class="svc-card svc-card--digital reveal" aria-labelledby="svc-obook-heading">
+        <div class="svc-icon-wrap" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="icoObookGrad" x1="8" y1="8" x2="40" y2="42" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#00b4ff"/><stop offset="1" stop-color="#00e5c8"/>
+              </linearGradient>
+            </defs>
+            <rect x="12" y="14" width="24" height="22" rx="3" stroke="url(#icoObookGrad)" stroke-width="2"/>
+            <path d="M12 20h24" stroke="url(#icoObookGrad)" stroke-width="1.5" opacity=".55"/>
+            <path d="M18 12v6M30 12v6" stroke="url(#icoObookGrad)" stroke-width="1.75" stroke-linecap="round"/>
+            <rect x="17" y="24" width="6" height="6" rx="1" stroke="url(#icoObookGrad)" stroke-width="1.25"/>
+            <path d="M27 26h6M27 29h4" stroke="url(#icoObookGrad)" stroke-width="1.25" stroke-linecap="round" opacity=".55"/>
+          </svg>
+        </div>
+        <h3 id="svc-obook-heading">Online Booking System Setup</h3>
+        <p>Booking systems implemented to reduce scheduling friction, improve availability control, and support growth.</p>
+        <span class="svc-link">Learn more →</span>
+      </a>
+      <a href="website-ui-ux-modernization.html" class="svc-card svc-card--digital reveal" aria-labelledby="svc-ux-heading">
+        <div class="svc-icon-wrap" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="icoUxGrad" x1="6" y1="40" x2="42" y2="10" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#00e5c8"/><stop offset="1" stop-color="#00b4ff"/>
+              </linearGradient>
+            </defs>
+            <rect x="10" y="12" width="28" height="24" rx="3" stroke="url(#icoUxGrad)" stroke-width="1.75" opacity=".45"/>
+            <path d="M14 18h12M14 23h20M14 28h16" stroke="url(#icoUxGrad)" stroke-width="1.25" stroke-linecap="round" opacity=".4"/>
+            <rect x="26" y="30" width="10" height="7" rx="1.5" stroke="url(#icoUxGrad)" stroke-width="1.75"/>
+            <path d="M28 33h6M28 35.5h4" stroke="url(#icoUxGrad)" stroke-width="1" stroke-linecap="round" opacity=".55"/>
+          </svg>
+        </div>
+        <h3 id="svc-ux-heading">Website UI/UX Modernization</h3>
+        <p>Interface modernization focused on usability, accessibility, and conversion clarity across customer journeys.</p>
+        <span class="svc-link">Learn more →</span>
+      </a>
+    </div>
+  </div>
+<!-- ═══ WHY CHOOSE US ═══ -->
+<section id="why" class="section">
+  <div class="section-inner">
+    <div class="reveal" style="text-align:center;margin-bottom:1rem">
+      <p class="section-tag" style="justify-content:center">Our Advantage</p>
+      <h2 class="section-title">Why Choose <em>PMB-Solutions</em></h2>
+      <p class="section-sub" style="margin:0 auto">A delivery model built for operational consistency, clarity, and long-term reliability.</p>
+    </div>
+    <div class="reveal-l" style="margin-top:3rem;max-width:720px;margin-left:auto;margin-right:auto">
+      <div class="why-badges">
+        <div class="why-badge">
+          <div class="badge-icon">01</div>
+          <div class="badge-body">
+            <h4>Structured system management and support workflows</h4>
+            <p>Defined processes keep delivery consistent across every service engagement.</p>
+          </div>
+        </div>
+        <div class="why-badge">
+          <div class="badge-icon">02</div>
+          <div class="badge-body">
+            <h4>Reliable response and resolution processes</h4>
+            <p>Prioritized support paths ensure issues are addressed with urgency and structure.</p>
+          </div>
+        </div>
+        <div class="why-badge">
+          <div class="badge-icon">03</div>
+          <div class="badge-body">
+            <h4>Solutions designed for long-term operational stability</h4>
+            <p>Implementation is planned to support continuity, scalability, and future growth.</p>
+          </div>
+        </div>
+        <div class="why-badge">
+          <div class="badge-icon">04</div>
+          <div class="badge-body">
+            <h4>Clear communication and well-documented systems</h4>
+            <p>Every recommendation and change is communicated in practical business terms.</p>
+          </div>
+        </div>
+        <div class="why-badge">
+          <div class="badge-icon">05</div>
+          <div class="badge-body">
+            <h4>Consistent service delivery across environments</h4>
+            <p>From single sites to distributed teams, delivery standards remain dependable.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="section-sub reveal" style="margin:2.5rem auto 0;max-width:640px;text-align:center;line-height:1.65;font-size:1.02rem;font-weight:500;color:rgba(200,214,240,.95)">Built around structured processes, not one-off fixes.</p>
+  </div>
+</section>
+
+<!-- ═══ ABOUT ═══ -->
+<section id="about" class="section">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-text reveal-l">
+        <p class="section-tag">Who We Are</p>
+        <h2 class="section-title">Making tech <em>work for you</em></h2>
+        <p>PMB-Solutions is a modern IT services company built on clarity, reliability, and practical problem-solving. We help businesses stay secure, connected, and confident in their technology.</p>
+        <p>Focused on delivering structured, reliable IT systems for modern business environments — we remove complexity and deliver dependable outcomes.</p>
+        <p class="about-lead">PMB-Solutions was founded on three core principles:</p>
+        <ul class="about-principles">
+          <li><strong>Clear communication</strong> — clients always know what’s happening and why</li>
+          <li><strong>Practical solutions</strong> — no upselling, no jargon, just what you need</li>
+          <li><strong>Trust and transparency</strong> — dependable support you can count on</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FAQ ═══ -->
+<section id="faq" class="section">
+  <div class="section-inner">
+    <div class="reveal" style="text-align:center">
+      <p class="section-tag" style="justify-content:center">Got Questions?</p>
+      <h2 class="section-title">Frequently Asked <em>Questions</em></h2>
+      <p class="section-sub" style="margin:0 auto">Straightforward answers to what our clients ask most.</p>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item reveal">
+        <div class="faq-q">Do you offer on-site or remote support?<span class="faq-icon" aria-hidden="true"></span></div>
+        <div class="faq-a"><div class="faq-a-inner">We offer both. Remote support is available for software, configuration, and diagnostic issues and is often the fastest option. On-site visits are available throughout New York for hardware installations, camera setups, network deployments, and any issue that requires a physical presence.</div></div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">What size businesses do you work with?<span class="faq-icon" aria-hidden="true"></span></div>
+        <div class="faq-a"><div class="faq-a-inner">We work with small to mid-sized businesses as well as individual professionals, delivering a consistent, enterprise-level standard of IT services across every engagement.</div></div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">How quickly can you respond to an emergency?<span class="faq-icon" aria-hidden="true"></span></div>
+        <div class="faq-a"><div class="faq-a-inner">We prioritize responsiveness and reliability in every engagement, ensuring that critical issues are addressed promptly and handled with urgency.</div></div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">Do you offer monthly managed IT support plans?<span class="faq-icon" aria-hidden="true"></span></div>
+        <div class="faq-a"><div class="faq-a-inner">Our managed IT services provide ongoing system monitoring, maintenance, and security management to ensure your environment remains stable, secure, and up to date.</div></div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">Can you install security cameras and connect them to my network?<span class="faq-icon" aria-hidden="true"></span></div>
+        <div class="faq-a"><div class="faq-a-inner">Yes. We manage the full lifecycle of camera system implementation, including physical installation, system configuration, network integration, and overall deployment.</div></div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">What is your pricing structure?<span class="faq-icon" aria-hidden="true"></span></div>
+        <div class="faq-a"><div class="faq-a-inner">Our services are structured based on the scope, complexity, and requirements of each engagement. We provide tailored service proposals following an initial consultation, allowing us to align the appropriate level of support, resources, and configuration to your specific needs. This ensures a clear, well-defined approach that supports both immediate requirements and long-term objectives. For more information or to discuss your requirements, we encourage you to reach out directly.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═══ -->
+<section id="contact" class="section">
+  <div class="section-inner">
+    <div class="contact-layout">
+      <div class="contact-main-grid">
+      <div class="contact-left">
+      <div class="contact-journey reveal-l">
+        <p class="section-tag">Get in Touch</p>
+        <h2 class="section-title">Start Your <em>IT Journey</em></h2>
+        <p class="section-sub">Tell us about your environment — we respond within one business day.</p>
+        <p class="contact-intro">Choose the best way to get started:</p>
+        <div class="contact-info">
+          <div class="c-item">
+            <div class="c-icon" aria-hidden="true">Em</div>
+            <div>
+              <h4>Email</h4>
+              <p><a href="mailto:info@pmb-solutions.com">info@pmb-solutions.com</a></p>
+            </div>
+          </div>
+          <div class="c-item">
+            <div class="c-icon" aria-hidden="true">Ph</div>
+            <div>
+              <h4>Phone</h4>
+              <p><a href="tel:+19174994911">(917) 499-4911</a></p>
+            </div>
+          </div>
+          <div class="c-item">
+            <div class="c-icon" aria-hidden="true">Loc</div>
+            <div>
+              <h4>Location</h4>
+              <p>Based in New York • Remote Services Available Nationwide</p>
+            </div>
+          </div>
+          <div class="c-item">
+            <div class="c-icon" aria-hidden="true">Hr</div>
+            <div>
+              <h4>Hours</h4>
+              <p>Mon–Fri 8am–7pm · Sat 9am–4pm</p>
+            </div>
+          </div>
+        </div>
+      </div>
+        <div class="contact-cta-box reveal">
+          <h4>Schedule a Consultation</h4>
+          <p>Book a consultation to review your current setup and align the right next steps.</p>
+          <a class="btn-primary btn-contact-action" href="https://outlook.office.com/book/PMBSolutionsClientBookingPortal@PMB-Solutions.com/" target="_blank" rel="noopener noreferrer">Book a Consultation</a>
+        </div>
+      </div>
+        <div class="contact-form-card reveal-r">
+        <h3>Send a Message</h3>
+        <p class="contact-form-lead">We'll get back to you within one business day.</p>
+        <form class="contact-form" id="contact-form" novalidate>
+          <div class="form-row">
+  <div class="f-group">
+    <label>First Name</label>
+    <input type="text" name="first_name" placeholder="John" required>
+  </div>
+
+  <div class="f-group">
+    <label>Last Name</label>
+    <input type="text" name="last_name" placeholder="Doe" required>
+  </div>
+</div>
+
+<div class="f-group">
+  <label>Email</label>
+  <input type="email" name="email" placeholder="john@company.com" required>
+</div>
+
+<div class="f-group">
+  <label>Phone (Optional)</label>
+  <input type="tel" name="phone" placeholder="(917) 499-4911">
+</div>
+
+<div class="f-group">
+  <label>Service Needed</label>
+  <select name="service">
+    <option value="">Select a service…</option>
+    <option>Desktop Support</option>
+    <option>Network Engineering</option>
+    <option>Camera Installation</option>
+    <option>Data Migration &amp; Recovery</option>
+    <option>IT Security Services</option>
+    <option>Troubleshooting</option>
+    <option>Small Business IT</option>
+    <option>Home Office Tech Support</option>
+    <option>Other / Not Sure</option>
+  </select>
+</div>
+
+<div class="f-group">
+  <label>Describe Your Issue</label>
+  <textarea name="message" placeholder="Tell us what's going on — the more detail, the better…" required></textarea>
+</div>
+
+          <button type="submit" class="btn-submit btn-contact-action btn-secondary-action" id="submitBtn">Send Message</button>
+          <p id="contactFormStatus" class="contact-form-status" role="status" aria-live="polite" hidden></p>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER — minimal: brand + contact (navigation is in the header) ═══ -->
+<footer class="site-footer" aria-label="Site footer">
+  <div class="footer-main">
+    <div class="footer-brand">
+      <div class="nav-logo site-logo">
+        <img class="nav-logo-img site-logo-img" src="pmb_solutions_logo.svg" alt="PMB-Solutions — IT Services &amp; Infrastructure" width="260" height="97" decoding="async" />
+      </div>
+      <p>Professional IT services and network solutions for businesses that need structured, reliable technology support.</p>
+    </div>
+    <div class="footer-col">
+      <p class="footer-col-label">Services</p>
+      <ul class="footer-col-list">
+        <li><a href="category-it-support-technical-services.html">IT Support &amp; Technical Services</a></li>
+        <li><a href="category-website-design-digital-presence.html">Website &amp; Digital Presence</a></li>
+        <li><a href="category-branding-graphic-design.html">Branding &amp; Graphic Design</a></li>
+        <li><a href="category-social-media-content-management.html">Social Media &amp; Content</a></li>
+        <li><a href="category-business-setup-digital-infrastructure.html">Business Setup &amp; Infrastructure</a></li>
+        <li><a href="category-premium-bundles-packages.html">Premium Bundles</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <p class="footer-col-label">Resources</p>
+      <ul class="footer-col-list">
+        <li><a href="knowledge-base/index.html">Knowledge Base</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <p class="footer-col-label">Company</p>
+      <ul class="footer-col-list">
+        <li><a href="#about">About</a></li>
+        <li><a href="#why">Why Us</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-contact footer-col">
+      <p class="footer-contact-label">Contact</p>
+      <ul class="footer-contact-list">
+        <li><a href="mailto:info@pmb-solutions.com">info@pmb-solutions.com</a></li>
+        <li><a href="tel:+19174994911">(917) 499-4911</a></li>
+        <li><span class="footer-location">Based in New York • Remote Services Available Nationwide</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2025 PMB-Solutions LLC · All rights reserved · New York, NY</p>
+    <a class="footer-legal" href="privacy-policy.html">Privacy Policy</a>
+  </div>
+</footer>
+
+<!-- ═══ SUPPORT CHAT (messages → info@pmb-solutions.com) ═══ -->
+<div class="support-chat" id="supportChatRoot">
+  <div id="supportChatBackdrop" class="support-chat-backdrop" aria-hidden="true"></div>
+  <div id="supportChatPanel" class="support-chat-panel" role="dialog" aria-modal="true" aria-labelledby="supportChatTitle" hidden aria-hidden="true">
+    <button type="button" class="support-chat-close" id="supportChatClose" aria-label="Close support chat">×</button>
+    <div class="support-chat-panel-inner">
+      <h2 id="supportChatTitle">PMB‑Solutions Support</h2>
+      <p class="support-chat-sub" id="supportChatSub">Send a message directly to our team</p>
+      <form id="supportChatForm" class="support-chat-form" novalidate>
+        <label for="supportChatName">Name
+          <input id="supportChatName" name="name" type="text" autocomplete="name" required maxlength="120" placeholder="Your name" aria-required="true"/>
+        </label>
+        <label for="supportChatEmail">Email
+          <input id="supportChatEmail" name="email" type="email" autocomplete="email" required maxlength="200" placeholder="you@example.com" aria-required="true"/>
+        </label>
+        <label for="supportChatMessage">Message
+          <textarea id="supportChatMessage" name="message" required maxlength="8000" placeholder="Describe what you need help with…" aria-required="true"></textarea>
+        </label>
+        <button type="submit" class="support-chat-submit" id="supportChatSubmit">Send Message</button>
+      </form>
+      <p id="supportChatSuccess" class="support-chat-success" role="status" aria-live="polite" hidden>Thank you! Your message has been sent. We will get back to you shortly.</p>
+    </div>
+  </div>
+  <button type="button" id="supportChatBubble" class="support-chat-bubble" aria-label="Open PMB-Solutions support chat" aria-expanded="false" aria-controls="supportChatPanel">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  </button>
+</div>
+
+<a href="tel:+19174994911" class="mobile-call-fab" aria-label="Call PMB-Solutions at (917) 499-4911"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a>
+
+<div id="smartSearchFullOverlay" class="smart-search-full" hidden aria-hidden="true">
+  <div class="smart-search-full-backdrop" data-ss-close tabindex="-1"></div>
+  <div class="smart-search-full-dialog" role="dialog" aria-modal="true" aria-labelledby="smartSearchFullTitle">
+    <div class="smart-search-full-head">
+      <h2 id="smartSearchFullTitle">Search results</h2>
+      <button type="button" class="smart-search-full-close" data-ss-close aria-label="Close search results">×</button>
+    </div>
+    <p class="smart-search-full-query" id="smartSearchFullQuery"></p>
+    <div class="smart-search-full-list" id="smartSearchFullList"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SCRIPTS
+═══════════════════════════════════════════════ -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+/* ── HOMEPAGE BACKGROUND VIDEO — ensure playback on mobile ── */
+(function(){
+  const v=document.querySelector('.homepage-bg-video');
+  if(!v)return;
+  const play=()=>{v.play().catch(()=>{});};
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',play);
+  else play();
+})();
+</script>
+<script>
+/* ── NAVBAR (sticky height + scroll shrink + motion) ── */
+const nav = document.getElementById('navbar');
+let lastScrollY = window.scrollY || 0;
+let navMotionTimer = null;
+function setNavHeightVar(){
+  if(!nav)return;
+  document.documentElement.style.setProperty('--nav-h', nav.offsetHeight + 'px');
+}
+function scrollToAnchorId(id, behavior){
+  if(!id) return;
+  const el = document.getElementById(id);
+  if(!el) return;
+  setNavHeightVar();
+  el.scrollIntoView({ behavior: behavior || 'smooth', block: 'start' });
+}
+function alignHashScroll(){
+  if(!location.hash || location.hash.length < 2) return;
+  scrollToAnchorId(decodeURIComponent(location.hash.slice(1)), 'auto');
+}
+setNavHeightVar();
+alignHashScroll();
+if(nav && typeof ResizeObserver !== 'undefined'){
+  new ResizeObserver(setNavHeightVar).observe(nav);
+}
+window.addEventListener('resize', setNavHeightVar);
+window.addEventListener('load', alignHashScroll);
+window.addEventListener('scroll', () => {
+  if(!nav)return;
+  const y = window.scrollY;
+  const nowScrolled = y > 60;
+  const wasScrolled = nav.classList.contains('scrolled');
+  nav.classList.toggle('scrolled', nowScrolled);
+  if(nowScrolled && !wasScrolled && y > lastScrollY){
+    clearTimeout(navMotionTimer);
+    nav.classList.remove('nav-scroll-motion');
+    void nav.offsetWidth;
+    nav.classList.add('nav-scroll-motion');
+    navMotionTimer = setTimeout(() => { nav.classList.remove('nav-scroll-motion'); }, 520);
+  }
+  lastScrollY = y;
+}, { passive: true });
+
+/* ── NAV MOBILE DRAWER ── */
+(function(){
+  const toggle = document.getElementById('navMenuToggle');
+  const drawer = document.getElementById('navDrawer');
+  const backdrop = document.getElementById('navDrawerBackdrop');
+  if(!toggle || !drawer || !backdrop) return;
+  function isOpen(){
+    return drawer.classList.contains('is-open');
+  }
+  function setOpen(open){
+    drawer.classList.toggle('is-open', open);
+    backdrop.classList.toggle('is-open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    toggle.setAttribute('aria-label', open ? 'Close site menu' : 'Open site menu');
+    drawer.setAttribute('aria-hidden', open ? 'false' : 'true');
+    backdrop.setAttribute('aria-hidden', 'true');
+    if(open){
+      drawer.removeAttribute('inert');
+      const first = drawer.querySelector('a');
+      if(first) first.focus({ preventScroll: true });
+      document.body.style.overflow = 'hidden';
+    }else{
+      drawer.setAttribute('inert', '');
+      document.body.style.overflow = '';
+      toggle.focus({ preventScroll: true });
+    }
+  }
+  toggle.addEventListener('click', function(){
+    setOpen(!isOpen());
+  });
+  backdrop.addEventListener('click', function(){
+    setOpen(false);
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && isOpen()){
+      setOpen(false);
+    }
+  });
+  drawer.querySelectorAll('a').forEach(function(link){
+    link.addEventListener('click', function(){
+      setOpen(false);
+    });
+  });
+  window.addEventListener('resize', function(){
+    if(window.innerWidth >= 901 && isOpen()) setOpen(false);
+  });
+})();
+
+/* ── SMART SITE SEARCH (indexed + fuzzy + intent) ──
+   Static index: update SMART_SEARCH_STATIC when adding pages.
+   Homepage sections: merged live from DOM (#services cards, #faq, #about, #hero, #contact) when present. */
+(function(){
+  const SYNONYMS = {
+    help:['support','assist','assistance','service','services','contact','customer','care','troubleshoot','troubleshooting','fix','repair','resolve'],
+    support:['help','assist','contact','troubleshoot','fix','service','ticket','customer','desk'],
+    fix:['repair','troubleshoot','resolve','support','solve','patch','broken','issue'],
+    issue:['problem','ticket','support','error','bug','outage','broken'],
+    problem:['issue','support','help','fix','troubleshoot','error'],
+    wifi:['wireless','wi-fi','network','internet','ssid','router','mesh'],
+    wireless:['wifi','wi-fi','network','internet'],
+    camera:['security','cctv','nvr','dvr','surveillance','ip camera','recording'],
+    cctv:['camera','security','surveillance'],
+    computer:['desktop','pc','mac','laptop','workstation','machine'],
+    pc:['computer','desktop','windows','intel'],
+    laptop:['computer','notebook','portable','macbook'],
+    email:['mail','contact','info','message','inbox'],
+    phone:['call','tel','dial','contact','number','917'],
+    virus:['malware','spyware','infection','removal','security'],
+    backup:['restore','recovery','migration','cloud','archive'],
+    password:['login','signin','credential','mfa','2fa','authentication'],
+    assist:['help','support','service','contact'],
+    assistance:['help','support','service'],
+    remote:['vpn','offsite','work from home','anywhere'],
+    onsite:['on-site','visit','field','new york']
+  };
+  const SUPPORT_INTENT_RE = /\b(help|support|fix|fixes|fixed|issue|issues|problem|problems|broken|assist|assistance|trouble|troubleshoot|troubleshooting|error|errors|outage|ticket|customer|call|email|down|slow|need\s+help|contact|stuck|urgent)\b/i;
+  const SUPPORT_URL_HINT = /contact|troubleshoot|support|desktop|help|faq|privacy/i;
+
+  const SMART_SEARCH_STATIC = [
+    {kicker:'Home',title:'PMB-Solutions — Overview',url:'index.html',support:0.35,body:'PMB-Solutions homepage Your Trusted IT Solutions Partner IT solutions desktop support network engineering camera installation smart IT services small businesses home offices consultation hero trusted partner technology'},
+    {kicker:'Home · Services overview',title:'Services Overview — six categories',url:'index.html#services-overview',support:0.28,body:'Services Overview IT Support Technical Services Website Design Digital Presence Branding Graphic Design Social Media Content Management Business Setup Digital Infrastructure Premium Bundles Packages category pages enterprise architecture'},
+    {kicker:'Category',title:'IT Support & Technical Services',url:'category-it-support-technical-services.html',support:0.45,body:'IT Support Technical Services managed troubleshooting device setup WiFi backup remote printer camera network engineering category catalog'},
+    {kicker:'Category',title:'Website Design & Digital Presence',url:'category-website-design-digital-presence.html',support:0.42,body:'Website design management UI UX domain DNS hosting SEO content security monitoring digital presence category'},
+    {kicker:'Category',title:'Branding & Graphic Design',url:'category-branding-graphic-design.html',support:0.4,body:'Logo brand identity style guide social branding flier graphic business cards print digital ads category'},
+    {kicker:'Category',title:'Social Media & Content Management',url:'category-social-media-content-management.html',support:0.4,body:'Social media management content reels TikTok calendars engagement analytics reporting category'},
+    {kicker:'Category',title:'Business Setup & Digital Infrastructure',url:'category-business-setup-digital-infrastructure.html',support:0.43,body:'Business email booking Google Business Profile digital presence automation cloud migration integrations category'},
+    {kicker:'Category',title:'Premium Bundles & Packages',url:'category-premium-bundles-packages.html',support:0.38,body:'Business Launch Digital Growth IT Essentials Brand Identity Social Accelerator Booking Automation bundle packages value'},
+    {kicker:'Home · Services',title:'Comprehensive IT Services',url:'index.html#services',support:0.25,body:'What We Do Comprehensive IT Services home office business network layer covered Desktop Support hardware diagnostics OS installation performance virus removal software PC Mac Network Engineering LAN WAN router switch VLAN infrastructure Camera Installation IP NVR DVR remote viewing security Data Migration Recovery cloud backup restore drive IT Security firewall Wi-Fi VPN hardening audit Troubleshooting diagnosis root cause Small Business IT managed server cloud cybersecurity Home Office Tech printer VPN productivity'},
+    {kicker:'Home · Why Us',title:'Why Choose PMB-Solutions',url:'index.html#why',support:0.55,body:'Why Choose PMB-Solutions Our Advantage trust Fast responsive support pricing Personalized Clear explanations Reliable results IT partner communication stress dependable experience'},
+    {kicker:'Home · About',title:'Making tech work for you',url:'index.html#about',support:0.3,body:'Who We Are Making tech work for you PMB-Solutions clarity reliability troubleshooting device setup network support small business principles communication transparency modern IT services secure connected confident technology'},
+    {kicker:'Home · FAQ',title:'Frequently Asked Questions',url:'index.html#faq',support:0.7,body:'Frequently Asked Questions on-site remote support New York hardware camera network business size emergency response managed IT monthly plans security cameras Hikvision Dahua Reolink Ubiquiti pricing consultation outage hours visit'},
+    {kicker:'Home · Contact',title:'Start Your IT Journey — Contact',url:'index.html#contact',support:1,body:'Get in Touch Start Your IT Journey contact email info@pmb-solutions.com mailto phone 917 499 4911 19174994911 tel New York on-site remote nationwide hours message consultation form service needed send message same day response'},
+    {kicker:'Service',title:'Desktop Support',url:'desktop-support.html',support:0.85,body:'Desktop Support hands-on computer tune-up fresh start hardware health operating system speed clutter startup virus programs Windows Mac students freelancers office machines PC diagnostics appointment book pain points audience details'},
+    {kicker:'Service',title:'Network Engineering',url:'network-engineering.html',support:0.75,body:'Network Engineering internet Wi-Fi office connections planning setup dependable team grows LAN router switch VLAN cabling wireless infrastructure teams devices point-of-sale appointment'},
+    {kicker:'Service',title:'Camera Installation & Security Setup',url:'camera-installation-security-setup.html',support:0.65,body:'Camera Installation Security Setup IP NVR DVR home business surveillance monitoring mounting configuration remote viewing CCTV tablet phone computer step'},
+    {kicker:'Service',title:'Data Migration & Recovery',url:'data-migration-recovery.html',support:0.8,body:'Data Migration Recovery files transfer cloud backup restore drive failure corruption accidental deletion verified restores downtime cloud migration'},
+    {kicker:'Service',title:'IT Security Services',url:'it-security-services.html',support:0.82,body:'IT Security Services firewall protection Wi-Fi segmentation VPN remote workers device hardening security audits laptops phones sign-in lost device MFA practical'},
+    {kicker:'Service',title:'Troubleshooting & Tech Support',url:'troubleshooting-tech-support.html',support:0.95,body:'Troubleshooting Tech Support technology misbehaves diagnosis hardware software network layers symptom fix work school layers root cause help desk'},
+    {kicker:'Service',title:'Small Business IT Support',url:'small-business-it-support.html',support:0.88,body:'Small Business IT Support team technology dependable friendly full-time IT department server email employee managed cloud cybersecurity'},
+    {kicker:'Service',title:'Home Office Tech Support',url:'home-office-tech-support.html',support:0.78,body:'Home Office Tech Support workspace Wi-Fi devices professional steady printer VPN productivity smart device optimization'},
+    {kicker:'Legal',title:'Privacy Policy',url:'privacy-policy.html',support:0.15,body:'Privacy Policy PMB-Solutions personal information contact rights access corrections deletion third-party links data collection cookies website'}
+  ];
+
+  function norm(t){return String(t||'').toLowerCase().replace(/\s+/g,' ').trim();}
+  function escapeHtml(s){
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function levenshtein(a,b){
+    if(a.length>b.length){var t=a;a=b;b=t;}
+    var n=a.length,m=b.length;
+    if(!n)return m;if(!m)return n;
+    var i,j,row=Array(n+1);
+    for(j=0;j<=n;j++)row[j]=j;
+    for(i=1;i<=m;i++){
+      var prev=i,nrow=[i];
+      for(j=1;j<=n;j++){
+        var cost=a[j-1]===b[i-1]?0:1;
+        nrow[j]=Math.min(prev+cost,row[j]+1,nrow[j-1]+1);
+        prev=nrow[j];
+      }
+      row=nrow;
+    }
+    return row[n];
+  }
+  function queryTokens(q){
+    return norm(q).split(/[^a-z0-9]+/i).filter(function(t){return t.length>0;});
+  }
+  function expansionSet(tokens){
+    var set={},i,t,arr,j;
+    for(i=0;i<tokens.length;i++){
+      t=tokens[i];
+      if(t.length)set[t]=1;
+      arr=SYNONYMS[t];
+      if(arr){for(j=0;j<arr.length;j++)set[arr[j]]=1;}
+    }
+    return Object.keys(set);
+  }
+  function hasSupportIntent(q){
+    var s=norm(q);
+    if(SUPPORT_INTENT_RE.test(s))return true;
+    var t=queryTokens(q),i;
+    for(i=0;i<t.length;i++){
+      if(SYNONYMS.help&&SYNONYMS.help.indexOf(t[i])!==-1)return true;
+      if(t[i]==='help'||t[i]==='support'||t[i]==='fix'||t[i]==='issue'||t[i]==='problem')return true;
+    }
+    return false;
+  }
+  function hayFor(e){
+    return norm([e.kicker,e.title,e.url.replace(/[#?].*$/,''),e.body].join(' '));
+  }
+  function fuzzyWordScore(tok,hay){
+    if(tok.length<3)return 0;
+    if(hay.indexOf(tok)!==-1)return 1;
+    var words=hay.split(/[^a-z0-9]+/),w,di,best=0,th;
+    for(var i=0;i<words.length;i++){
+      w=words[i];
+      if(!w||w.length<3)continue;
+      if(Math.abs(w.length-tok.length)>2)continue;
+      di=levenshtein(tok,w);
+      th=w.length<=5?1:2;
+      if(di<=th)best=Math.max(best,1-di/(th+1));
+    }
+    return best;
+  }
+  function scoreEntry(e,tokens,expanded,intent){
+    var h=hayFor(e),score=0,ti,tk,ex,j;
+    for(ti=0;ti<tokens.length;ti++){
+      tk=tokens[ti];
+      if(!tk||tk.length<3)continue;
+      if(h.indexOf(tk)!==-1)score+=14;
+      else score+=fuzzyWordScore(tk,h)*9;
+    }
+    for(j=0;j<expanded.length;j++){
+      ex=expanded[j];
+      if(tokens.indexOf(ex)!==-1)continue;
+      if(ex.length<3)continue;
+      if(h.indexOf(ex)!==-1)score+=6;
+    }
+    if(intent)score+=(e.support||0)*22;
+    if(intent&&SUPPORT_URL_HINT.test(e.url))score+=8;
+    return score;
+  }
+  function bestMatchIndex(hayRaw,tokens,expanded){
+    var hay=hayRaw.toLowerCase(),bi=-1,u='',all=tokens.concat(expanded),i,t,pos,w,words;
+    for(i=0;i<all.length;i++){
+      t=all[i];
+      if(!t||t.length<2)continue;
+      pos=hay.indexOf(t);
+      if(pos!==-1&&(bi===-1||pos<bi)){bi=pos;u=t;}
+    }
+    if(bi!==-1)return{idx:bi,len:u.length};
+    for(i=0;i<tokens.length;i++){
+      t=tokens[i];
+      if(t.length<4)continue;
+      words=hay.split(/[^a-z0-9]+/);
+      for(w=0;w<words.length;w++){
+        if(!words[w]||words[w].length<3)continue;
+        if(levenshtein(t,words[w])<=1){
+          pos=hay.indexOf(words[w]);
+          if(pos!==-1&&(bi===-1||pos<bi)){bi=pos;u=words[w];}
+        }
+      }
+    }
+    return bi===-1?{idx:0,len:0}:{idx:bi,len:u.length||0};
+  }
+  function makeSnippet(raw,tokens,expanded,title){
+    var r=String(raw||''),h=r.toLowerCase();
+    if(!r.trim())return title;
+    var bm=bestMatchIndex(r,tokens,expanded),start=Math.max(0,bm.idx-70),end=Math.min(r.length,bm.idx+120);
+    var sn=r.slice(start,end);
+    if(start>0)sn='…'+sn.trim();
+    if(end<r.length)sn=sn.trim()+'…';
+    return sn.replace(/\s+/g,' ').trim()||title;
+  }
+  function highlightSnippet(snippet,tokens,expanded){
+    var e=escapeHtml(snippet),pool=[],i,t;
+    var all=tokens.concat(expanded);
+    for(i=0;i<all.length;i++){
+      t=all[i];
+      if(!t||t.length<2)continue;
+      if(pool.indexOf(t)===-1)pool.push(t);
+    }
+    pool.sort(function(a,b){return b.length-a.length;});
+    for(i=0;i<pool.length;i++){
+      t=pool[i];
+      try{
+        var re=new RegExp('('+t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');
+        e=e.replace(re,'<mark class="ss-mark">$1</mark>');
+      }catch(err){}
+    }
+    return e;
+  }
+  function mergeDomChunks(){
+    var out=[],cards,el,h,p,href,sec,faqs,q,a,i;
+    try{
+      cards=document.querySelectorAll('#services-overview .svc-card');
+      for(i=0;i<cards.length;i++){
+        el=cards[i];h=el.querySelector('h3');p=el.querySelector('p');
+        href=el.getAttribute('href')||'';
+        if(h&&p)out.push({kicker:'Home · Service card',title:h.textContent.trim(),url:href,body:(h.textContent+' '+p.textContent),support:0.4});
+      }
+      sec=document.querySelector('#about .about-text');
+      if(sec)out.push({kicker:'Home · About (live)',title:'About — live content',url:'index.html#about',body:sec.innerText||'',support:0.25});
+      sec=document.querySelector('#hero .hero-content');
+      if(sec)out.push({kicker:'Home · Hero (live)',title:'Hero — live content',url:'index.html#hero',body:sec.innerText||'',support:0.2});
+      faqs=document.querySelectorAll('#faq .faq-item');
+      for(i=0;i<faqs.length;i++){
+        el=faqs[i];q=el.querySelector('.faq-q');a=el.querySelector('.faq-a-inner');
+        if(q)out.push({kicker:'Home · FAQ',title:(q.textContent||'').replace(/\s+/g,' ').trim(),url:'index.html#faq',body:((a&&a.textContent)||'')+' '+(q.textContent||''),support:0.65});
+      }
+      sec=document.querySelector('#contact .contact-info');
+      if(sec)out.push({kicker:'Home · Contact (live)',title:'Contact details',url:'index.html#contact',body:sec.innerText||'',support:1});
+    }catch(err){}
+    return out;
+  }
+  function buildIndex(){
+    var base=SMART_SEARCH_STATIC.slice(),dom=mergeDomChunks(),seen={},i,e,key;
+    for(i=0;i<base.length;i++){
+      e=base[i];
+      key=(e.url||'')+'|'+norm(e.title);
+      seen[key]=1;
+    }
+    for(i=0;i<dom.length;i++){
+      e=dom[i];
+      key=(e.url||'')+'|'+norm(e.title);
+      if(seen[key])continue;
+      seen[key]=1;
+      base.push(e);
+    }
+    return base;
+  }
+  var INDEX=buildIndex();
+
+  function rankedSearch(qraw,limit){
+    var qn=norm(qraw);
+    if(!qn)return[];
+    var tokens=queryTokens(qraw),exp=expansionSet(tokens),intent=hasSupportIntent(qraw);
+    var scored=[],i,s,sn,entry;
+    for(i=0;i<INDEX.length;i++){
+      entry=INDEX[i];
+      s=scoreEntry(entry,tokens,exp,intent);
+      if(s<1.75)continue;
+      sn=makeSnippet(entry.body,tokens,exp,entry.title);
+      scored.push({entry:entry,score:s,snippet:sn});
+    }
+    scored.sort(function(a,b){return b.score-a.score;});
+    return scored.slice(0,limit||40);
+  }
+
+  var input=document.getElementById('siteSearchInput');
+  var panel=document.getElementById('siteSearchResults');
+  var full=document.getElementById('smartSearchFullOverlay');
+  var fullList=document.getElementById('smartSearchFullList');
+  var fullQueryEl=document.getElementById('smartSearchFullQuery');
+  if(!input||!panel)return;
+  var wrap=input.closest('.site-search-wrap');
+  var deb;
+
+  function setOpen(open){
+    input.setAttribute('aria-expanded',open?'true':'false');
+    if(open)panel.classList.add('ss-open');
+    else panel.classList.remove('ss-open');
+  }
+  function closeFull(){
+    if(!full)return;
+    full.hidden=true;
+    full.classList.remove('ss-full-visible');
+    full.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
+  }
+  function openFull(q,rows){
+    if(!full||!fullList)return;
+    full.hidden=false;
+    full.offsetHeight;
+    full.classList.add('ss-full-visible');
+    full.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+    if(fullQueryEl)fullQueryEl.innerHTML='Showing results for <strong>'+escapeHtml(q)+'</strong>';
+    fullList.innerHTML='';
+    fullList.appendChild(rows.cloneNode(true));
+    var btnClose=full.querySelector('.smart-search-full-close');
+    if(btnClose)btnClose.focus();
+  }
+  function buildResultsFragment(list,intent,qraw,maxItems){
+    var frag=document.createDocumentFragment(),i,row,a,sk,ti,sn,tokens,exp;
+    tokens=queryTokens(qraw);
+    exp=expansionSet(tokens);
+    if(intent){
+      var act=document.createElement('div');
+      act.className='ss-actions';
+      act.innerHTML='<a class="ss-action" href="tel:+19174994911" role="option"><strong>Call now</strong><span>(917) 499-4911</span></a>'+
+        '<a class="ss-action" href="mailto:info@pmb-solutions.com" role="option"><strong>Email support</strong><span>info@pmb-solutions.com</span></a>';
+      frag.appendChild(act);
+    }
+    if(!list.length){
+      var em=document.createElement('div');
+      em.className='ss-empty';
+      em.textContent='No matches yet — try different words or check spelling.';
+      frag.appendChild(em);
+      return frag;
+    }
+    for(i=0;i<Math.min(list.length,maxItems);i++){
+      row=list[i];
+      a=document.createElement('a');
+      a.className='ss-result';
+      a.href=row.entry.url;
+      a.setAttribute('role','option');
+      sk=document.createElement('span');
+      sk.className='ss-result-kicker';
+      sk.textContent=row.entry.kicker||'Result';
+      ti=document.createElement('span');
+      ti.className='ss-result-title';
+      ti.innerHTML=highlightSnippet(row.entry.title,tokens,exp);
+      sn=document.createElement('span');
+      sn.className='ss-result-snippet';
+      sn.innerHTML=highlightSnippet(row.snippet,tokens,exp);
+      a.appendChild(sk);a.appendChild(ti);a.appendChild(sn);
+      frag.appendChild(a);
+    }
+    var hint=document.createElement('div');
+    hint.className='ss-footer-hint';
+    hint.textContent='Press Esc to close · Click a result to open';
+    frag.appendChild(hint);
+    return frag;
+  }
+  function renderDropdown(qraw){
+    var qn=norm(qraw);
+    panel.innerHTML='';
+    if(!qn){panel.hidden=true;setOpen(false);panel.classList.remove('ss-open');return;}
+    var intent=hasSupportIntent(qraw);
+    var list=rankedSearch(qraw,10);
+    panel.appendChild(buildResultsFragment(list,intent,qraw,8));
+    panel.hidden=false;
+    setOpen(true);
+  }
+  function closePanel(){
+    panel.hidden=true;
+    panel.innerHTML='';
+    setOpen(false);
+    panel.classList.remove('ss-open');
+  }
+  function runSearch(){
+    INDEX=buildIndex();
+    renderDropdown(input.value);
+  }
+  input.addEventListener('input',function(){
+    clearTimeout(deb);
+    deb=setTimeout(runSearch,90);
+  });
+  input.addEventListener('focus',function(){
+    if(norm(input.value))runSearch();
+  });
+  input.addEventListener('keydown',function(ev){
+    if(ev.key==='Escape'){
+      closePanel();
+      closeFull();
+      return;
+    }
+    if(ev.key!=='Enter')return;
+    var qn=norm(input.value);
+    if(!qn)return;
+    ev.preventDefault();
+    INDEX=buildIndex();
+    var intent=hasSupportIntent(input.value);
+    var list=rankedSearch(input.value,60);
+    var frag=buildResultsFragment(list,intent,input.value,60);
+    var wrapFrag=document.createElement('div');
+    wrapFrag.appendChild(frag);
+    openFull(input.value.trim(),wrapFrag);
+    closePanel();
+  });
+  panel.addEventListener('mousedown',function(ev){
+    if(ev.target.closest&&ev.target.closest('a'))return;
+    if(ev.target!==panel)ev.preventDefault();
+  });
+  document.addEventListener('click',function(ev){
+    if(wrap&&!wrap.contains(ev.target))closePanel();
+    if(full&&!full.hidden){
+      var c=ev.target.closest&&ev.target.closest('[data-ss-close]');
+      if(c)closeFull();
+      else if(ev.target.classList&&ev.target.classList.contains('smart-search-full-backdrop'))closeFull();
+    }
+  });
+  if(full)full.addEventListener('click',function(ev){
+    if(ev.target.getAttribute&&ev.target.getAttribute('data-ss-close')!==null)closeFull();
+  });
+  document.addEventListener('keydown',function(ev){
+    if(ev.key==='Escape'&&full&&!full.hidden)closeFull();
+  });
+})();
+
+/* ── SCROLL REVEAL ── */
+const revealEls = document.querySelectorAll('.reveal,.reveal-l,.reveal-r');
+const revObs = new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting){
+      const siblings = [...e.target.parentElement.querySelectorAll('.reveal,.reveal-l,.reveal-r')];
+      const idx = siblings.indexOf(e.target);
+      e.target.style.transitionDelay = (idx * 0.07)+'s';
+      e.target.classList.add('in');
+      revObs.unobserve(e.target);
+    }
+  });
+},{threshold:0.1});
+revealEls.forEach(el=>revObs.observe(el));
+
+/* ── FAQ ACCORDION ── */
+document.querySelectorAll('.faq-q').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const item = btn.parentElement;
+    const ans  = item.querySelector('.faq-a');
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i=>{
+      i.classList.remove('open');
+      i.querySelector('.faq-a').classList.remove('open');
+    });
+    if(!wasOpen){ item.classList.add('open'); ans.classList.add('open'); }
+  });
+});
+
+/* ── SUPPORT CHAT (email to team — no AI, no local storage) ── */
+(function(){
+  var root=document.getElementById('supportChatRoot');
+  var bubble=document.getElementById('supportChatBubble');
+  var panel=document.getElementById('supportChatPanel');
+  var backdrop=document.getElementById('supportChatBackdrop');
+  var closeBtn=document.getElementById('supportChatClose');
+  var form=document.getElementById('supportChatForm');
+  var successEl=document.getElementById('supportChatSuccess');
+  var subEl=document.getElementById('supportChatSub');
+  var submitBtn=document.getElementById('supportChatSubmit');
+  if(!root||!bubble||!panel||!form)return;
+
+  var FORMSUBMIT_ENDPOINT='https://formsubmit.co/ajax/info@pmb-solutions.com';
+
+  function setOpen(open){
+    bubble.setAttribute('aria-expanded',open?'true':'false');
+    panel.hidden=!open;
+    panel.setAttribute('aria-hidden',open?'false':'true');
+    backdrop.setAttribute('aria-hidden',open?'false':'true');
+    panel.classList.toggle('support-chat-open',open);
+    backdrop.classList.toggle('support-chat-open',open);
+    document.body.style.overflow=open?'hidden':'';
+    if(open){
+      successEl.hidden=true;
+      subEl.hidden=false;
+      form.hidden=false;
+      form.reset();
+      var first=form.querySelector('input');
+      if(first)setTimeout(function(){first.focus();},80);
+    }
+  }
+  function isOpen(){return panel.classList.contains('support-chat-open');}
+
+  bubble.addEventListener('click',function(ev){
+    ev.stopPropagation();
+    setOpen(!isOpen());
+  });
+  function dismiss(){setOpen(false);}
+  if(closeBtn)closeBtn.addEventListener('click',dismiss);
+  backdrop.addEventListener('click',dismiss);
+  document.addEventListener('keydown',function(ev){
+    if(ev.key==='Escape'&&isOpen()){ev.preventDefault();dismiss();}
+  });
+  document.addEventListener('click',function(ev){
+    if(!isOpen())return;
+    if(root.contains(ev.target))return;
+    dismiss();
+  },true);
+
+  function showSent(){
+    form.hidden=true;
+    subEl.hidden=true;
+    successEl.hidden=false;
+  }
+
+  function openMailto(name,email,message,ts,pageUrl){
+    var sub=encodeURIComponent('[PMB Support] '+name);
+    var body=encodeURIComponent(
+      'Name: '+name+'\nEmail: '+email+'\n\nMessage:\n'+message+'\n\n---\nTimestamp: '+ts+'\nPage: '+pageUrl
+    );
+    showSent();
+    setTimeout(function(){
+      window.location.href='mailto:info@pmb-solutions.com?subject='+sub+'&body='+body;
+    },400);
+  }
+
+  form.addEventListener('submit',function(ev){
+    ev.preventDefault();
+    if(!form.reportValidity())return;
+    var name=document.getElementById('supportChatName').value.trim();
+    var email=document.getElementById('supportChatEmail').value.trim();
+    var message=document.getElementById('supportChatMessage').value.trim();
+    var ts=new Date().toISOString();
+    var pageUrl=window.location.href;
+    submitBtn.disabled=true;
+
+    var payload={
+      name:name,
+      email:email,
+      message:message,
+      _subject:'PMB-Solutions Support: '+name,
+      _replyto:email,
+      _template:'table',
+      Timestamp:ts,
+      Page:pageUrl
+    };
+
+    fetch(FORMSUBMIT_ENDPOINT,{
+      method:'POST',
+      headers:{'Content-Type':'application/json',Accept:'application/json'},
+      body:JSON.stringify(payload)
+    }).then(function(res){
+      return res.json().then(function(data){
+        return {ok:res.ok,data:data};
+      }).catch(function(){
+        return {ok:false,data:{}};
+      });
+    }).then(function(result){
+      var ok=result.ok&&(result.data.success===true||result.data.success==='true');
+      if(ok)showSent();
+      else openMailto(name,email,message,ts,pageUrl);
+    }).catch(function(){
+      openMailto(name,email,message,ts,pageUrl);
+    }).finally(function(){
+      submitBtn.disabled=false;
+    });
+  });
+})();
+
+</script>
+<script>
+/* ── CONTACT FORM (EmailJS v4) ── */
+(function(){
+  var EMAILJS_SERVICE_ID='service_ewd6itn';
+  var EMAILJS_TEMPLATE_ID='template_xnsugsc';
+  var EMAILJS_PUBLIC_KEY='nOwUuoUlIUq4uqt6R';
+
+  function initContactForm(){
+    var form=document.getElementById('contact-form');
+    var statusEl=document.getElementById('contactFormStatus');
+    var submitBtn=document.getElementById('submitBtn');
+    if(!form||!submitBtn)return;
+
+    if(typeof emailjs==='undefined'){
+      if(statusEl){
+        statusEl.hidden=false;
+        statusEl.textContent='EmailJS could not load. Check your connection and refresh the page.';
+        statusEl.className='contact-form-status is-error';
+      }
+      return;
+    }
+
+    emailjs.init({publicKey:EMAILJS_PUBLIC_KEY});
+
+    function fieldValue(name){
+      var el=form.elements.namedItem(name);
+      return el&&'value' in el?String(el.value).trim():'';
+    }
+
+    function templateParams(){
+      var email=fieldValue('email');
+      return{
+        first_name:fieldValue('first_name'),
+        last_name:fieldValue('last_name'),
+        email:email,
+        phone:fieldValue('phone')||'Not provided',
+        service:fieldValue('service')||'Not specified',
+        message:fieldValue('message'),
+        reply_to:email
+      };
+    }
+
+    function showStatus(message,isError){
+      if(!statusEl)return;
+      statusEl.hidden=false;
+      statusEl.textContent=message;
+      statusEl.className='contact-form-status '+(isError?'is-error':'is-success');
+    }
+    function hideStatus(){
+      if(!statusEl)return;
+      statusEl.hidden=true;
+      statusEl.textContent='';
+      statusEl.className='contact-form-status';
+    }
+
+    form.addEventListener('submit',function(e){
+      e.preventDefault();
+      if(!form.reportValidity())return;
+
+      hideStatus();
+      var originalLabel=submitBtn.textContent;
+      submitBtn.disabled=true;
+      submitBtn.textContent='Sending…';
+
+      emailjs.send(EMAILJS_SERVICE_ID,EMAILJS_TEMPLATE_ID,templateParams())
+        .then(function(){
+          showStatus('Message sent successfully',false);
+          form.reset();
+        })
+        .catch(function(err){
+          console.error('EmailJS contact form error:',err);
+          showStatus('Could not send your message. Please try again or email info@pmb-solutions.com.',true);
+        })
+        .finally(function(){
+          submitBtn.disabled=false;
+          submitBtn.textContent=originalLabel;
+        });
+    });
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',initContactForm);
+  }else{
+    initContactForm();
+  }
+})();
+</script>
+<script src="js/theme-toggle.js"></script>
+</body>
+</html>

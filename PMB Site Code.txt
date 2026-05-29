@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PMB-Solutions — IT Services & Network Solutions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════
+   ROOT & RESET
+═══════════════════════════════════════════════ */
+:root {
+  --bg:        #080e1a;
+  --bg2:       #0c1424;
+  --bg3:       #101c32;
+  --panel:     rgba(12,20,36,0.82);
+  --border:    rgba(0,180,255,0.12);
+  --border2:   rgba(0,180,255,0.22);
+  --blue:      #00b4ff;
+  --teal:      #00e5c8;
+  --blue-dim:  rgba(0,180,255,0.08);
+  --teal-dim:  rgba(0,229,200,0.08);
+  --white:     #e8f0ff;
+  --muted:     #6a7fa8;
+  --muted2:    #8a9fc4;
+  --glow-b:    rgba(0,180,255,0.25);
+  --glow-t:    rgba(0,229,200,0.2);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--white);
+  font-family:'Outfit',sans-serif;
+  font-weight:400;
+  line-height:1.7;
+  overflow-x:hidden;
+}
+h1,h2,h3,h4,h5{font-family:'Rajdhani',sans-serif;font-weight:700;line-height:1.1;letter-spacing:0.02em}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:'Outfit',sans-serif}
+img{max-width:100%}
+
+/* ═══════════════════════════════════════════════
+   SCROLLBAR
+═══════════════════════════════════════════════ */
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--blue);border-radius:3px}
+
+/* ═══════════════════════════════════════════════
+   CANVAS BACKGROUND
+═══════════════════════════════════════════════ */
+#particle-canvas{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  z-index:0;pointer-events:none;
+}
+
+/* ═══════════════════════════════════════════════
+   NAVBAR
+═══════════════════════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;width:100%;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1rem 5vw;
+  background:rgba(8,14,26,0.75);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border);
+  transition:padding .3s,background .3s;
+}
+nav.scrolled{padding:.7rem 5vw;background:rgba(8,14,26,0.95)}
+.nav-logo{
+  font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.35rem;
+  letter-spacing:.08em;display:flex;align-items:center;gap:.5rem;
+}
+.nav-logo .logo-mark{
+  width:32px;height:32px;border-radius:6px;
+  background:linear-gradient(135deg,var(--blue),var(--teal));
+  display:flex;align-items:center;justify-content:center;
+  font-size:.85rem;font-weight:900;color:#080e1a;
+  box-shadow:0 0 14px var(--glow-b);
+}
+.nav-logo .logo-text{color:var(--white)}
+.nav-logo .logo-text span{color:var(--blue)}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{
+  font-size:.83rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted2);font-weight:500;
+  position:relative;padding-bottom:2px;
+  transition:color .2s;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:0;left:0;width:0;height:1px;
+  background:var(--blue);transition:width .25s;
+}
+.nav-links a:hover{color:var(--white)}
+.nav-links a:hover::after{width:100%}
+.nav-right{display:flex;align-items:center;gap:1rem}
+.search-bar{
+  display:flex;align-items:center;gap:.5rem;
+  background:var(--blue-dim);border:1px solid var(--border);
+  border-radius:20px;padding:.35rem .9rem;
+  transition:border-color .2s,box-shadow .2s;
+}
+.search-bar:focus-within{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,180,255,.1)}
+.search-bar input{
+  background:transparent;border:none;outline:none;
+  color:var(--white);font-family:'Outfit',sans-serif;font-size:.83rem;
+  width:140px;
+}
+.search-bar input::placeholder{color:var(--muted)}
+.search-icon{color:var(--muted);font-size:.85rem}
+.btn-nav{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+  background:linear-gradient(135deg,var(--blue),var(--teal));
+  border:none;color:#080e1a;
+  padding:.45rem 1.3rem;border-radius:4px;
+  font-family:'Rajdhani',sans-serif;font-weight:700;
+  font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;
+  transition:box-shadow .2s,transform .15s;
+  box-shadow:0 0 18px var(--glow-b);
+}
+.btn-nav:hover{box-shadow:0 0 30px var(--glow-b);transform:translateY(-1px)}
+
+/* ═══════════════════════════════════════════════
+   SECTION WRAPPER
+═══════════════════════════════════════════════ */
+.section{position:relative;z-index:10;padding:7rem 5vw}
+.section-inner{max-width:1200px;margin:0 auto}
+.section-tag{
+  display:inline-flex;align-items:center;gap:.6rem;
+  font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--blue);font-weight:600;margin-bottom:.9rem;
+}
+.section-tag::before{content:'//';opacity:.5}
+.section-title{
+  font-size:clamp(2rem,3.8vw,3rem);letter-spacing:.03em;
+  margin-bottom:1rem;
+}
+.section-title em{font-style:normal;color:var(--blue)}
+.section-sub{color:var(--muted2);max-width:540px;font-size:1rem}
+
+/* ═══════════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════════ */
+#hero{
+  min-height:100vh;display:flex;align-items:center;
+  padding:9rem 5vw 5rem;position:relative;z-index:10;
+  overflow:hidden;
+}
+.hero-content{max-width:700px}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:.6rem;
+  background:rgba(0,180,255,.06);border:1px solid rgba(0,180,255,.2);
+  padding:.35rem 1rem;border-radius:20px;
+  font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--teal);margin-bottom:2rem;
+  animation:fadeUp .6s ease both;
+}
+.live-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--teal);
+  animation:livePulse 1.6s ease-in-out infinite;
+}
+@keyframes livePulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.5)}}
+
+.hero-h1{
+  font-size:clamp(2.8rem,6vw,5rem);
+  font-weight:700;letter-spacing:.02em;line-height:1.04;
+  margin-bottom:1.5rem;
+  animation:fadeUp .7s .1s ease both;
+}
+.hero-h1 .line2{
+  background:linear-gradient(90deg,var(--blue),var(--teal));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero-sub{
+  color:var(--muted2);font-size:1.08rem;max-width:520px;
+  margin-bottom:2.5rem;
+  animation:fadeUp .7s .2s ease both;
+}
+.hero-btns{
+  display:flex;gap:1rem;flex-wrap:wrap;
+  animation:fadeUp .7s .3s ease both;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--blue),var(--teal));
+  border:none;color:#080e1a;padding:.85rem 2.2rem;border-radius:5px;
+  font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.95rem;
+  letter-spacing:.1em;text-transform:uppercase;
+  transition:box-shadow .2s,transform .15s;
+  box-shadow:0 0 28px var(--glow-b);
+}
+.btn-primary:hover{box-shadow:0 0 45px var(--glow-b);transform:translateY(-2px)}
+.btn-outline{
+  background:transparent;border:1px solid rgba(0,180,255,.3);
+  color:var(--white);padding:.85rem 2.2rem;border-radius:5px;
+  font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.95rem;
+  letter-spacing:.1em;text-transform:uppercase;
+  transition:border-color .2s,background .2s,transform .15s;
+}
+.btn-outline:hover{border-color:var(--blue);background:var(--blue-dim);transform:translateY(-2px)}
+
+.hero-chips{
+  display:flex;gap:.8rem;flex-wrap:wrap;margin-top:3rem;
+  animation:fadeUp .7s .45s ease both;
+}
+.chip{
+  display:flex;align-items:center;gap:.45rem;
+  background:var(--panel);border:1px solid var(--border);
+  padding:.4rem .85rem;border-radius:20px;
+  font-size:.78rem;color:var(--muted2);
+  transition:border-color .2s,color .2s;
+}
+.chip:hover{border-color:var(--blue);color:var(--white)}
+.chip-dot{width:5px;height:5px;border-radius:50%;background:var(--teal)}
+
+.hero-visual{
+  position:absolute;right:-60px;top:50%;transform:translateY(-50%);
+  width:480px;height:480px;opacity:.12;pointer-events:none;
+  animation:rotateSlow 40s linear infinite;
+}
+@keyframes rotateSlow{from{transform:translateY(-50%) rotate(0deg)}to{transform:translateY(-50%) rotate(360deg)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
+
+/* ═══════════════════════════════════════════════
+   SERVICES
+═══════════════════════════════════════════════ */
+#services{background:rgba(12,20,36,0.6)}
+.services-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1.3rem;margin-top:3.5rem;
+}
+.svc-card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:1.8rem;
+  position:relative;overflow:hidden;
+  transition:transform .3s,border-color .3s,box-shadow .3s;
+  cursor:default;
+}
+.svc-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(0,180,255,.04),transparent);
+  opacity:0;transition:opacity .3s;
+}
+.svc-card:hover{transform:translateY(-6px);border-color:rgba(0,180,255,.35);box-shadow:0 20px 50px rgba(0,0,0,.5),0 0 30px rgba(0,180,255,.08)}
+.svc-card:hover::before{opacity:1}
+.svc-card::after{
+  content:'';position:absolute;top:0;left:0;
+  width:100%;height:2px;
+  background:linear-gradient(90deg,var(--blue),var(--teal));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .4s ease;
+}
+.svc-card:hover::after{transform:scaleX(1)}
+.svc-icon-wrap{
+  width:54px;height:54px;border-radius:12px;
+  background:var(--blue-dim);border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.5rem;margin-bottom:1.3rem;
+  transition:box-shadow .3s,background .3s;
+}
+.svc-card:hover .svc-icon-wrap{
+  background:rgba(0,180,255,.14);
+  box-shadow:0 0 20px rgba(0,180,255,.2);
+}
+.svc-card h3{font-size:1.15rem;margin-bottom:.5rem}
+.svc-card p{color:var(--muted2);font-size:.88rem;line-height:1.65}
+.svc-link{
+  display:inline-flex;align-items:center;gap:.35rem;
+  margin-top:1rem;font-size:.8rem;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--blue);font-weight:600;
+  opacity:0;transform:translateX(-6px);
+  transition:opacity .25s,transform .25s;
+}
+.svc-card:hover .svc-link{opacity:1;transform:none}
+
+/* ═══════════════════════════════════════════════
+   WHY CHOOSE US
+═══════════════════════════════════════════════ */
+#why{background:var(--bg)}
+.why-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:4rem;
+  align-items:center;margin-top:3rem;
+}
+.why-badges{display:flex;flex-direction:column;gap:1rem}
+.why-badge{
+  display:flex;align-items:center;gap:1.2rem;
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:10px;padding:1.2rem 1.5rem;
+  transition:border-color .25s,transform .25s,box-shadow .25s;
+}
+.why-badge:hover{border-color:rgba(0,229,200,.3);transform:translateX(6px);box-shadow:0 8px 30px rgba(0,0,0,.3),inset 0 0 0 1px rgba(0,229,200,.06)}
+.badge-icon{
+  width:44px;height:44px;flex-shrink:0;
+  border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-size:1.2rem;background:var(--teal-dim);border:1px solid rgba(0,229,200,.2);
+  transition:box-shadow .25s;
+}
+.why-badge:hover .badge-icon{box-shadow:0 0 16px var(--glow-t)}
+.badge-body h4{font-size:.97rem;font-weight:600;margin-bottom:.15rem}
+.badge-body p{font-size:.83rem;color:var(--muted2)}
+
+.why-right{
+  display:flex;flex-direction:column;gap:1.5rem;
+}
+.stat-block{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:10px;padding:1.5rem 1.8rem;
+}
+.stat-num{
+  font-family:'Rajdhani',sans-serif;font-size:2.5rem;font-weight:700;
+  background:linear-gradient(135deg,var(--blue),var(--teal));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.stat-label{font-size:.8rem;color:var(--muted2);letter-spacing:.06em;text-transform:uppercase;margin-top:.15rem}
+.stat-bar{height:3px;background:rgba(255,255,255,.05);border-radius:2px;margin-top:.8rem}
+.stat-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--blue),var(--teal))}
+
+/* ═══════════════════════════════════════════════
+   ABOUT
+═══════════════════════════════════════════════ */
+#about{background:rgba(12,20,36,0.7)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+.about-text p{color:var(--muted2);margin-top:1.5rem;font-size:.97rem;line-height:1.8}
+.about-text p+p{margin-top:.9rem}
+.about-certs{
+  display:flex;flex-wrap:wrap;gap:.7rem;margin-top:2rem;
+}
+.cert-tag{
+  background:var(--blue-dim);border:1px solid var(--border2);
+  border-radius:4px;padding:.3rem .8rem;
+  font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--blue);font-weight:600;
+}
+.about-visual{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:14px;padding:2rem;
+  display:flex;flex-direction:column;gap:1rem;
+}
+.about-visual-header{
+  display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem;
+}
+.about-visual-header .dot{width:9px;height:9px;border-radius:50%}
+.about-visual-header .dot:nth-child(1){background:#ff5f57}
+.about-visual-header .dot:nth-child(2){background:#febc2e}
+.about-visual-header .dot:nth-child(3){background:#28c840}
+.terminal-line{
+  font-family:monospace;font-size:.8rem;color:var(--muted2);
+  padding:.25rem 0;border-bottom:1px solid rgba(255,255,255,.03);
+}
+.terminal-line .cmd{color:var(--blue)}
+.terminal-line .ok{color:var(--teal)}
+.terminal-line .val{color:#f5a623}
+.terminal-cursor{
+  display:inline-block;width:8px;height:14px;
+  background:var(--blue);margin-left:4px;vertical-align:middle;
+  animation:blink .9s step-end infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* ═══════════════════════════════════════════════
+   FAQ
+═══════════════════════════════════════════════ */
+#faq{background:var(--bg)}
+.faq-list{margin-top:3rem;display:flex;flex-direction:column;gap:.8rem;max-width:820px;margin-left:auto;margin-right:auto}
+.faq-item{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:8px;overflow:hidden;
+  transition:border-color .25s;
+}
+.faq-item.open{border-color:rgba(0,180,255,.3)}
+.faq-q{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:1.2rem 1.5rem;cursor:pointer;
+  font-family:'Rajdhani',sans-serif;font-size:1.05rem;font-weight:600;
+  transition:color .2s;user-select:none;
+}
+.faq-q:hover{color:var(--blue)}
+.faq-chevron{
+  width:22px;height:22px;border:1px solid var(--border2);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:.7rem;flex-shrink:0;
+  transition:transform .3s,background .25s,border-color .25s;
+}
+.faq-item.open .faq-chevron{transform:rotate(180deg);background:var(--blue);border-color:var(--blue);color:#080e1a}
+.faq-a{
+  max-height:0;overflow:hidden;
+  transition:max-height .4s ease,padding .3s;
+  color:var(--muted2);font-size:.9rem;line-height:1.75;
+}
+.faq-a.open{max-height:300px;padding:0 1.5rem 1.2rem}
+
+/* ═══════════════════════════════════════════════
+   CONTACT
+═══════════════════════════════════════════════ */
+#contact{background:rgba(12,20,36,0.8)}
+.contact-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:5rem}
+.contact-info{margin-top:2rem;display:flex;flex-direction:column;gap:1.2rem}
+.c-item{
+  display:flex;align-items:flex-start;gap:1rem;
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:8px;padding:1.1rem 1.3rem;
+  transition:border-color .25s;
+}
+.c-item:hover{border-color:rgba(0,180,255,.3)}
+.c-icon{
+  width:40px;height:40px;flex-shrink:0;border-radius:8px;
+  background:var(--blue-dim);border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;font-size:1rem;
+}
+.c-item h4{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-bottom:.2rem}
+.c-item p{font-size:.88rem;color:var(--muted2)}
+.contact-cta-box{
+  margin-top:2rem;
+  background:linear-gradient(135deg,rgba(0,180,255,.06),rgba(0,229,200,.04));
+  border:1px solid rgba(0,180,255,.2);border-radius:10px;
+  padding:1.5rem;
+}
+.contact-cta-box p{color:var(--muted2);font-size:.88rem;margin-bottom:1rem}
+
+.contact-form{display:flex;flex-direction:column;gap:1rem;margin-top:2rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.f-group{display:flex;flex-direction:column;gap:.4rem}
+.f-group label{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.f-group input,.f-group textarea,.f-group select{
+  background:var(--blue-dim);border:1px solid var(--border);
+  border-radius:6px;padding:.7rem 1rem;
+  color:var(--white);font-family:'Outfit',sans-serif;font-size:.9rem;
+  outline:none;transition:border-color .2s,box-shadow .2s;
+}
+.f-group input::placeholder,.f-group textarea::placeholder{color:var(--muted)}
+.f-group input:focus,.f-group textarea:focus,.f-group select:focus{
+  border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,180,255,.1);
+}
+.f-group select option{background:var(--bg2)}
+.f-group textarea{min-height:120px;resize:vertical}
+.btn-submit{
+  background:linear-gradient(135deg,var(--blue),var(--teal));
+  border:none;color:#080e1a;padding:.85rem 2rem;
+  border-radius:6px;font-family:'Rajdhani',sans-serif;font-weight:700;
+  font-size:.95rem;letter-spacing:.1em;text-transform:uppercase;
+  align-self:flex-start;
+  transition:box-shadow .2s,transform .15s;
+  box-shadow:0 0 22px var(--glow-b);
+}
+.btn-submit:hover{box-shadow:0 0 40px var(--glow-b);transform:translateY(-2px)}
+
+/* (Legacy chat widget removed — see index.html for support chat.) */
+
+/* ═══════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════ */
+footer{
+  background:#040810;
+  border-top:1px solid var(--border);
+  padding:4rem 5vw 2rem;
+  position:relative;z-index:10;
+}
+.footer-grid{
+  display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;
+  gap:3rem;max-width:1200px;margin:0 auto 3rem;
+}
+.footer-brand p{color:var(--muted);font-size:.85rem;margin-top:.8rem;max-width:250px;line-height:1.7}
+.footer-col h5{
+  font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--blue);margin-bottom:1rem;
+}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.6rem}
+.footer-col ul a{color:var(--muted);font-size:.85rem;transition:color .2s}
+.footer-col ul a:hover{color:var(--white)}
+.footer-bottom{
+  display:flex;justify-content:space-between;align-items:center;
+  padding-top:2rem;border-top:1px solid var(--border);
+  max-width:1200px;margin:0 auto;
+}
+.footer-bottom p{font-size:.78rem;color:var(--muted)}
+.socials{display:flex;gap:.7rem}
+.social{
+  width:34px;height:34px;border-radius:6px;
+  background:var(--blue-dim);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.85rem;color:var(--muted2);
+  transition:border-color .2s,color .2s,box-shadow .2s;
+}
+.social:hover{border-color:var(--blue);color:var(--blue);box-shadow:0 0 12px var(--glow-b)}
+
+/* ═══════════════════════════════════════════════
+   REVEAL ANIMATIONS
+═══════════════════════════════════════════════ */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+.reveal-l{opacity:0;transform:translateX(-28px);transition:opacity .7s ease,transform .7s ease}
+.reveal-l.in{opacity:1;transform:none}
+.reveal-r{opacity:0;transform:translateX(28px);transition:opacity .7s ease,transform .7s ease}
+.reveal-r.in{opacity:1;transform:none}
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════ */
+@media(max-width:900px){
+  .nav-links,.search-bar{display:none}
+  .about-grid,.why-grid,.contact-grid,.footer-grid{grid-template-columns:1fr;gap:2.5rem}
+  .form-row{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:600px){
+  .services-grid{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- PARTICLE CANVAS -->
+<canvas id="particle-canvas"></canvas>
+
+<!-- ═══ NAVBAR ═══ -->
+<nav id="navbar">
+  <div class="nav-logo">
+    <div class="logo-mark">P</div>
+    <div class="logo-text">PMB-<span>Solutions</span></div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="search-bar">
+      <span class="search-icon">⌕</span>
+      <input type="text" placeholder="Search services…" />
+    </div>
+    <a href="#contact" class="btn-nav">Contact Support</a>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <!-- Decorative rotating ring -->
+  <svg class="hero-visual" viewBox="0 0 480 480" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="240" cy="240" r="200" stroke="url(#rg1)" stroke-width="1"/>
+    <circle cx="240" cy="240" r="160" stroke="url(#rg1)" stroke-width="0.5" stroke-dasharray="8 12"/>
+    <circle cx="240" cy="240" r="120" stroke="url(#rg1)" stroke-width="1"/>
+    <circle cx="240" cy="240" r="80" stroke="url(#rg1)" stroke-width="0.5"/>
+    <circle cx="240" cy="40" r="6" fill="#00b4ff"/>
+    <circle cx="440" cy="240" r="4" fill="#00e5c8"/>
+    <circle cx="240" cy="440" r="5" fill="#00b4ff"/>
+    <circle cx="40" cy="240" r="4" fill="#00e5c8"/>
+    <defs>
+      <linearGradient id="rg1" x1="0" y1="0" x2="480" y2="480">
+        <stop offset="0%" stop-color="#00b4ff" stop-opacity=".8"/>
+        <stop offset="100%" stop-color="#00e5c8" stop-opacity=".4"/>
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <div class="live-dot"></div>
+      New York · Serving Businesses & Individuals
+    </div>
+    <h1 class="hero-h1">
+      Your Trusted<br>
+      <span class="line2">IT Solutions</span><br>
+      Partner
+    </h1>
+    <p class="hero-sub">PMB-Solutions delivers professional desktop support, network engineering, camera installation, and smart IT services — for small businesses and home offices alike.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get a Free Consultation</button>
+      <button class="btn-outline" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">Explore Services</button>
+    </div>
+    <div class="hero-chips">
+      <div class="chip"><div class="chip-dot"></div>Desktop Support</div>
+      <div class="chip"><div class="chip-dot"></div>Network Engineering</div>
+      <div class="chip"><div class="chip-dot"></div>Camera Installation</div>
+      <div class="chip"><div class="chip-dot"></div>Home Office IT</div>
+      <div class="chip"><div class="chip-dot"></div>Troubleshooting</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SERVICES ═══ -->
+<section id="services" class="section">
+  <div class="section-inner">
+    <div class="reveal">
+      <p class="section-tag">What We Do</p>
+      <h2 class="section-title">Comprehensive <em>IT Services</em></h2>
+      <p class="section-sub">From your home office to your business network — PMB-Solutions has you covered at every layer.</p>
+    </div>
+    <div class="services-grid">
+      <div class="svc-card reveal">
+        <div class="svc-icon-wrap">🖥️</div>
+        <h3>Desktop Support</h3>
+        <p>Hardware diagnostics, OS installation, performance tuning, virus removal, and software setup for PCs and Macs.</p>
+        <div class="svc-link">Learn more →</div>
+      </div>
+      <div class="svc-card reveal">
+        <div class="svc-icon-wrap">🌐</div>
+        <h3>Network Engineering</h3>
+        <p>LAN/WAN design, router and switch configuration, VLAN segmentation, and enterprise-grade infrastructure deployment.</p>
+        <div class="svc-link">Learn more →</div>
+      </div>
+      <div class="svc-card reveal">
+        <div class="svc-icon-wrap">📷</div>
+        <h3>Camera Installation</h3>
+        <p>IP camera setup, NVR/DVR configuration, remote viewing access, and full security camera system design and installation.</p>
+        <div class="svc-link">Learn more →</div>
+      </div>
+      <div class="svc-card reveal">
+        <div class="svc-icon-wrap">🔧</div>
+        <h3>Troubleshooting</h3>
+        <p>Systematic, root-cause diagnosis across hardware, software, and network layers. We fix the problem — not just the symptom.</p>
+        <div class="svc-link">Learn more →</div>
+      </div>
+      <div class="svc-card reveal">
+        <div class="svc-icon-wrap">🏢</div>
+        <h3>Small Business IT</h3>
+        <p>End-to-end IT management for SMBs — from server setup and cloud migration to ongoing managed support and cybersecurity.</p>
+        <div class="svc-link">Learn more →</div>
+      </div>
+      <div class="svc-card reveal">
+        <div class="svc-icon-wrap">🏠</div>
+        <h3>Home Office Tech Support</h3>
+        <p>Wi-Fi optimization, smart device setup, printer troubleshooting, VPN configuration, and productivity tool installation.</p>
+        <div class="svc-link">Learn more →</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ WHY CHOOSE US ═══ -->
+<section id="why" class="section">
+  <div class="section-inner">
+    <div class="reveal" style="text-align:center;margin-bottom:1rem">
+      <p class="section-tag" style="justify-content:center">Our Advantage</p>
+      <h2 class="section-title">Why Choose <em>PMB-Solutions</em></h2>
+      <p class="section-sub" style="margin:0 auto">We bring enterprise-level thinking to every engagement — regardless of your company size.</p>
+    </div>
+    <div class="why-grid" style="margin-top:3rem">
+      <div class="why-badges reveal-l">
+        <div class="why-badge">
+          <div class="badge-icon">🎯</div>
+          <div class="badge-body">
+            <h4>Methodical Approach</h4>
+            <p>Every diagnosis starts with evidence, not guesswork. Structured, repeatable process every time.</p>
+          </div>
+        </div>
+        <div class="why-badge">
+          <div class="badge-icon">⚡</div>
+          <div class="badge-body">
+            <h4>Fast Response Times</h4>
+            <p>Critical issues addressed within hours, not days. We know downtime costs you money.</p>
+          </div>
+        </div>
+        <div class="why-badge">
+          <div class="badge-icon">🛡️</div>
+          <div class="badge-body">
+            <h4>Security-First Mindset</h4>
+            <p>Every solution is designed with security best practices baked in from the start.</p>
+          </div>
+        </div>
+        <div class="why-badge">
+          <div class="badge-icon">📄</div>
+          <div class="badge-body">
+            <h4>Full Documentation</h4>
+            <p>We hand over complete documentation so your team owns the knowledge, not just us.</p>
+          </div>
+        </div>
+        <div class="why-badge">
+          <div class="badge-icon">📈</div>
+          <div class="badge-body">
+            <h4>Scalable Solutions</h4>
+            <p>Infrastructure built to grow with you — no rearchitecting when you expand next year.</p>
+          </div>
+        </div>
+      </div>
+      <div class="why-right reveal-r">
+        <div class="stat-block">
+          <div class="stat-num">99.8%</div>
+          <div class="stat-label">Average Client Uptime</div>
+          <div class="stat-bar"><div class="stat-fill" style="width:99.8%"></div></div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-num">&lt; 4 hrs</div>
+          <div class="stat-label">Average Response Time</div>
+          <div class="stat-bar"><div class="stat-fill" style="width:88%"></div></div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-num">500+</div>
+          <div class="stat-label">Clients Served</div>
+          <div class="stat-bar"><div class="stat-fill" style="width:72%"></div></div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-num">100%</div>
+          <div class="stat-label">Issues Documented with Root-Cause</div>
+          <div class="stat-bar"><div class="stat-fill" style="width:100%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ABOUT ═══ -->
+<section id="about" class="section">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-text reveal-l">
+        <p class="section-tag">Who We Are</p>
+        <h2 class="section-title">Built on <em>Technical Excellence</em></h2>
+        <p>PMB-Solutions was founded with a single mission: bring enterprise-grade IT expertise to the clients who need it most — small businesses, entrepreneurs, and individuals who deserve the same quality of service as Fortune 500 companies.</p>
+        <p>Based in New York, we serve clients across the region with hands-on, responsive, and technically rigorous support. Whether you need a new network designed from scratch or just need your laptop running again, we approach every job with the same precision.</p>
+        <p>We believe technology should work for you — not the other way around. Our team speaks plain English, not just tech jargon.</p>
+        <div class="about-certs">
+          <span class="cert-tag">CompTIA A+</span>
+          <span class="cert-tag">Network+</span>
+          <span class="cert-tag">Security+</span>
+          <span class="cert-tag">Cisco Certified</span>
+          <span class="cert-tag">Microsoft Partner</span>
+        </div>
+      </div>
+      <div class="reveal-r">
+        <div class="about-visual">
+          <div class="about-visual-header">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <span style="font-family:monospace;font-size:.72rem;color:var(--muted);margin-left:.5rem">pmb-diagnostics — bash</span>
+          </div>
+          <div class="terminal-line"><span class="cmd">$</span> pmb --run network-audit</div>
+          <div class="terminal-line"><span class="ok">✓</span> Scanning active interfaces... <span class="val">done</span></div>
+          <div class="terminal-line"><span class="ok">✓</span> VLAN segmentation check... <span class="val">pass</span></div>
+          <div class="terminal-line"><span class="ok">✓</span> Firewall ruleset verified... <span class="val">pass</span></div>
+          <div class="terminal-line"><span class="ok">✓</span> Wireless coverage analysis... <span class="val">done</span></div>
+          <div class="terminal-line"><span class="ok">✓</span> Camera feeds verified... <span class="val">6/6 online</span></div>
+          <div class="terminal-line"><span class="ok">✓</span> Uptime report generated... <span class="val">99.9%</span></div>
+          <div class="terminal-line"><span class="cmd">$</span> pmb --deploy security-patch<span class="terminal-cursor"></span></div>
+          <div style="margin-top:.8rem;padding-top:.8rem;border-top:1px solid rgba(255,255,255,.05)">
+            <div style="font-size:.72rem;color:var(--muted)">PMB-Solutions Diagnostic Suite v3.1 · All systems nominal</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FAQ ═══ -->
+<section id="faq" class="section">
+  <div class="section-inner">
+    <div class="reveal" style="text-align:center">
+      <p class="section-tag" style="justify-content:center">Got Questions?</p>
+      <h2 class="section-title">Frequently Asked <em>Questions</em></h2>
+      <p class="section-sub" style="margin:0 auto">Straightforward answers to what our clients ask most.</p>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item reveal">
+        <div class="faq-q">Do you offer on-site or remote support?<div class="faq-chevron">▾</div></div>
+        <div class="faq-a">We offer both. Remote support is available for software, configuration, and diagnostic issues and is often the fastest option. On-site visits are available throughout New York for hardware installations, camera setups, network deployments, and any issue that requires a physical presence.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">What size businesses do you work with?<div class="faq-chevron">▾</div></div>
+        <div class="faq-a">We specialize in small to medium-sized businesses (1–200 employees) as well as individual home office clients. Our sweet spot is clients who need enterprise-quality IT without an enterprise budget. Every client gets the same level of attention and expertise.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">How quickly can you respond to an emergency?<div class="faq-chevron">▾</div></div>
+        <div class="faq-a">For critical outages and emergencies, our typical response time is under 4 hours. We offer priority support agreements for clients who need guaranteed response windows. Remote triage can often begin within 30 minutes of initial contact during business hours.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">Do you offer monthly managed IT support plans?<div class="faq-chevron">▾</div></div>
+        <div class="faq-a">Yes. Our managed IT plans provide ongoing monitoring, maintenance, security patching, and priority support for a flat monthly fee. This is ideal for small businesses that need predictable IT costs and proactive — not reactive — IT management.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">Can you install security cameras and connect them to my network?<div class="faq-chevron">▾</div></div>
+        <div class="faq-a">Absolutely. We handle the full camera installation workflow: hardware mounting, IP camera configuration, NVR/DVR setup, network integration, remote viewing setup, and user training. We work with all major brands including Hikvision, Dahua, Reolink, Ubiquiti, and more.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">What is your pricing structure?<div class="faq-chevron">▾</div></div>
+        <div class="faq-a">We offer both hourly and project-based pricing depending on the engagement. Remote support starts at a competitive flat rate. On-site visits, project scopes, and managed plans are quoted after a free initial consultation where we assess your exact needs. Contact us for a no-obligation quote.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═══ -->
+<section id="contact" class="section">
+  <div class="section-inner">
+    <div class="contact-grid">
+      <div class="reveal-l">
+        <p class="section-tag">Get in Touch</p>
+        <h2 class="section-title">Start Your <em>IT Journey</em></h2>
+        <p class="section-sub">Ready to get your tech working flawlessly? Reach out — we respond the same day.</p>
+        <div class="contact-info">
+          <div class="c-item">
+            <div class="c-icon">📧</div>
+            <div>
+              <h4>Email</h4>
+              <p><a href="mailto:info@pmb-solutions.com">info@pmb-solutions.com</a></p>
+            </div>
+          </div>
+          <div class="c-item">
+            <div class="c-icon">📞</div>
+            <div>
+              <h4>Phone</h4>
+              <p><a href="tel:+19174994911">(917) 499-4911</a></p>
+            </div>
+          </div>
+          <div class="c-item">
+            <div class="c-icon">📍</div>
+            <div>
+              <h4>Location</h4>
+              <p>Based in New York • Remote Services Available Nationwide</p>
+            </div>
+          </div>
+          <div class="c-item">
+            <div class="c-icon">🕐</div>
+            <div>
+              <h4>Hours</h4>
+              <p>Mon–Fri 8am–7pm · Sat 9am–4pm</p>
+            </div>
+          </div>
+        </div>
+        <div class="contact-cta-box">
+          <h4 style="font-size:1rem;margin-bottom:.5rem">Free Consultation</h4>
+          <p>Not sure what you need? Tell us your problem and we'll figure it out together — no charge for the initial call.</p>
+          <button class="btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Book a Free Call →</button>
+        </div>
+      </div>
+      <div class="reveal-r">
+        <h3 style="font-size:1.3rem;margin-bottom:.3rem">Send a Message</h3>
+        <p style="color:var(--muted2);font-size:.85rem">We'll get back to you within one business day.</p>
+        <div class="contact-form">
+          <div class="form-row">
+            <div class="f-group"><label>First Name</label><input type="text" placeholder="John"/></div>
+            <div class="f-group"><label>Last Name</label><input type="text" placeholder="Doe"/></div>
+          </div>
+          <div class="f-group"><label>Email</label><input type="email" placeholder="john@company.com"/></div>
+          <div class="f-group"><label>Phone (Optional)</label><input type="tel" placeholder="(917) 499-4911"/></div>
+          <div class="f-group">
+            <label>Service Needed</label>
+            <select>
+              <option value="">Select a service…</option>
+              <option>Desktop Support</option>
+              <option>Network Engineering</option>
+              <option>Camera Installation</option>
+              <option>Troubleshooting</option>
+              <option>Small Business IT</option>
+              <option>Home Office Tech Support</option>
+              <option>Other / Not Sure</option>
+            </select>
+          </div>
+          <div class="f-group"><label>Describe Your Issue</label><textarea placeholder="Tell us what's going on — the more detail, the better…"></textarea></div>
+          <button class="btn-submit" id="submitBtn">Send Message →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="nav-logo" style="font-size:1.2rem">
+        <div class="logo-mark">P</div>
+        <div class="logo-text">PMB-<span style="color:var(--blue)">Solutions</span></div>
+      </div>
+      <p>Professional IT services and network solutions for small businesses and individuals across New York.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Services</h5>
+      <ul>
+        <li><a href="#services">Desktop Support</a></li>
+        <li><a href="#services">Network Engineering</a></li>
+        <li><a href="#services">Camera Installation</a></li>
+        <li><a href="#services">Troubleshooting</a></li>
+        <li><a href="#services">Small Business IT</a></li>
+        <li><a href="#services">Home Office Support</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#why">Why PMB</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Contact</h5>
+      <ul>
+        <li><a href="mailto:info@pmb-solutions.com">info@pmb-solutions.com</a></li>
+        <li><a href="tel:+19174994911">(917) 499-4911</a></li>
+        <li><span class="footer-location">Based in New York • Remote Services Available Nationwide</span></li>
+        <li><a href="#">Mon–Sat Support</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 PMB-Solutions LLC · All rights reserved · New York, NY</p>
+    <div class="socials">
+      <a class="social" href="#" title="LinkedIn">in</a>
+      <a class="social" href="#" title="Twitter">𝕏</a>
+      <a class="social" href="#" title="Facebook">f</a>
+      <a class="social" href="#" title="Instagram">◎</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════════
+     SCRIPTS
+═══════════════════════════════════════════════ -->
+<script>
+/* ── PARTICLE NETWORK CANVAS ── */
+(function(){
+  const canvas = document.getElementById('particle-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles, animId;
+  const COUNT = 90;
+  const DIST  = 140;
+  const SPEED  = 0.35;
+
+  function resize(){
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function Particle(){
+    this.x  = Math.random() * W;
+    this.y  = Math.random() * H;
+    this.vx = (Math.random()-.5) * SPEED;
+    this.vy = (Math.random()-.5) * SPEED;
+    this.r  = Math.random() * 1.8 + .5;
+    this.color = Math.random() > .55 ? '#00b4ff' : '#00e5c8';
+  }
+  Particle.prototype.update = function(){
+    this.x += this.vx; this.y += this.vy;
+    if(this.x < 0 || this.x > W) this.vx *= -1;
+    if(this.y < 0 || this.y > H) this.vy *= -1;
+  };
+
+  function init(){
+    resize();
+    particles = Array.from({length:COUNT}, ()=> new Particle());
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // Draw connections
+    for(let i=0;i<particles.length;i++){
+      for(let j=i+1;j<particles.length;j++){
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const d  = Math.sqrt(dx*dx+dy*dy);
+        if(d < DIST){
+          const alpha = (1 - d/DIST) * 0.2;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(0,180,255,${alpha})`;
+          ctx.lineWidth = .8;
+          ctx.stroke();
+        }
+      }
+    }
+    // Draw particles
+    particles.forEach(p => {
+      p.update();
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = .55;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    });
+    animId = requestAnimationFrame(draw);
+  }
+
+  init();
+  draw();
+  window.addEventListener('resize', ()=>{ cancelAnimationFrame(animId); init(); draw(); });
+
+  // Mouse interaction
+  let mouse = {x:-9999, y:-9999};
+  window.addEventListener('mousemove', e=>{ mouse.x=e.clientX; mouse.y=e.clientY; });
+
+  // Subtle push effect
+  const origDraw = draw;
+  function drawWithMouse(){
+    ctx.clearRect(0,0,W,H);
+    for(let i=0;i<particles.length;i++){
+      const dx = particles[i].x - mouse.x;
+      const dy = particles[i].y - mouse.y;
+      const d  = Math.sqrt(dx*dx+dy*dy);
+      if(d < 100){
+        const force = (100-d)/100 * .4;
+        particles[i].vx += (dx/d)*force;
+        particles[i].vy += (dy/d)*force;
+        const spd = Math.sqrt(particles[i].vx**2 + particles[i].vy**2);
+        if(spd > SPEED*4){ particles[i].vx*=.85; particles[i].vy*=.85; }
+      }
+    }
+    for(let i=0;i<particles.length;i++){
+      for(let j=i+1;j<particles.length;j++){
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const d  = Math.sqrt(dx*dx+dy*dy);
+        if(d < DIST){
+          const alpha = (1-d/DIST)*0.18;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x,particles[i].y);
+          ctx.lineTo(particles[j].x,particles[j].y);
+          ctx.strokeStyle=`rgba(0,180,255,${alpha})`;
+          ctx.lineWidth=.8;ctx.stroke();
+        }
+      }
+    }
+    particles.forEach(p => {
+      p.update();
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.color;
+      ctx.globalAlpha=.55;ctx.fill();ctx.globalAlpha=1;
+    });
+    animId=requestAnimationFrame(drawWithMouse);
+  }
+  cancelAnimationFrame(animId);
+  drawWithMouse();
+})();
+
+/* ── NAVBAR SCROLL ── */
+const nav = document.getElementById('navbar');
+window.addEventListener('scroll',()=>{
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+/* ── SCROLL REVEAL ── */
+const revealEls = document.querySelectorAll('.reveal,.reveal-l,.reveal-r');
+const revObs = new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting){
+      const siblings = [...e.target.parentElement.querySelectorAll('.reveal,.reveal-l,.reveal-r')];
+      const idx = siblings.indexOf(e.target);
+      e.target.style.transitionDelay = (idx * 0.07)+'s';
+      e.target.classList.add('in');
+      revObs.unobserve(e.target);
+    }
+  });
+},{threshold:0.1});
+revealEls.forEach(el=>revObs.observe(el));
+
+/* ── FAQ ACCORDION ── */
+document.querySelectorAll('.faq-q').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const item = btn.parentElement;
+    const ans  = item.querySelector('.faq-a');
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i=>{
+      i.classList.remove('open');
+      i.querySelector('.faq-a').classList.remove('open');
+    });
+    if(!wasOpen){ item.classList.add('open'); ans.classList.add('open'); }
+  });
+});
+
+/* ── SUBMIT BUTTON ── */
+document.getElementById('submitBtn').addEventListener('click',function(e){
+  e.preventDefault();
+  this.textContent = 'Message Sent ✓';
+  this.style.background = 'linear-gradient(135deg,#10b981,#00e5c8)';
+  setTimeout(()=>{
+    this.textContent = 'Send Message →';
+    this.style.background = '';
+  },3500);
+});
+</script>
+</body>
+</html>

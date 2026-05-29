@@ -1,0 +1,254 @@
+/* ═══════════════════════════════════════════════════════════════
+   PMB HOMEPAGE — FULL-PAGE BACKGROUND VIDEO
+   Scoped to body.homepage-video-bg (index.html only)
+═══════════════════════════════════════════════════════════════ */
+
+/* Disable particle canvas + CSS gradient stack — video is the backdrop */
+body.homepage-video-bg #particle-canvas{
+  display:none!important;
+}
+body.homepage-video-bg::before{
+  display:none!important;
+}
+
+/* ── VIDEO LAYER (Layer 0)
+   Fixed full-viewport cinematic background; does not affect document flow. ── */
+.homepage-video-wrap{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  overflow:hidden;
+  pointer-events:none;
+}
+.homepage-bg-video{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center center;
+  /* Slightly brighter — video reads as the environment, not a backdrop */
+  filter:brightness(0.88) contrast(1.05) saturate(0.96);
+  transform:scale(1.02);
+}
+
+/* ── OVERLAY LAYER (Layer 1)
+   Gradient tint (not flat) — balances readability with visible motion. ── */
+.homepage-video-overlay{
+  position:fixed;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(8,14,26,0.38) 0%,
+      rgba(8,14,26,0.48) 42%,
+      rgba(8,14,26,0.62) 100%
+    ),
+    linear-gradient(
+      to right,
+      rgba(8,14,26,0.22) 0%,
+      transparent 38%,
+      transparent 62%,
+      rgba(8,14,26,0.22) 100%
+    );
+}
+
+/* ── HERO INTEGRATION
+   Hero sits inside the environment — light wash, motion visible behind text. ── */
+body.homepage-video-bg #hero::before{
+  background:linear-gradient(
+    118deg,
+    rgba(8,14,26,0.22) 0%,
+    rgba(8,14,26,0.12) 45%,
+    rgba(8,14,26,0.2) 100%
+  );
+  background-size:100% 100%;
+  animation:none;
+}
+body.homepage-video-bg #hero::after{
+  opacity:0.22;
+}
+
+body.homepage-video-bg .hero-content{
+  background:rgba(8,14,26,0.38);
+  backdrop-filter:blur(10px) saturate(130%);
+  -webkit-backdrop-filter:blur(10px) saturate(130%);
+  border:1px solid rgba(255,255,255,0.05);
+  border-radius:18px;
+  padding:clamp(2rem,4vw,2.85rem);
+  max-width:760px;
+  box-shadow:none;
+}
+
+/* ── SECTION PANELS (Layer 2+)
+   Soft glass surfaces — video shows through; content stays centered. ── */
+body.homepage-video-bg .section .section-inner{
+  background:rgba(8,14,26,0.42);
+  backdrop-filter:blur(8px) saturate(125%);
+  -webkit-backdrop-filter:blur(8px) saturate(125%);
+  border:1px solid rgba(255,255,255,0.04);
+  border-radius:18px;
+  padding:clamp(2.25rem,4vw,3.25rem);
+  max-width:1200px;
+  margin-left:auto;
+  margin-right:auto;
+  box-shadow:none;
+}
+
+/* Remove opaque section fills — video flows between panels */
+body.homepage-video-bg :is(#services,#services-overview){
+  background:transparent;
+}
+body.homepage-video-bg #why,
+body.homepage-video-bg #faq,
+body.homepage-video-bg #contact,
+body.homepage-video-bg #about,
+body.homepage-video-bg #how-it-works{
+  background:transparent;
+  border-top-color:rgba(255,255,255,0.03);
+  border-bottom-color:rgba(255,255,255,0.03);
+}
+
+/* ── IMMERSIVE UI COMPONENTS
+   Semi-transparent floating panels — background visible through interface. ── */
+body.homepage-video-bg .svc-card,
+body.homepage-video-bg :is(#services,#services-overview) .svc-card,
+body.homepage-video-bg #how-it-works .svc-card{
+  background:rgba(12,20,36,0.65)!important;
+  backdrop-filter:blur(8px) saturate(120%);
+  -webkit-backdrop-filter:blur(8px) saturate(120%);
+  border:1px solid rgba(255,255,255,0.05);
+  box-shadow:0 2px 16px rgba(0,0,0,0.1);
+}
+
+body.homepage-video-bg :is(#services,#services-overview) .svc-card:hover,
+body.homepage-video-bg #how-it-works .svc-card:hover,
+body.homepage-video-bg .svc-card:hover{
+  border-color:rgba(0,180,255,0.16);
+  box-shadow:
+    0 6px 24px rgba(0,0,0,0.14),
+    0 0 18px rgba(0,180,255,0.05);
+  transform:translateY(-4px);
+}
+
+body.homepage-video-bg .faq-item{
+  background:rgba(12,20,36,0.65);
+  backdrop-filter:blur(8px) saturate(120%);
+  -webkit-backdrop-filter:blur(8px) saturate(120%);
+  border:1px solid rgba(255,255,255,0.05);
+  box-shadow:0 2px 16px rgba(0,0,0,0.1);
+}
+body.homepage-video-bg .faq-item.open{
+  border-color:rgba(0,180,255,0.18);
+  box-shadow:
+    0 4px 22px rgba(0,0,0,0.14),
+    0 0 16px rgba(0,180,255,0.05);
+}
+
+body.homepage-video-bg .why-badges{
+  background:rgba(12,20,36,0.65);
+  backdrop-filter:blur(8px) saturate(120%);
+  -webkit-backdrop-filter:blur(8px) saturate(120%);
+  border:1px solid rgba(255,255,255,0.05);
+  box-shadow:0 2px 16px rgba(0,0,0,0.1);
+}
+body.homepage-video-bg .why-badge{
+  border-bottom-color:rgba(255,255,255,0.05);
+}
+body.homepage-video-bg .why-badge:hover{
+  background:rgba(0,180,255,0.03);
+}
+
+body.homepage-video-bg .contact-form-card{
+  background:rgba(12,20,36,0.65);
+  backdrop-filter:blur(8px) saturate(120%);
+  -webkit-backdrop-filter:blur(8px) saturate(120%);
+  border:1px solid rgba(255,255,255,0.05);
+  box-shadow:0 2px 16px rgba(0,0,0,0.1);
+}
+body.homepage-video-bg .contact-cta-box{
+  background:rgba(12,20,36,0.58);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  border:1px solid rgba(0,180,255,0.12);
+  box-shadow:0 2px 14px rgba(0,0,0,0.1);
+}
+
+body.homepage-video-bg .c-item{
+  background:rgba(12,20,36,0.55);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  border-color:rgba(255,255,255,0.05);
+  box-shadow:none;
+}
+
+/* Footer — integrated, not a solid slab */
+body.homepage-video-bg footer.site-footer{
+  background:rgba(4,8,16,0.48);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  border-top:1px solid rgba(255,255,255,0.04);
+}
+body.homepage-video-bg .footer-main{
+  background:rgba(8,14,26,0.42);
+  border:1px solid rgba(255,255,255,0.04);
+  border-radius:16px;
+  padding:clamp(1.75rem,3vw,2.25rem);
+  box-shadow:none;
+}
+
+/* Text contrast — headings & CTAs stay crisp over video */
+body.homepage-video-bg .section-title,
+body.homepage-video-bg #hero .section-title{
+  text-shadow:0 1px 16px rgba(0,0,0,0.45);
+}
+body.homepage-video-bg .hero-sub,
+body.homepage-video-bg .section-sub{
+  text-shadow:0 1px 10px rgba(0,0,0,0.4);
+}
+body.homepage-video-bg .btn-primary,
+body.homepage-video-bg .btn-outline{
+  text-shadow:0 1px 2px rgba(0,0,0,0.35);
+}
+
+/* ── MOBILE — slightly darker overlay; panels stay translucent ── */
+@media (max-width:768px){
+  .homepage-video-overlay{
+    background:
+      linear-gradient(
+        to bottom,
+        rgba(8,14,26,0.48) 0%,
+        rgba(8,14,26,0.58) 50%,
+        rgba(8,14,26,0.68) 100%
+      );
+  }
+  .homepage-bg-video{
+    filter:brightness(0.82) contrast(1.06) saturate(0.94);
+  }
+  body.homepage-video-bg .hero-content{
+    background:rgba(8,14,26,0.52);
+  }
+  body.homepage-video-bg .section .section-inner{
+    background:rgba(8,14,26,0.55);
+  }
+  body.homepage-video-bg .svc-card,
+  body.homepage-video-bg :is(#services,#services-overview) .svc-card,
+  body.homepage-video-bg #how-it-works .svc-card,
+  body.homepage-video-bg .faq-item,
+  body.homepage-video-bg .why-badges,
+  body.homepage-video-bg .contact-form-card{
+    background:rgba(12,20,36,0.72)!important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .homepage-bg-video{
+    display:none;
+  }
+  .homepage-video-overlay{
+    background:rgba(8,14,26,0.82);
+  }
+}
+

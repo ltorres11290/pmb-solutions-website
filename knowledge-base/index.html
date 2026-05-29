@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="48x48 32x32 16x16" type="image/x-icon"/>
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"/>
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"/>
+<link rel="icon" type="image/svg+xml" href="../favicon.svg" sizes="any"/>
+<link rel="icon" type="image/svg+xml" href="../favicon-dark.svg" sizes="any" media="(prefers-color-scheme: dark)"/>
+<link rel="apple-touch-icon" href="../apple-touch-icon.png" sizes="180x180"/>
+<link rel="manifest" href="../site.webmanifest"/>
+<meta name="theme-color" content="#00b4ff"/>
+<title>Knowledge Base - PMB-Solutions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/pmb-enterprise-architecture.css"/>
+<style>
+/* Keep resource cards visibly interactive and safely disable dead links */
+.services-grid--catalog a.svc-card{cursor:pointer}
+.services-grid--catalog a.svc-card.is-disabled{
+  cursor:not-allowed;
+  pointer-events:none;
+}
+.kb-search-results{
+  margin-top:.75rem;
+  display:grid;
+  gap:.65rem;
+}
+.kb-search-results[hidden]{display:none!important}
+.kb-search-result{
+  display:block;
+  padding:.8rem .95rem;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:var(--panel);
+}
+.kb-search-result strong{
+  display:block;
+  font-size:.97rem;
+  line-height:1.45;
+  color:var(--white);
+}
+.kb-search-result span{
+  display:block;
+  margin-top:.2rem;
+  font-size:.78rem;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+.kb-search-result em{
+  display:block;
+  margin-top:.35rem;
+  font-style:normal;
+  font-size:.86rem;
+  line-height:1.5;
+  color:var(--muted2);
+}
+.kb-search-status{
+  margin-top:.6rem;
+  color:var(--muted2);
+  font-size:.86rem;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+.kb-search-empty{
+  margin-top:.8rem;
+  color:var(--muted2);
+  font-size:.92rem;
+  line-height:1.5;
+}
+/* Knowledge base typography upgrades for readability and hierarchy */
+.services-grid--catalog .svc-card h3{
+  font-size:clamp(1.25rem,1.05rem + 0.7vw,1.5rem);
+  font-weight:700;
+  line-height:1.3;
+  margin:0 0 .55rem;
+}
+.services-grid--catalog .svc-card p{
+  font-size:1rem;
+  line-height:1.62;
+  margin:0 0 .85rem;
+}
+.services-grid--catalog .svc-card .svc-link{
+  font-size:.96rem;
+  line-height:1.45;
+}
+#it-support .section-tag,
+#website-digital-presence .section-tag,
+#branding-graphics .section-tag,
+#social-media .section-tag,
+#business-setup .section-tag{
+  font-size:clamp(1.75rem,1.55rem + 1vw,2.2rem);
+  line-height:1.2;
+  margin-bottom:1rem;
+  letter-spacing:.02em;
+  text-transform:none;
+}
+#it-support .services-grid--catalog,
+#website-digital-presence .services-grid--catalog,
+#branding-graphics .services-grid--catalog,
+#social-media .services-grid--catalog,
+#business-setup .services-grid--catalog{
+  gap:1.35rem;
+}
+#it-support,
+#website-digital-presence,
+#branding-graphics,
+#social-media,
+#business-setup{
+  padding-top:4.2rem;
+}
+@media(max-width:900px){
+  .services-grid--catalog .svc-card h3{
+    font-size:clamp(1.12rem,1.02rem + 0.65vw,1.25rem);
+    margin-bottom:.48rem;
+  }
+  .services-grid--catalog .svc-card p{
+    font-size:.97rem;
+    line-height:1.58;
+    margin-bottom:.78rem;
+  }
+  #it-support .section-tag,
+  #website-digital-presence .section-tag,
+  #branding-graphics .section-tag,
+  #social-media .section-tag,
+  #business-setup .section-tag{
+    font-size:clamp(1.4rem,1.26rem + .8vw,1.7rem);
+    margin-bottom:.8rem;
+  }
+  #it-support,
+  #website-digital-presence,
+  #branding-graphics,
+  #social-media,
+  #business-setup{
+    padding-top:3.1rem;
+  }
+}
+</style>
+<link rel="stylesheet" href="../css/pmb-homepage-background.css"/>
+<link rel="stylesheet" href="../css/pmb-knowledge-base.css"/>
+<link rel="stylesheet" href="../css/theme-toggle.css"/>
+</head>
+<body class="kb-site">
+<canvas id="particle-canvas" aria-hidden="true"></canvas>
+<nav id="navbar">
+  <a href="../index.html" class="nav-logo">
+    <img class="nav-logo-img" src="../pmb_solutions_logo.svg" alt="PMB-Solutions" width="260" height="97" decoding="async"/>
+  </a>
+  <ul class="nav-links">
+    <li class="nav-dropdown-wrap">
+      <a href="../index.html#services-overview" class="nav-dropdown-trigger">Services</a>
+      <ul class="nav-dropdown-menu" role="menu" aria-label="Service categories">
+        <li role="none"><a role="menuitem" href="../category-it-support-technical-services.html">IT Support &amp; Technical Services</a></li>
+        <li role="none"><a role="menuitem" href="../category-website-design-digital-presence.html">Website Design &amp; Digital Presence</a></li>
+        <li role="none"><a role="menuitem" href="../category-branding-graphic-design.html">Branding &amp; Graphic Design</a></li>
+        <li role="none"><a role="menuitem" href="../category-social-media-content-management.html">Social Media &amp; Content Management</a></li>
+        <li role="none"><a role="menuitem" href="../category-business-setup-digital-infrastructure.html">Business Setup &amp; Digital Infrastructure</a></li>
+      </ul>
+    </li>
+    <li class="nav-dropdown-wrap">
+      <a href="index.html" class="nav-dropdown-trigger">Resources</a>
+      <ul class="nav-dropdown-menu" role="menu" aria-label="Resources">
+        <li role="none"><a role="menuitem" href="index.html">Knowledge Base</a></li>
+        
+      </ul>
+    </li>
+    <li><a href="../index.html#contact">Contact</a></li>
+  </ul>
+</nav>
+<header class="svc-hero"><div class="svc-hero-inner section-inner--narrow">
+  <p class="section-tag">Resources</p>
+  <h1>Knowledge <em>Base</em></h1>
+  <p class="svc-hero-lead">Practical guides to help you troubleshoot faster, prepare project assets, and manage your digital systems with confidence.</p>
+  <p class="svc-hero-lead">Find answers, guides, and practical solutions across your systems.</p>
+</div></header>
+<main id="category-body">
+  <section class="section"><div class="section-inner">
+    <p class="section-tag reveal">Search</p>
+    <h2 class="section-title reveal">Find an <em>article</em></h2>
+    <div class="search-bar reveal" style="max-width:720px;">
+      <span class="search-icon" aria-hidden="true">⌕</span>
+      <input type="text" id="kbSearchInput" placeholder="Search knowledge base articles..." aria-label="Search knowledge base" autocomplete="off" />
+    </div>
+    <p id="kbSearchStatus" class="kb-search-status" hidden></p>
+    <div id="kbSearchResults" class="kb-search-results" role="listbox" aria-label="Knowledge base search results" hidden></div>
+    <p id="kbSearchEmpty" class="kb-search-empty" hidden>No articles found.</p>
+    <div style="margin-bottom:1.5rem"></div>
+    <p class="section-tag reveal">Categories</p>
+    <h2 class="section-title reveal">Browse by <em>topic</em></h2>
+    <div class="services-grid--catalog">
+      <a href="#it-support" class="svc-card reveal"><h3>IT Support</h3><p>Remote support prep, WiFi troubleshooting, backups, malware checks, and device planning.</p><span class="svc-link">View articles →</span></a>
+      <a href="#website-digital-presence" class="svc-card reveal"><h3>Website &amp; Digital Presence</h3><p>Project prep, content handoff, update workflows, domains, and security checks.</p><span class="svc-link">View articles →</span></a>
+      <a href="#branding-graphics" class="svc-card reveal"><h3>Branding &amp; Graphics</h3><p>Logo file usage, brand consistency, and image prep best practices.</p><span class="svc-link">View articles →</span></a>
+      <a href="#social-media" class="svc-card reveal"><h3>Social Media</h3><p>Access setup, calendar approvals, and media submission workflows.</p><span class="svc-link">View articles →</span></a>
+      <a href="#business-setup" class="svc-card reveal"><h3>Business Setup</h3><p>Business email onboarding, booking access, and profile maintenance.</p><span class="svc-link">View articles →</span></a>
+    </div>
+  </div></section>
+
+  <section id="it-support" class="section"><div class="section-inner">
+    <p class="section-tag reveal">IT Support</p>
+    <div class="services-grid--catalog">
+      <a href="how-to-prepare-for-a-remote-support-session.html" class="svc-card reveal"><h3>How to prepare for a remote support session</h3><span class="svc-link">Read article →</span></a>
+      <a href="what-to-do-if-your-wifi-keeps-dropping.html" class="svc-card reveal"><h3>What to do if your WiFi keeps dropping</h3><span class="svc-link">Read article →</span></a>
+      <a href="how-to-back-up-your-files-properly.html" class="svc-card reveal"><h3>How to back up your files properly</h3><span class="svc-link">Read article →</span></a>
+      <a href="how-to-know-if-your-computer-has-a-virus.html" class="svc-card reveal"><h3>How to know if your computer has a virus</h3><span class="svc-link">Read article →</span></a>
+      <a href="how-to-choose-the-right-laptop-for-your-business.html" class="svc-card reveal"><h3>How to choose the right laptop for your business</h3><span class="svc-link">Read article →</span></a>
+    </div>
+  </div></section>
+
+  <section id="website-digital-presence" class="section"><div class="section-inner">
+    <p class="section-tag reveal">Website &amp; Digital Presence</p>
+    <div class="services-grid--catalog">
+      <a href="what-to-do-before-starting-a-website-project.html" class="svc-card reveal"><h3>What to do before starting a website project</h3><span class="svc-link">Read article →</span></a>
+      <a href="how-to-send-your-website-content-to-pmb-solutions.html" class="svc-card reveal"><h3>How to send your website content to PMB-Solutions</h3><span class="svc-link">Read article →</span></a>
+      <a href="how-to-request-website-updates.html" class="svc-card reveal"><h3>How to request website updates</h3><span class="svc-link">Read article →</span></a>
+      <a href="how-to-connect-your-domain-to-your-website.html" class="svc-card reveal"><h3>How to connect your domain to your website</h3><span class="svc-link">Read article →</span></a>
+      <a href="how-to-check-if-your-website-is-secure.html" class="svc-card reveal"><h3>How to check if your website is secure</h3><span class="svc-link">Read article →</span></a>
+    </div>
+  </div></section>
+
+  <section id="branding-graphics" class="section"><div class="section-inner">
+    <p class="section-tag reveal">Branding &amp; Graphics</p>
+    <div class="services-grid--catalog">
+      <a href="what-files-you-receive-with-a-logo-package.html" class="svc-card reveal"><h3>What files you receive with a logo package</h3><span class="svc-link">Read article →</span></a>
+      <a href="how-to-use-your-brand-colors-consistently.html" class="svc-card reveal"><h3>How to use your brand colors consistently</h3><span class="svc-link">Read article →</span></a>
+      <a href="how-to-prepare-images-for-your-website.html" class="svc-card reveal"><h3>How to prepare images for your website</h3><span class="svc-link">Read article →</span></a>
+    </div>
+  </div></section>
+
+  <section id="social-media" class="section"><div class="section-inner">
+    <p class="section-tag reveal">Social Media</p>
+    <div class="services-grid--catalog">
+      <a href="how-to-give-pmb-solutions-access-to-your-social-accounts.html" class="svc-card reveal"><h3>How to give PMB-Solutions access to your social accounts</h3><span class="svc-link">Read article →</span></a>
+      <a href="how-to-approve-your-monthly-content-calendar.html" class="svc-card reveal"><h3>How to approve your monthly content calendar</h3><span class="svc-link">Read article →</span></a>
+      <a href="how-to-send-photos-and-videos-for-content-creation.html" class="svc-card reveal"><h3>How to send photos and videos for content creation</h3><span class="svc-link">Read article →</span></a>
+    </div>
+  </div></section>
+
+  <section id="business-setup" class="section"><div class="section-inner">
+    <p class="section-tag reveal">Business Setup</p>
+    <div class="services-grid--catalog">
+      <a href="how-to-set-up-your-business-email-on-your-phone.html" class="svc-card reveal"><h3>How to set up your business email on your phone</h3><span class="svc-link">Read article →</span></a>
+      <a href="how-to-access-your-booking-system.html" class="svc-card reveal"><h3>How to access your booking system</h3><span class="svc-link">Read article →</span></a>
+      <a href="how-to-update-your-google-business-profile.html" class="svc-card reveal"><h3>How to update your Google Business Profile</h3><span class="svc-link">Read article →</span></a>
+    </div>
+  </div></section>
+</main>
+<script>
+const nav=document.getElementById('navbar');
+addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>60));
+document.querySelectorAll('.reveal').forEach(el=>{
+  const io=new IntersectionObserver((ents)=>{ents.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:0.12});
+  io.observe(el);
+});
+
+/* Validate article destinations and disable any dead cards */
+(function(){
+  const cards=[...document.querySelectorAll('.services-grid--catalog a.svc-card[href]')];
+  cards.forEach((card)=>{
+    const href=(card.getAttribute('href')||'').trim();
+    if(!href || href.startsWith('#')) return;
+    const targetUrl=new URL(href, window.location.href);
+    fetch(targetUrl, {method:'HEAD'})
+      .then((res)=>{
+        if(res.ok) return;
+        card.classList.add('is-disabled');
+        card.setAttribute('aria-disabled','true');
+        card.removeAttribute('href');
+      })
+      .catch(()=>{
+        card.classList.add('is-disabled');
+        card.setAttribute('aria-disabled','true');
+        card.removeAttribute('href');
+      });
+  });
+})();
+
+/* Knowledge base search: intent-based live matching */
+(function(){
+  const input=document.getElementById('kbSearchInput');
+  const resultsEl=document.getElementById('kbSearchResults');
+  const emptyEl=document.getElementById('kbSearchEmpty');
+  const statusEl=document.getElementById('kbSearchStatus');
+  if(!input||!resultsEl||!emptyEl||!statusEl)return;
+
+  const keywordMap={
+    help:['support','assistance','troubleshooting','fix'],
+    support:['help','assist','troubleshooting','repair'],
+    assist:['help','support','assistance'],
+    assistance:['help','support','assist'],
+    issue:['problem','error','fault','bug'],
+    problem:['issue','error','fault','trouble'],
+    error:['issue','problem','fault','bug'],
+    slow:['lag','performance','speed'],
+    lag:['slow','performance','speed'],
+    wifi:['internet','network','connection','router'],
+    internet:['wifi','network','connection'],
+    network:['wifi','internet','connection'],
+    connection:['wifi','internet','network'],
+    email:['outlook','mail','inbox'],
+    mail:['email','outlook','inbox'],
+    outlook:['email','mail','inbox'],
+    printer:['printing','print'],
+    print:['printer','printing'],
+    printing:['printer','print'],
+    setup:['install','configuration','deployment'],
+    install:['setup','configuration','deployment'],
+    configuration:['setup','install','deployment'],
+    broken:['not working','issue','error','failure'],
+    fix:['repair','troubleshoot','resolve','help','support'],
+    repair:['fix','troubleshoot','resolve'],
+    troubleshoot:['fix','repair','issue','problem','help'],
+    troubleshooting:['fix','repair','support','help'],
+    virus:['malware','security','threat'],
+    malware:['virus','security','threat'],
+    website:['site','web','domain'],
+    site:['website','web','domain'],
+    domain:['website','site','dns'],
+    booking:['calendar','appointment','schedule'],
+    calendar:['booking','appointment','schedule'],
+    backup:['recovery','restore','data'],
+    restore:['backup','recovery','data'],
+    social:['content','instagram','facebook','posting'],
+    security:['secure','protection','virus','malware'],
+    password:['login','access','credentials'],
+    update:['upgrade','patch','refresh'],
+    laptop:['computer','device','pc'],
+    phone:['mobile','device','email']
+  };
+
+  const articleCards=[...document.querySelectorAll('section[id] .services-grid--catalog a.svc-card[href]')];
+  const categoryDescriptions={};
+  [...document.querySelectorAll('a.svc-card.reveal[href^="#"]')].forEach((categoryCard)=>{
+    const target=(categoryCard.getAttribute('href')||'').replace('#','');
+    const descEl=categoryCard.querySelector('p');
+    if(target&&descEl){categoryDescriptions[target]=(descEl.textContent||'').trim();}
+  });
+
+  const articleIndex=articleCards.map((card)=>{
+    const section=card.closest('section[id]');
+    const categoryEl=section?section.querySelector('.section-tag'):null;
+    const titleEl=card.querySelector('h3');
+    const sectionId=section?section.id:'';
+    const title=(titleEl?titleEl.textContent:'').trim();
+    const description=categoryDescriptions[sectionId]||'';
+    const category=(categoryEl?categoryEl.textContent:'').trim();
+    const matchText=(title+' '+description).toLowerCase();
+    return{
+      href:card.getAttribute('href')||'',
+      title:title,
+      category:category,
+      description:description,
+      matchText:matchText
+    };
+  }).filter((item)=>item.href&&item.title);
+
+  function renderResults(matches){
+    resultsEl.innerHTML='';
+    matches.slice(0,8).forEach((item)=>{
+      const link=document.createElement('a');
+      link.className='kb-search-result';
+      link.href=item.href;
+      link.role='option';
+      link.innerHTML='<strong>'+item.title+'</strong><span>'+item.category+'</span>'+(item.description?'<em>'+item.description+'</em>':'');
+      resultsEl.appendChild(link);
+    });
+  }
+
+  function tokenize(text){
+    return text
+      .toLowerCase()
+      .split(/[^a-z0-9]+/i)
+      .map((w)=>w.trim())
+      .filter((w)=>w.length>1);
+  }
+
+  function expandQueryWords(words){
+    const expanded=[];
+    words.forEach((word)=>{
+      expanded.push(word);
+      if(keywordMap[word]){
+        expanded.push(...keywordMap[word]);
+      }
+    });
+    return [...new Set(expanded.filter((w)=>w.length>1))];
+  }
+
+  function scoreArticle(item,words){
+    let score=0;
+    words.forEach((word)=>{
+      if(!word||word.length<2)return;
+      if(item.matchText.includes(word))score+=1;
+      if(item.title.toLowerCase().includes(word))score+=2;
+    });
+    return score;
+  }
+
+  function matchExact(item,query,words){
+    if(item.matchText.includes(query))return true;
+    if(!words.length)return false;
+    return words.every((word)=>item.matchText.includes(word));
+  }
+
+  function matchExpanded(item,expandedWords){
+    return expandedWords.some((word)=>item.matchText.includes(word));
+  }
+
+  function updateSearch(){
+    const query=input.value.trim().toLowerCase();
+    if(!query){
+      resultsEl.hidden=true;
+      emptyEl.hidden=true;
+      statusEl.hidden=true;
+      resultsEl.innerHTML='';
+      return;
+    }
+
+    const words=tokenize(query);
+    const expandedWords=expandQueryWords(words.length?words:tokenize(query));
+
+    const exactResults=articleIndex
+      .filter((item)=>matchExact(item,query,words))
+      .map((item)=>({item,score:scoreArticle(item,words)+(item.matchText.includes(query)?3:0)}))
+      .sort((a,b)=>b.score-a.score)
+      .map((entry)=>entry.item);
+
+    if(exactResults.length){
+      renderResults(exactResults);
+      resultsEl.hidden=false;
+      emptyEl.hidden=true;
+      statusEl.hidden=true;
+      return;
+    }
+
+    const intentResults=articleIndex
+      .filter((item)=>matchExpanded(item,expandedWords))
+      .map((item)=>({item,score:scoreArticle(item,expandedWords)}))
+      .filter((entry)=>entry.score>0)
+      .sort((a,b)=>b.score-a.score)
+      .map((entry)=>entry.item);
+
+    if(intentResults.length){
+      renderResults(intentResults);
+      resultsEl.hidden=false;
+      emptyEl.hidden=true;
+      statusEl.hidden=false;
+      statusEl.textContent='Showing related results';
+      return;
+    }
+
+    resultsEl.hidden=true;
+    resultsEl.innerHTML='';
+    statusEl.hidden=true;
+    emptyEl.hidden=false;
+  }
+
+  input.addEventListener('input',updateSearch);
+})();
+</script>
+<script src="../js/particle-canvas.js" defer></script>
+<a href="tel:+19174994911" class="mobile-call-fab" aria-label="Call PMB-Solutions at (917) 499-4911"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a><script src="../js/theme-toggle.js"></script>
+</body></html>

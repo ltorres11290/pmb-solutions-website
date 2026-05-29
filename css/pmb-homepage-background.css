@@ -1,0 +1,32 @@
+/* Cinematic background stack — Layer 1 (deep, still gradient) + canvas layers above */
+
+body:has(#particle-canvas)::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  background:
+    radial-gradient(ellipse 130% 90% at 50% 108%, rgba(12,22,42,0.88) 0%, transparent 58%),
+    radial-gradient(ellipse 55% 45% at 14% 16%, rgba(0,120,180,0.07) 0%, transparent 52%),
+    radial-gradient(ellipse 48% 38% at 86% 20%, rgba(0,200,180,0.045) 0%, transparent 48%),
+    #080e1a;
+}
+
+#particle-canvas{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  z-index:1;
+  pointer-events:none;
+}
+
+@media (prefers-reduced-motion: reduce){
+  body:has(#particle-canvas)::before{
+    background:
+      radial-gradient(ellipse 130% 90% at 50% 108%, rgba(12,22,42,0.88) 0%, transparent 58%),
+      #080e1a;
+  }
+}

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="favicon.ico" sizes="48x48 32x32 16x16" type="image/x-icon"/>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png"/>
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png"/>
+<link rel="icon" type="image/svg+xml" href="favicon.svg" sizes="any"/>
+<link rel="icon" type="image/svg+xml" href="favicon-dark.svg" sizes="any" media="(prefers-color-scheme: dark)"/>
+<link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180"/>
+<link rel="manifest" href="site.webmanifest"/>
+<meta name="theme-color" content="#00b4ff"/>
+<title>Business Launch Bundle — PMB-Solutions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/pmb-enterprise-architecture.css"/><style>
+.pmb-bg--3 .svc-page-bg__layer--a{background:radial-gradient(circle at 75% 25%,rgba(0,229,200,.11),transparent 42%),linear-gradient(165deg,rgba(0,180,255,.04),transparent 50%);}
+.pmb-bg--3 .svc-page-bg__layer--b{background:repeating-linear-gradient(45deg,transparent 0 40px,rgba(0,180,255,.025) 40px 41px);opacity:.3;}
+@keyframes pmbBg3A{0%,100%{transform:scale(1)}50%{transform:scale(1.04) translate(1%,1%)}}
+@keyframes pmbBg3B{0%,100%{transform:rotate(0)}50%{transform:rotate(-3deg)}}
+.pmb-bg--3 .svc-page-bg__layer--a{animation:pmbBg3A 28s ease-in-out infinite}
+.pmb-bg--3 .svc-page-bg__layer--b{animation:pmbBg3B 22s ease-in-out infinite}
+
+/* =============================================================================
+   BUSINESS LAUNCH BUNDLE — full-page background video + readable content panels
+   Video stays visible site-wide; text sits in translucent zones above it.
+   ============================================================================= */
+
+/* VIDEO LAYER — fixed, full viewport, behind all page content */
+.blb-svc-video-bg{
+  position:fixed;inset:0;width:100%;height:100%;z-index:1;
+  pointer-events:none;overflow:hidden;contain:strict;
+}
+.blb-svc-video-bg__video{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center;
+  transform:scale(1.02);
+  /* Subtle grade for a calmer, premium look over raw footage */
+  filter:brightness(0.88) contrast(1.06) saturate(1.05);
+}
+
+/* OVERLAY LAYER — global dark scrim above video, below text (video still shows through) */
+.blb-svc-video-bg__overlay{
+  position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(
+    180deg,
+    rgba(8,14,26,0.62) 0%,
+    rgba(8,14,26,0.48) 42%,
+    rgba(8,14,26,0.58) 100%
+  );
+}
+
+/* Page uses video instead of CSS ambient + generic overlay hooks */
+body.has-blb-video .svc-page-bg{display:none}
+body.has-blb-video .page-overlay-bg{display:none}
+
+/* SECTION READABILITY — translucent panel per major block (hero, sections, CTA) */
+body.has-blb-video .svc-readable-zone{
+  max-width:720px;margin:0 auto;
+  padding:1.65rem 1.5rem;
+  background:rgba(8,14,26,0.58);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border:1px solid rgba(0,180,255,0.12);
+  border-radius:14px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.28);
+}
+body.has-blb-video .svc-hero{
+  min-height:min(68vh,680px);
+  /* Let background video show through hero; readability from .svc-readable-zone */
+}
+body.has-blb-video .svc-hero::before{
+  background:linear-gradient(180deg,rgba(6,12,22,0.35) 0%,transparent 55%,rgba(6,12,22,0.45) 100%);
+}
+body.has-blb-video #svc-detail{
+  background:transparent;
+  border-top:1px solid rgba(0,180,255,0.1);
+}
+body.has-blb-video #svc-detail .section:nth-child(even){background:transparent}
+body.has-blb-video .section{padding:2.35rem 5vw}
+body.has-blb-video .detail-panel{
+  margin-top:1rem;
+  background:rgba(12,20,36,0.72);
+  border:1px solid rgba(0,180,255,0.14);
+}
+body.has-blb-video .cta-final{
+  background:transparent;
+  border-top:1px solid rgba(0,180,255,0.1);
+}
+body.has-blb-video .page-with-overlay,
+body.has-blb-video nav,
+body.has-blb-video .cta-final,
+body.has-blb-video .mobile-call-fab{
+  position:relative;z-index:3;
+}
+body.has-blb-video nav{z-index:200}
+
+/* Mobile — slightly stronger scrim + panels so text stays crisp on small screens */
+@media(max-width:720px){
+  .blb-svc-video-bg__overlay{background:rgba(8,14,26,0.72)}
+  body.has-blb-video .svc-readable-zone{
+    padding:1.35rem 1.15rem;
+    background:rgba(8,14,26,0.7);
+  }
+  body.has-blb-video .detail-panel{background:rgba(12,20,36,0.82)}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .blb-svc-video-bg{display:none!important}
+  body.has-blb-video .svc-page-bg{display:block}
+}
+</style>
+<link rel="stylesheet" href="css/page-overlay-background.css"/>
+<link rel="stylesheet" href="css/theme-toggle.css"/>
+</head>
+<body class="has-blb-video">
+<!-- VIDEO LAYER + OVERLAY LAYER (fixed; does not affect document flow) -->
+<div class="blb-svc-video-bg" id="blb-svc-video-bg" aria-hidden="true">
+  <video
+    class="blb-svc-video-bg__video"
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="metadata"
+    disablePictureInPicture
+    disableRemotePlayback
+  >
+    <source src="assets/video/Business Launch Bundle.mp4" type="video/mp4"/>
+  </video>
+  <div class="blb-svc-video-bg__overlay" aria-hidden="true"></div>
+</div>
+<div class="svc-page-bg pmb-bg--3" aria-hidden="true"><div class="svc-page-bg__layer svc-page-bg__layer--a"></div><div class="svc-page-bg__layer svc-page-bg__layer--b"></div></div>
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">
+    <img class="nav-logo-img" src="pmb_solutions_logo.svg" alt="PMB-Solutions" width="260" height="97" decoding="async"/>
+  </a>
+  <ul class="nav-links">
+    <li class="nav-dropdown-wrap">
+      <a href="index.html#services-overview" class="nav-dropdown-trigger">Services</a>
+      <ul class="nav-dropdown-menu" role="menu" aria-label="Service categories">
+        <li role="none"><a role="menuitem" href="category-it-support-technical-services.html">IT Support &amp; Technical Services</a></li>
+        <li role="none"><a role="menuitem" href="category-website-design-digital-presence.html">Website Design &amp; Digital Presence</a></li>
+        <li role="none"><a role="menuitem" href="category-branding-graphic-design.html">Branding &amp; Graphic Design</a></li>
+        <li role="none"><a role="menuitem" href="category-social-media-content-management.html">Social Media &amp; Content Management</a></li>
+        <li role="none"><a role="menuitem" href="category-business-setup-digital-infrastructure.html">Business Setup &amp; Digital Infrastructure</a></li>
+        <li role="none"><a role="menuitem" href="category-premium-bundles-packages.html">Premium Bundles &amp; Packages</a></li>
+        <li class="nav-dropdown-sep" role="presentation" aria-hidden="true"></li>        <li role="none"><a role="menuitem" href="index.html#services">Full service catalog</a></li>
+      </ul>
+    </li>
+    <li><a href="index.html#why">Why Us</a></li>
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#faq">FAQ</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="page-with-overlay">
+<div class="page-overlay-bg digital-presence" aria-hidden="true"></div>
+<header class="svc-hero"><div class="svc-hero-inner section-inner--narrow svc-readable-zone">
+  <p class="section-tag">Bundle</p>
+  <h1>Business Launch <em>Bundle</em></h1>
+  <p class="svc-hero-lead">A bundled set of essential services to help you launch or grow your business with a clear structure, fewer decisions, and a unified setup.</p>
+  <div class="svc-hero-btns">
+    <a class="btn-primary" href="https://outlook.office.com/book/PMBSolutionsClientBookingPortal@PMB-Solutions.com/" target="_blank" rel="noopener noreferrer">Book Now</a>
+    <a class="btn-ghost" href="category-premium-bundles-packages.html">All bundles</a>
+  </div>
+</div></header>
+<main id="svc-detail">
+  <section class="section"><div class="section-inner section-inner--narrow svc-readable-zone">
+    <p class="section-tag reveal">Details</p>
+    <h2 class="section-title reveal">What this service <em>covers</em></h2>
+    <div class="detail-panel reveal"><ul class="detail-list">
+          <li>Logo design and basic brand identity development</li>
+          <li>Website or landing page setup aligned with your business</li>
+          <li>Domain, hosting, and email configuration</li>
+          <li>Business email setup with basic structure and security alignment</li>
+          <li>Initial setup of key online profiles such as Google Business Profile</li>
+    </ul></div>
+  </div></section>
+  <section class="section"><div class="section-inner section-inner--narrow svc-readable-zone">
+    <p class="section-tag reveal">Audience</p>
+    <h2 class="section-title reveal">Who this service is <em>for</em></h2>
+    <div class="detail-panel reveal"><ul class="detail-list">
+          <li>Businesses launching for the first time</li>
+          <li>Owners setting up their core systems and online presence</li>
+          <li>Companies expanding into new locations or services</li>
+          <li>Any business looking for a structured, all-in-one setup</li>
+    </ul></div>
+  </div></section>
+  <section class="section"><div class="section-inner section-inner--narrow svc-readable-zone">
+    <p class="section-tag reveal">Pain points</p>
+    <h2 class="section-title reveal">Common problems this <em>solves</em></h2>
+    <div class="detail-panel reveal"><ul class="detail-list">
+          <li>Disorganized setup across branding, website, and business tools</li>
+          <li>Multiple vendors handling different parts without coordination</li>
+          <li>Delays caused by incomplete or misaligned setup steps</li>
+          <li>Confusion around what needs to be done to launch properly</li>
+          <li>Inconsistent branding and systems from the start</li>
+    </ul></div>
+  </div></section>
+  <section class="section"><div class="section-inner section-inner--narrow svc-readable-zone">
+    <p class="section-tag reveal">Our approach</p>
+    <h2 class="section-title reveal">How PMB-Solutions <em>helps</em></h2>
+    <div class="detail-panel reveal"><ul class="detail-list">
+          <li>Coordinates essential setup across branding, website, and systems</li>
+          <li>Ensures each part of your setup works together correctly</li>
+          <li>Reduces complexity by handling multiple steps in a structured process</li>
+          <li>Keeps your launch organized and aligned with your business goals</li>
+          <li>Provides services based on a defined scope and rollout plan</li>
+    </ul></div>
+  </div></section>
+  <section class="section"><div class="section-inner section-inner--narrow svc-readable-zone">
+    <p class="section-tag reveal">Visit</p>
+    <h2 class="section-title reveal">What to expect during your <em>appointment</em></h2>
+    <div class="detail-panel reveal"><ul class="detail-list">
+          <li>A discussion of your business goals and launch requirements</li>
+          <li>Review of what is already set up and what is needed</li>
+          <li>Identification of key priorities and scope of work</li>
+          <li>Clear outline of next steps and phased implementation</li>
+    </ul></div>
+  </div></section>
+</main>
+<section class="cta-final"><div class="cta-final-inner svc-readable-zone reveal">
+  <h2>Launch your business with a clear and structured foundation</h2>
+  <p>Schedule an appointment to plan and implement the essential systems needed to get your business up and running.</p>
+  <a class="btn-primary" href="https://outlook.office.com/book/PMBSolutionsClientBookingPortal@PMB-Solutions.com/" target="_blank" rel="noopener noreferrer">Book Now</a>
+</div></section>
+</div>
+
+<script>
+const nav=document.getElementById('navbar');
+addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>60));
+document.querySelectorAll('.reveal').forEach(el=>{
+  const io=new IntersectionObserver((ents)=>{ents.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:0.12});
+  io.observe(el);
+});
+/* Ensure background video plays when autoplay is allowed */
+(function(){
+  var v=document.querySelector('.blb-svc-video-bg__video');
+  if(!v)return;
+  v.muted=true;
+  var p=v.play();
+  if(p&&typeof p.catch==='function'){p.catch(function(){});}
+  document.addEventListener('visibilitychange',function(){
+    if(document.hidden)v.pause();
+    else{v.play().catch(function(){});}
+  });
+})();
+</script>
+<a href="tel:+19174994911" class="mobile-call-fab" aria-label="Call PMB-Solutions at (917) 499-4911"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a>
+<script src="js/theme-toggle.js"></script>
+</body></html>

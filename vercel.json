@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    {
+      "source": "/pmb-solutions-v2.html",
+      "destination": "/index.html"
+    }
+  ],
+  "trailingSlash": false
+}
