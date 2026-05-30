@@ -141,11 +141,6 @@ ${NAV}
     <h2 class="section-title reveal">Common problems <em>solved</em></h2>
     <div class="detail-panel reveal"><ul class="detail-list">\n${li(problems)}\n    </ul></div>
   </div></section>
-  <section class="section"><div class="section-inner section-inner--narrow">
-    <p class="section-tag reveal">Pricing</p>
-    <h2 class="section-title reveal">Investment <em>placeholder</em></h2>
-    <div class="detail-panel reveal"><p>Scope and pricing are confirmed before work begins. Replace the Book Now URL with your live booking link when ready.</p></div>
-  </div></section>
 </main>
 <section class="cta-final" aria-labelledby="cta1"><div class="cta-final-inner reveal">
   <h2 id="cta1">${ctaTitle}</h2>
